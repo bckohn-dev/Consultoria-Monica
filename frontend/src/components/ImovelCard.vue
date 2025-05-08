@@ -5,6 +5,7 @@
     <img
       :src="imovel.foto"
       :alt="imovel.nome"
+      loading="lazy"
       class="w-full h-48 object-cover rounded-md mb-4"
     />
     <h3 class="text-xl font-semibold text-gray-800">{{ imovel.nome }}</h3>
@@ -14,20 +15,35 @@
     </p>
     <p class="text-gray-600">Área: {{ imovel.area }}m²</p>
     <button
-      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-300"
+      :disabled="loading"
+      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50"
     >
-      Ver Detalhes
+      {{ loading ? 'Carregando...' : 'Ver Detalhes' }}
     </button>
   </div>
 </template>
 
 <script>
-import { HomeIcon } from '@heroicons/vue/24/outline';
-
 export default {
-  components: { HomeIcon },
   props: {
     imovel: Object,
+  },
+  data() {
+    return {
+      loading: false, // Define o estado inicial de loading
+    };
+  },
+  methods: {
+    async verDetalhes() {
+      this.loading = true;
+      try {
+        // Simula uma ação, como carregar detalhes do imóvel
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        alert(`Detalhes do imóvel: ${this.imovel.nome}`);
+      } finally {
+        this.loading = false;
+      }
+    },
   },
 };
 </script>
