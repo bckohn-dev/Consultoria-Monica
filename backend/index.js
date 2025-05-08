@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from the uploads folder (fixed case)
-app.use('/imoveis', express.static(path.join(__dirname, 'Uploads/imoveis')));
+app.use('/imoveis', express.static(path.join(__dirname, 'uploads/imoveis')));
 
 // Endpoint to list properties
 app.get('/api/imoveis', async (req, res) => {

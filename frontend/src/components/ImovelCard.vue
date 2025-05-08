@@ -24,9 +24,14 @@
 </template>
 
 <script>
+import { HomeIcon } from '@heroicons/vue/24/outline'; // Updated import for Heroicons v2
+
 export default {
   props: {
     imovel: Object,
+  },
+  components: {
+    HomeIcon, // Register the HomeIcon component
   },
   data() {
     return {
