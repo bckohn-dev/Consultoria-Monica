@@ -43,4 +43,23 @@ app.get('/api/imoveis', async (req, res) => {
   }
 });
 
+// Endpoint para buscar imagens do carrossel
+app.get('/api/carrossel', async (req, res) => {
+  try {
+    const snapshot = await db.collection('carrossel').get();
+    const carrossel = snapshot.docs.map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        nome: data.nome || data.Nome, // Padroniza o campo 'nome'
+        foto: data.foto,
+      };
+    });
+    res.json(carrossel);
+  } catch (error) {
+    console.error('Erro ao buscar carrossel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(3000, () => console.log('Servidor rodando na porta 3000'));

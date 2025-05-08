@@ -5,6 +5,8 @@
       navigation
       pagination
       :loop="true"
+      :slides-per-view="1"
+      :slides-per-group="1"
       class="rounded-lg overflow-hidden"
     >
       <SwiperSlide v-for="item in destaques" :key="item.id">
@@ -25,6 +27,7 @@ import { Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import axios from 'axios';
 
 export default {
   components: { Swiper, SwiperSlide },
@@ -33,11 +36,17 @@ export default {
   },
   data() {
     return {
-      destaques: [
-        { id: 'apto-centro-01', nome: 'Apto Ouro Verde', foto: 'http://localhost:3000/imoveis/apto1.jpg' },
-        { id: 'apto-praia-01', nome: 'Apto Praia Azul', foto: 'http://localhost:3000/imoveis/apto2.jpg' },
-      ],
+      destaques: [], // Inicializa o array vazio
     };
+  },
+  async created() {
+    try {
+      const response = await axios.get('http://localhost:3000/api/carrossel'); // Endpoint do backend
+      this.destaques = response.data; // Atualiza os dados do carrossel
+      console.log('Dados do carrossel:', this.destaques); // Verifica os dados carregados
+    } catch (error) {
+      console.error('Erro ao buscar dados do carrossel:', error);
+    }
   },
 };
 </script>
