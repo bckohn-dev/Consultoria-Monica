@@ -4,9 +4,15 @@ const cors = require('cors');
 const path = require('path');
 const serviceAccount = require('./serviceAccountKey.json');
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+try {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
+  console.log('Firebase Admin initialized successfully');
+} catch (error) {
+  console.error('Error initializing Firebase Admin:', error);
+  process.exit(1); // Exit if initialization fails
+}
 
 const db = admin.firestore();
 const app = express();
@@ -14,8 +20,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static files from the uploads folder
-app.use('/imoveis', express.static(path.join(__dirname, 'uploads/imoveis')));
+// Serve static files from the uploads folder (fixed case)
+app.use('/imoveis', express.static(path.join(__dirname, 'Uploads/imoveis')));
 
 // Endpoint to list properties
 app.get('/api/imoveis', async (req, res) => {
@@ -28,9 +34,11 @@ app.get('/api/imoveis', async (req, res) => {
     if (quartos) query = query.where('quartos', '==', parseInt(quartos));
 
     const snapshot = await query.get();
+    console.log('Firestore snapshot size:', snapshot.size); // Log query result
     const imoveis = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.json(imoveis);
   } catch (error) {
+    console.error('Error in /api/imoveis:', error); // Detailed error log
     res.status(500).json({ error: error.message });
   }
 });
