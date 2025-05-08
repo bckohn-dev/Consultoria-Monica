@@ -9,7 +9,7 @@
     >
       <SwiperSlide v-for="item in destaques" :key="item.id">
         <div class="relative">
-          <img :src="item.foto" :alt="item.nome" class="w-full h-[500px] object-cover" />
+          <img :src="item.foto" :alt="item.nome" class="w-full h-[300px] sm:h-[500px] object-cover" />
           <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-4 w-full">
             <h3 class="text-2xl font-bold">{{ item.nome }}</h3>
           </div>

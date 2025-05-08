@@ -5,7 +5,13 @@
       <nav>
         <ul class="flex space-x-6">
           <li>
-            <router-link to="/" class="hover:text-gray-200">Home</router-link>
+            <router-link
+              to="/"
+              class="hover:text-gray-200"
+              :class="{ 'font-bold underline': $route.path === '/' }"
+            >
+              Home
+            </router-link>
           </li>
           <li>
             <router-link to="/catalogo" class="hover:text-gray-200">Catálogo</router-link>
