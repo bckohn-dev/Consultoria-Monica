@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import CatalogPage from '../views/CatalogPage.vue';
+import AdminPage from '../views/AdminPage.vue';
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: '/catalogo',
     name: 'Catalogo',
     component: CatalogPage,
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: AdminPage,
   },
 ];
 

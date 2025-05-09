@@ -43,6 +43,44 @@ app.get('/api/imoveis', async (req, res) => {
   }
 });
 
+// Endpoint para adicionar um imóvel
+app.post('/api/imoveis', async (req, res) => {
+  try {
+    const novoImovel = req.body;
+    const docRef = await db.collection('imoveis').add(novoImovel);
+    res.status(201).json({ id: docRef.id, ...novoImovel });
+  } catch (error) {
+    console.error('Erro ao adicionar imóvel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint para editar um imóvel
+app.put('/api/imoveis/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log('ID recebido no backend:', id); // Log para depuração
+    const dadosAtualizados = req.body;
+    await db.collection('imoveis').doc(id).update(dadosAtualizados);
+    res.json({ id, ...dadosAtualizados });
+  } catch (error) {
+    console.error('Erro ao editar imóvel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Endpoint para remover um imóvel
+app.delete('/api/imoveis/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await db.collection('imoveis').doc(id).delete();
+    res.status(204).send();
+  } catch (error) {
+    console.error('Erro ao remover imóvel:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Endpoint para buscar imagens do carrossel
 app.get('/api/carrossel', async (req, res) => {
   try {
