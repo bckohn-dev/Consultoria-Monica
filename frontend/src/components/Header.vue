@@ -18,7 +18,11 @@
 
       <!-- Menu de navegação -->
       <nav
-        :class="[menuAberto ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0', 'overflow-hidden transition-all duration-300 ease-in-out absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-blue-600 sm:bg-transparent sm:flex']"
+        :class="[
+          'sm:flex',
+          menuAberto ? 'block' : 'hidden', // Controla a visibilidade no mobile
+          'absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-blue-600 sm:bg-transparent'
+        ]"
       >
         <ul class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 text-sm sm:text-base p-4 sm:p-0">
           <li>
