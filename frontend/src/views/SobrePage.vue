@@ -4,6 +4,7 @@
     <Header />
 
     <!-- Conteúdo principal -->
+    <hr>
     <section class="container mx-auto my-16 px-4 bg-blue-600 text-white py-12 rounded-md">
       <h2 class="text-5xl font-bold text-blue-600 bg-white py-4 px-6 rounded-md text-center mb-12">
         Sobre a Nossa Consultoria Imobiliária

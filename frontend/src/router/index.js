@@ -3,6 +3,7 @@ import HomePage from '../views/HomePage.vue';
 import CatalogPage from '../views/CatalogPage.vue';
 import AdminPage from '../views/AdminPage.vue';
 import SobrePage from '../views/SobrePage.vue';
+import Contato from '../views/Contato.vue';
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/sobre',
     name: 'Sobre',
     component: SobrePage,
+  },
+  {
+    path: '/contato',
+    name: 'Contato',
+    component: Contato,
   },
 ];
 

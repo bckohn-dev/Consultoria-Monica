@@ -1,6 +1,6 @@
 <template>
   <header :class="['bg-blue-600 text-white', $route.path === '/catalogo' ? '' : 'shadow-md']">
-    <div class="container mx-auto flex justify-between items-center py-4 px-4">
+    <div class="container mx-auto flex justify-between items-center py-5 px-5">
       <h1 class="text-4xl font-bold">Monica Consultoria Imobiliaria</h1> 
       <nav>
         <ul class="flex space-x-6">
@@ -18,6 +18,9 @@
           </li>
           <li>
             <router-link to="/sobre" class="hover:text-gray-200 transition-colors duration-300">Sobre</router-link>
+          </li>
+          <li>
+            <router-link to="/contato" class="hover:text-gray-200 transition-colors duration-300">Contato</router-link>
           </li>
         </ul>
       </nav>
