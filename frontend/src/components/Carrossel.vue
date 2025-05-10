@@ -58,6 +58,11 @@ export default {
   background: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   padding: 20px;
+  transition: background 0.3s ease;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background: rgba(0, 0, 0, 0.7);
 }
 .swiper-pagination-bullet-active {
   background: #1e3a8a;

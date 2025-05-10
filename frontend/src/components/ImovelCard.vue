@@ -16,6 +16,7 @@
     <p class="text-gray-600">Área: {{ imovel.area }}m²</p>
     <button
       :disabled="loading"
+      @click="verDetalhes"
       class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50"
     >
       {{ loading ? 'Carregando...' : 'Ver Detalhes' }}
