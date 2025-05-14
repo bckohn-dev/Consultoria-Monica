@@ -12,7 +12,7 @@
         @click="menuAberto = !menuAberto"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="roundgit " stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
         </svg>
       </button>
 
@@ -51,15 +51,37 @@
             </router-link>
           </li>
           <li>
-            <router-link
-              to="/contato"
+            <button
+              @click="abrirContato"
               class="hover:text-gray-200 transition-colors duration-300"
             >
               Contato
-            </router-link>
+            </button>
           </li>
         </ul>
       </nav>
+    </div>
+
+    <!-- Modal de Contato -->
+    <div
+      v-if="mostrarContato"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      @click.self="fecharContato"
+    >
+      <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-1/2">
+        <h2 class="text-2xl font-bold text-blue-600 mb-4">Contato</h2>
+        <ul class="space-y-2 text-gray-700">
+          <li><strong>Email:</strong> contato@consultoriaimobiliaria.com</li>
+          <li><strong>Telefone:</strong> (11) 94539-3359</li>
+          <li><strong>Endereço:</strong> Rua dos Imóveis, 123, Centro, São Paulo - SP</li>
+        </ul>
+        <button
+          @click="fecharContato"
+          class="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300"
+        >
+          Fechar
+        </button>
+      </div>
     </div>
   </header>
 </template>
@@ -70,7 +92,16 @@ export default {
   data() {
     return {
       menuAberto: false, // Controla a visibilidade do menu no mobile
+      mostrarContato: false, // Controla a visibilidade do modal de contato
     };
+  },
+  methods: {
+    abrirContato() {
+      this.mostrarContato = true;
+    },
+    fecharContato() {
+      this.mostrarContato = false;
+    },
   },
 };
 </script>
