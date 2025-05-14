@@ -7,6 +7,9 @@
           <a href="https://www.instagram.com/monicanogueira156?utm_source=qr&igsh=MWlocWZ5cmw0a25maA==" class="hover:text-blue-400 transition-colors duration-300">Instagram</a>
           <a href="https://kwai-video.com/u/@monicanogueira230/CoZIxgN7" class="hover:text-blue-400 transition-colors duration-300">Kwai</a>
         </div>
+        <div>
+          <br><p>CreciSP 266907</p>
+        </div>
       </div>
     </footer>
 </template>
