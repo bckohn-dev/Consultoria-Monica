@@ -54,17 +54,17 @@ export default {
 <style>
 .swiper-button-next,
 .swiper-button-prev {
-  color: #ffffff;
-  background: rgba(0, 0, 0, 0.5);
+  color: #BDB76B; /* Cor dourada */
+  background: rgba(0, 0, 128, 0.5); /* Fundo azul marinho */
   border-radius: 50%;
   padding: 20px;
   transition: background 0.3s ease;
 }
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 128, 0.7); /* Fundo azul mais escuro */
 }
 .swiper-pagination-bullet-active {
-  background: #1e3a8a;
+  background: #BDB76B; /* Cor dourada */
 }
 </style>

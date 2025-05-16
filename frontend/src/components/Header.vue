@@ -1,10 +1,12 @@
 <template>
-  <header :class="['bg-blue-600 text-white', $route.path === '/catalogo' ? '' : 'shadow-md']">
-    <div class="container mx-auto flex justify-between items-center py-4 px-4">
-      <!-- Título -->
-      <h1 class="text-2xl sm:text-4xl font-bold">
-        Monica Consultoria Imobiliária
-      </h1>
+  <header :class="['bg-navy text-white', $route.path === '/catalogo' ? '' : 'shadow-md']">
+    <div class="container mx-auto flex justify-between items-center py-2 px-4">
+      <!-- Logo -->
+      <img
+        src="@/assets/Logo.jpg"
+        alt="Monica Consultoria Imobiliária"
+        class="main__logo object-contain"
+      />
 
       <!-- Ícone do menu (mobile) -->
       <button
@@ -20,15 +22,15 @@
       <nav
         :class="[
           'sm:flex',
-          menuAberto ? 'block' : 'hidden', // Controla a visibilidade no mobile
-          'absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-blue-600 sm:bg-transparent'
+          menuAberto ? 'block' : 'hidden',
+          'absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-navy sm:bg-transparent'
         ]"
       >
         <ul class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 text-sm sm:text-base p-4 sm:p-0">
           <li>
             <router-link
               to="/"
-              class="hover:text-gray-200 transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300"
               :class="{ 'font-bold underline': $route.path === '/' }"
             >
               Home
@@ -37,7 +39,7 @@
           <li>
             <router-link
               to="/catalogo"
-              class="hover:text-gray-200 transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300"
             >
               Catálogo
             </router-link>
@@ -45,7 +47,7 @@
           <li>
             <router-link
               to="/sobre"
-              class="hover:text-gray-200 transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300"
             >
               Sobre
             </router-link>
@@ -53,7 +55,7 @@
           <li>
             <button
               @click="abrirContato"
-              class="hover:text-gray-200 transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300"
             >
               Contato
             </button>
@@ -69,7 +71,7 @@
       @click.self="fecharContato"
     >
       <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-1/2">
-        <h2 class="text-2xl font-bold text-blue-600 mb-4">Contato</h2>
+        <h2 class="text-2xl font-bold text-navy mb-4">Contato</h2>
         <ul class="space-y-2 text-gray-700">
           <li><strong>Email:</strong> contato@consultoriaimobiliaria.com</li>
           <li><strong>Telefone:</strong> (11) 94539-3359</li>
@@ -77,7 +79,7 @@
         </ul>
         <button
           @click="fecharContato"
-          class="mt-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300"
+          class="mt-6 bg-navy text-white px-4 py-2 rounded hover:bg-gold hover:text-navy transition-colors duration-300"
         >
           Fechar
         </button>
@@ -105,3 +107,12 @@ export default {
   },
 };
 </script>
+<style>
+.main__logo {
+  max-height: 80px; /* ajuste conforme necessário */
+  width: 20%;
+  max-width: 220px; /* limite opcional para não ficar exagerado */
+  margin: 0;
+  display: block;
+}
+</style>

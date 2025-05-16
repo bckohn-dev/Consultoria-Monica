@@ -5,7 +5,7 @@ export default {
     extend: {
       colors: {
         gold: '#BDB76B', // Cor para detalhes
-        navy: '#000080', // Cor para títulos e botões
+        navy: '#1F234C', // Cor para títulos e botões
       },
     },
   },

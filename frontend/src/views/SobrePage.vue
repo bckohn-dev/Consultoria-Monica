@@ -5,14 +5,14 @@
 
     <!-- Conteúdo principal -->
     <hr>
-    <section class="container mx-auto my-16 px-4 bg-blue-600 text-white py-12 rounded-md">
-      <h2 class="text-5xl font-bold text-blue-600 bg-white py-4 px-6 rounded-md text-center mb-12">
+    <section class="container mx-auto my-16 px-4 bg-white text-black py-12 rounded-md">
+      <h2 class="text-5xl font-bold bg-navy text-gold py-4 px-6 rounded-md text-center mb-12">
         Sobre a Nossa Consultoria Imobiliária
       </h2>
       
       <!-- Missão, Visão e Valores -->
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold text-blue-600 bg-white py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Missão
         </h3>
         <p class="text-lg leading-relaxed">
@@ -20,7 +20,7 @@
         </p>
       </div>
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold text-blue-600 bg-white py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Visão
         </h3>
         <p class="text-lg leading-relaxed">
@@ -28,7 +28,7 @@
         </p>
       </div>
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold text-blue-600 bg-white py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Valores
         </h3>
         <ul class="list-disc list-inside text-lg leading-relaxed">
@@ -41,7 +41,7 @@
 
       <!-- Serviços -->
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold text-blue-600 bg-white py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Nossos Serviços
         </h3>
         <ul class="list-disc list-inside text-lg leading-relaxed">
@@ -54,7 +54,7 @@
 
       <!-- Contato -->
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold text-blue-600 bg-white py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Entre em Contato
         </h3>
         <p class="text-lg leading-relaxed">

@@ -1,11 +1,11 @@
 <template>
   <section class="container mx-auto my-16">
-    <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Catálogo de Imóveis</h2>
+    <h2 class="text-3xl font-bold text-navy mb-8 text-center">Catálogo de Imóveis</h2>
     <!-- Filtros -->
     <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8">
       <select
         v-model="filtros.quartos"
-        class="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+        class="border border-gold p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
         @change="buscarImoveis"
       >
         <option value="">Quartos</option>
@@ -17,14 +17,14 @@
         v-model="filtros.precoMin"
         type="number"
         placeholder="Preço mín. (R$)"
-        class="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+        class="border border-gold p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
         @input="buscarImoveis"
       />
       <input
         v-model="filtros.precoMax"
         type="number"
         placeholder="Preço máx. (R$)"
-        class="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-600"
+        class="border border-gold p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-navy"
         @input="buscarImoveis"
       />
     </div>
@@ -78,3 +78,16 @@ export default {
   },
 };
 </script>
+
+<style>
+/* Adicionando cores personalizadas */
+.border-gold {
+  border-color: #BDB76B;
+}
+.text-navy {
+  color: #000080;
+}
+.focus\:ring-navy:focus {
+  ring-color: #000080;
+}
+</style>

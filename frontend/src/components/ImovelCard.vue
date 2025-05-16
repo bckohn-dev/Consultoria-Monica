@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border rounded-lg p-4 shadow-md bg-white hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between h-[450px] mx-2 sm:mx-0"
+    class="border border-gold rounded-lg p-4 shadow-md bg-white hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between h-[450px] mx-2 sm:mx-0"
   >
     <img
       :src="imovel.foto"
@@ -9,18 +9,21 @@
       class="w-full h-48 object-cover rounded-md mb-4"
     />
     <div class="flex-grow">
-      <h3 class="text-xl font-semibold text-gray-800">{{ imovel.nome }}</h3>
-      <hr class="my-2 border-gray-300" />
+      <h3 class="text-xl font-semibold text-navy">{{ imovel.nome }}</h3>
+      <hr class="my-2 border-gold" />
       <p class="text-gray-600">Preço: R${{ imovel.preco.toLocaleString('pt-BR') }}</p>
       <p class="text-gray-600 flex items-center">
         <HomeIcon class="w-5 h-5 mr-2" /> Quartos: {{ imovel.quartos }}
       </p>
-      <p class="text-gray-600">Área: {{ imovel.area }}m²</p>
+      <p class="text-gray-600 flex items-center">
+        <img src="../assets/icones/areaIcon.png" alt="Área" class="w-5 h-5 mr-2" />
+        {{ imovel.area }}m²
+      </p>
     </div>
     <button
       :disabled="loading"
       @click="verDetalhes"
-      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors duration-300 disabled:opacity-50"
+      class="mt-4 bg-navy text-white px-4 py-2 rounded-md hover:bg-gold hover:text-navy transition-colors duration-300 disabled:opacity-50"
     >
       {{ loading ? 'Carregando...' : 'Ver Detalhes' }}
     </button>
@@ -55,3 +58,22 @@ export default {
   },
 };
 </script>
+
+<style>
+/* Adicionando cores personalizadas */
+.border-gold {
+  border-color: #BDB76B;
+}
+.text-navy {
+  color: #000080;
+}
+.bg-navy {
+  background-color: #000080;
+}
+.hover\:bg-gold:hover {
+  background-color: #BDB76B;
+}
+.hover\:text-navy:hover {
+  color: #000080;
+}
+</style>
