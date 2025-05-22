@@ -13,7 +13,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDjp45m8QA6n6iAq_GnkvwjtSoMu2z0rDE",
   authDomain: "catalogo-imoveis.firebaseapp.com",
   projectId: "catalogo-imoveis",
-  storageBucket: "catalogo-imoveis.firebasestorage.app",
+  storageBucket: "catalogo-imoveis.appspot.com",
   messagingSenderId: "474028159075",
   appId: "1:474028159075:web:fdf95c32ee68efc4d78856",
   measurementId: "G-0V31KQH9YF"
@@ -21,6 +21,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// const analytics = getAnalytics(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
