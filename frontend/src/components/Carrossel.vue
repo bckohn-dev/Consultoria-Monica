@@ -41,7 +41,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get('http://localhost:3000/api/carrossel'); // Endpoint do backend
+      const response = await fetch("/api/carrossel"); // Endpoint do backend
       this.destaques = response.data; // Atualiza os dados do carrossel
       console.log('Dados do carrossel:', this.destaques); // Verifica os dados carregados
     } catch (error) {

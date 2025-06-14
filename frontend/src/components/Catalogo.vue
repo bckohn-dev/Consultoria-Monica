@@ -62,7 +62,7 @@ export default {
         if (filtros.value.precoMin) params.precoMin = parseInt(filtros.value.precoMin);
         if (filtros.value.precoMax) params.precoMax = parseInt(filtros.value.precoMax);
 
-        const response = await axios.get('http://localhost:3000/api/imoveis', { params });
+        const response = await fetch("/api/imoveis");
         imoveis.value = response.data || [];
       } catch (err) {
         console.error('Erro ao buscar imóveis:', err);
