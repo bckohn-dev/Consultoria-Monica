@@ -1,11 +1,17 @@
-// api/imoveis.js
+import { getApps, initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { initializeApp, cert } from "firebase-admin/app";
-import serviceAccount from "../../backend/serviceAccountKey.json"; // ou onde estiver
 
-const app = initializeApp({
-  credential: cert(serviceAccount),
-});
+let app;
+
+if (!getApps().length) {
+  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
+  app = initializeApp({
+    credential: cert(serviceAccount),
+  });
+} else {
+  app = getApps()[0];
+}
+
 const db = getFirestore(app);
 
 export default async function handler(req, res) {
