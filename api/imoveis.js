@@ -1,18 +1,27 @@
 import { getApps, initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
-let app;
+const {
+  FIREBASE_ADMIN_PROJECT_ID,
+  FIREBASE_ADMIN_CLIENT_EMAIL,
+  FIREBASE_ADMIN_PRIVATE_KEY,
+} = process.env;
 
-if (!getApps().length) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY);
-  app = initializeApp({
-    credential: cert(serviceAccount),
-  });
-} else {
-  app = getApps()[0];
+if (!FIREBASE_ADMIN_PROJECT_ID || !FIREBASE_ADMIN_CLIENT_EMAIL || !FIREBASE_ADMIN_PRIVATE_KEY) {
+  console.error("🚨 Variáveis de ambiente do Firebase não configuradas corretamente!");
 }
 
-const db = getFirestore(app);
+if (!getApps().length) {
+  initializeApp({
+    credential: cert({
+      projectId: FIREBASE_ADMIN_PROJECT_ID,
+      clientEmail: FIREBASE_ADMIN_CLIENT_EMAIL,
+      privateKey: FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, '\n'),
+    }),
+  });
+}
+
+const db = getFirestore();
 
 export default async function handler(req, res) {
   try {
