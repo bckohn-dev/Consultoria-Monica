@@ -1,8 +1,9 @@
+// main.js
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import './index.css';
 
-const app = createApp(App);
-app.use(router);
-app.mount('#app');
+const vueApp = createApp(App); // ✅ renomeado para evitar conflito
+vueApp.use(router);
+vueApp.mount('#app');
