@@ -11,7 +11,9 @@
     <div class="flex-grow">
       <h3 class="text-xl font-semibold text-navy">{{ imovel.nome }}</h3>
       <hr class="my-2 border-gold" />
-      <p class="text-gray-600">Preço: R${{ imovel.preco.toLocaleString('pt-BR') }}</p>
+      <p class="text-gray-600">
+        Preço: R${{ imovel.preco?.toLocaleString('pt-BR') || '—' }}
+      </p>
       <p class="text-gray-600 flex items-center">
         <HomeIcon class="w-5 h-5 mr-2" /> Quartos: {{ imovel.quartos }}
       </p>

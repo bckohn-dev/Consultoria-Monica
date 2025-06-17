@@ -65,7 +65,8 @@ export default {
             precoMax: filtros.value.precoMax,
           },
         });
-        imoveis.value = response.data; // Assumindo que o backend retorna um array
+        imoveis.value = response.data.filter(item => item.nome && typeof item.preco === 'number');
+
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
         console.error('Erro ao carregar imóveis:', err);

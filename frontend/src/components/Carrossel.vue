@@ -4,7 +4,7 @@
       :modules="[SwiperNavigation, SwiperPagination]"
       navigation
       pagination
-      :loop="true"
+      :loop="carouselData.length >= 3"
       :slides-per-view="1"
       :slides-per-group="1"
       class="rounded-lg overflow-hidden"
@@ -40,13 +40,12 @@ export default {
     };
   },
   async created() {
-    try {
-      const response = await fetch("/api/carrossel"); // Endpoint do backend
-      this.destaques = response.data; // Atualiza os dados do carrossel
-      console.log('Dados do carrossel:', this.destaques); // Verifica os dados carregados
-    } catch (error) {
-      console.error('Erro ao buscar dados do carrossel:', error);
-    }
+    axios.get('/api/carrossel')
+      .then(res => {
+        console.log("Dados do carrossel:", res.data);
+        this.destaques = res.data || [];
+    })
+    .catch(err => console.error("Erro ao buscar carrossel:", err));
   },
 };
 </script>
