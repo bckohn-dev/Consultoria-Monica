@@ -26,3 +26,9 @@ dist-ssr
 serviceAccountKey.json
 node_modules/
 # Local env files
+
+.env.local
+.vercel/
+frontend/.vercel/
+frontend/process.env
+backend/node_modules/

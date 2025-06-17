@@ -24,3 +24,9 @@ dist-ssr
 *.sw?
 
 node_modules/
+
+.env.local
+.vercel/
+frontend/.vercel/
+frontend/process.env
+backend/node_modules/

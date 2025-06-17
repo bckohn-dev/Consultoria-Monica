@@ -1,0 +1,5 @@
+.env.local
+.vercel/
+frontend/.vercel/
+frontend/process.env
+backend/node_modules/
