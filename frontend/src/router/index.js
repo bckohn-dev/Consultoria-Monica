@@ -1,59 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomePage from '../views/HomePage.vue';
-import CatalogPage from '../views/CatalogPage.vue';
-import AdminPage from '../views/AdminPage.vue';
-import SobrePage from '../views/SobrePage.vue';
-import LoginPage from '../views/LoginPage.vue';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const Home = () => import('../views/HomePage.vue');
+const Catalogo = () => import('../views/CatalogoPage.vue');
+const Admin = () => import('../views/AdminPage.vue');
+const Contato = () => import('../views/ContatoPage.vue');
+const Sobre = () => import('../views/SobrePage.vue');
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: HomePage,
-  },
-  {
-    path: '/catalogo',
-    name: 'Catalogo',
-    component: CatalogPage,
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: LoginPage,
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: AdminPage,
-    meta: { requiresAuth: true }, // Adicionando meta para autenticação
-  },
-  {
-    path: '/sobre',
-    name: 'Sobre',
-    component: SobrePage,
-  },
+  { path: '/', name: 'Home', component: Home },
+  { path: '/catalogo', name: 'Catalogo', component: Catalogo },
+  { path: '/admin', name: 'Admin', component: Admin },
+  { path: '/contato', name: 'Contato', component: Contato },
+  { path: '/sobre', name: 'Sobre', component: Sobre },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-});
-
-// Guardião de rota
-router.beforeEach((to, from, next) => {
-  const auth = getAuth();
-  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-  if (!requiresAuth) return next();
-
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      next();
-    } else {
-      next("/login");
-    }
-  });
 });
 
 export default router;
