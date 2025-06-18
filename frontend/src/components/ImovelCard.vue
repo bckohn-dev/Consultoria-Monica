@@ -53,8 +53,6 @@ export default {
     imovel: {
       type: Object,
       required: true,
-      validator: obj =>
-        obj && typeof obj === 'object' && 'nome' in obj && 'foto' in obj,
     },
   },
   components: {
@@ -63,7 +61,7 @@ export default {
   data() {
     return {
       loading: false,
-      fallbackImage: '/default-placeholder.jpg', // Caminho para a imagem de fallback
+      fallbackImage: '/default-placeholder.jpg',
     };
   },
   methods: {
@@ -71,11 +69,17 @@ export default {
       this.loading = true;
       try {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        this.$emit('ver-detalhes', this.imovel); // ✅ Emits to parent
+        this.$emit('ver-detalhes', this.imovel);
       } finally {
         this.loading = false;
       }
     },
+    onImageError(event) {
+      event.target.src = this.fallbackImage;
+    },
+  },
+  mounted() {
+    console.log('🔍 Imóvel recebido no Card:', this.imovel);
   },
 };
 </script>
