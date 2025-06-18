@@ -15,17 +15,11 @@
       </h3>
       <hr class="my-2 border-gold" />
       <p class="text-gray-600">
-        Preço:
-        <span v-if="typeof imovel.preco === 'number'">
-          R$<!--{{ imovel.preco.toLocaleString('pt-BR') }}-->
-        </span>
-        <span v-else>
-          Não informado
-        </span>
+        Preço: {{ formattedPrice }}
       </p>
       <p class="text-gray-600 flex items-center">
         <HomeIcon class="w-5 h-5 mr-2" />
-        Quartos: {{ imovel.quartos ?? 'N/D' }}
+        Quartos: {{ typeof imovel.quartos === 'number' ? imovel.quartos : 'N/D' }}
       </p>
 
       <p class="text-gray-600 flex items-center">
@@ -78,9 +72,20 @@ export default {
       event.target.src = this.fallbackImage;
     },
   },
-  mounted() {
-    console.log("✅ Imóveis recebidos:", response.data);
+  computed: {
+    formattedPrice() {
+      const price = this.imovel.preco;
+      return typeof price === 'number'
+        ? price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+        : 'Não informado';
+    }
   },
+  mounted() {
+    const img = this.$el.querySelector('img');
+    if (img && !img.complete) {
+      img.addEventListener('error', this.onImageError);
+    }
+  }
 };
 </script>
 
