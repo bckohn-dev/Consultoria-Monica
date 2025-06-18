@@ -74,7 +74,8 @@ export default {
             precoMax: filtros.value.precoMax,
           },
         });
-        imoveis.value = response.data.filter(item => item.nome && typeof item.preco === 'number');
+        const items = Array.isArray(response.data) ? response.data : [];
+        imoveis.value = items.filter(item => item.nome && typeof item.preco === 'number');
 
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';

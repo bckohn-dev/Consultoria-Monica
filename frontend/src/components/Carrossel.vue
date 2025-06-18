@@ -4,7 +4,7 @@
       :modules="[SwiperNavigation, SwiperPagination]"
       navigation
       pagination
-      :loop="carouselData.length >= 3"
+      :loop="destaques.length >= 3"
       :slides-per-view="1"
       :slides-per-group="1"
       class="rounded-lg overflow-hidden"
