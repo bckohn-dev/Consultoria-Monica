@@ -17,7 +17,7 @@
       <p class="text-gray-600">
         Preço:
         <span v-if="typeof imovel.preco === 'number'">
-          R${{ imovel.preco.toLocaleString('pt-BR') }}
+          R$<!--{{ imovel.preco.toLocaleString('pt-BR') }}-->
         </span>
         <span v-else>
           Não informado
