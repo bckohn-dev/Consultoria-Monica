@@ -16,7 +16,7 @@
       <hr class="my-2 border-gold" />
       <p class="text-gray-600">
         Preço:
-        <span v-if="imovel.preco !== undefined">
+        <span v-if="typeof imovel.preco === 'number'">
           R${{ imovel.preco.toLocaleString('pt-BR') }}
         </span>
         <span v-else>
@@ -79,7 +79,7 @@ export default {
     },
   },
   mounted() {
-    console.log('🔍 Imóvel recebido no Card:', this.imovel);
+    console.log("✅ Imóveis recebidos:", response.data);
   },
 };
 </script>
