@@ -74,8 +74,8 @@ export default {
   },
   computed: {
     formattedPrice() {
-      const price = this.imovel.preco;
-      return typeof price === 'number'
+      const price = this.imovel?.preco;
+      return typeof price === 'number' && !isNaN(price)
         ? price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
         : 'Não informado';
     }
