@@ -3,26 +3,39 @@
     class="border border-gold rounded-lg p-4 shadow-md bg-white hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between h-[450px] mx-2 sm:mx-0"
   >
     <img
-      :src="imovel.foto"
-      :alt="imovel.nome"
+      :src="imovel.foto || fallbackImage"
+      :alt="imovel.nome || 'Imagem do imóvel'"
       loading="lazy"
+      @error="onImageError"
       class="w-full h-48 object-cover rounded-md mb-4"
     />
     <div class="flex-grow">
-      <h3 class="text-xl font-semibold text-navy">{{ imovel.nome }}</h3>
+      <h3 class="text-xl font-semibold text-navy">
+        {{ imovel.nome || 'Sem nome' }}
+      </h3>
       <hr class="my-2 border-gold" />
       <p class="text-gray-600">
-        Preço: R${{ imovel.preco?.toLocaleString('pt-BR') || '—' }}
+        Preço:
+        <span v-if="imovel.preco !== undefined">
+          R${{ imovel.preco.toLocaleString('pt-BR') }}
+        </span>
+        <span v-else>
+          Não informado
+        </span>
       </p>
       <p class="text-gray-600 flex items-center">
-        <HomeIcon class="w-5 h-5 mr-2" /> Quartos: {{ imovel.quartos }}
+        <HomeIcon class="w-5 h-5 mr-2" />
+        Quartos: {{ imovel.quartos ?? 'N/D' }}
       </p>
+
       <p class="text-gray-600 flex items-center">
         <img src="../assets/icones/areaIcon.png" alt="Área" class="w-5 h-5 mr-2" />
-        {{ imovel.area }}m²
+        {{ imovel.area !== undefined ? `${imovel.area}m²` : 'Área N/D' }}
       </p>
+
     </div>
     <button
+      aria-label="Ver detalhes do imóvel"
       :disabled="loading"
       @click="verDetalhes"
       class="mt-4 bg-navy text-white px-4 py-2 rounded-md hover:bg-gold hover:text-navy transition-colors duration-300 disabled:opacity-50"
@@ -37,7 +50,12 @@ import { HomeIcon } from '@heroicons/vue/24/outline';
 
 export default {
   props: {
-    imovel: Object,
+    imovel: {
+      type: Object,
+      required: true,
+      validator: obj =>
+        obj && typeof obj === 'object' && 'nome' in obj && 'foto' in obj,
+    },
   },
   components: {
     HomeIcon,
@@ -45,6 +63,7 @@ export default {
   data() {
     return {
       loading: false,
+      fallbackImage: '/default-placeholder.jpg', // Caminho para a imagem de fallback
     };
   },
   methods: {
@@ -52,7 +71,7 @@ export default {
       this.loading = true;
       try {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        alert(`Detalhes do imóvel: ${this.imovel.nome}`);
+        this.$emit('ver-detalhes', this.imovel); // ✅ Emits to parent
       } finally {
         this.loading = false;
       }

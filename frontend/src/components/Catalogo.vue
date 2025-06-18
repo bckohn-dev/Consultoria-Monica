@@ -35,7 +35,12 @@
       Nenhum imóvel encontrado.
     </div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <ImovelCard v-for="imovel in imoveis" :key="imovel.id" :imovel="imovel" />
+      <ImovelCard
+        v-for="imovel in imoveis"
+        :key="imovel.id"
+        :imovel="imovel"
+        @ver-detalhes="mostrarDetalhes"
+      />
     </div>
   </section>
 </template>
@@ -53,7 +58,11 @@ export default {
     const loading = ref(false);
     const error = ref(null);
 
-     const buscarImoveis = async () => {
+    const mostrarDetalhes = (imovel) => {
+      console.log('Imóvel selecionado:', imovel);
+      alert(`Detalhes do imóvel: ${imovel.nome}`);
+    };
+    const buscarImoveis = async () => {
       loading.value = true;
       error.value = null;
       try {
@@ -77,7 +86,9 @@ export default {
 
     buscarImoveis();
 
-    return { imoveis, filtros, loading, error, buscarImoveis };
+    return {
+      imoveis, filtros, loading, error, buscarImoveis, mostrarDetalhes
+    };
   },
 };
 </script>
