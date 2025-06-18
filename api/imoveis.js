@@ -1,8 +1,5 @@
 // api/imoveis.js
-import { getFirestore } from 'firebase-admin/firestore';
-import { app } from './_firebaseAdmin'; // seu init do Firebase Admin
-
-const db = getFirestore(app);
+import { db } from './_firebaseAdmin.js';
 
 export default async function handler(req, res) {
   try {
@@ -10,8 +7,13 @@ export default async function handler(req, res) {
 
     const imoveis = snapshot.docs.map(doc => ({
       id: doc.id,
-      ...doc.data()
+      ...doc.data(),
     }));
+
+    // ✅ Verificação extra
+    if (!Array.isArray(imoveis)) {
+      return res.status(500).json({ error: 'Dados inválidos: imóveis não é um array' });
+    }
 
     return res.status(200).json(imoveis);
   } catch (error) {
@@ -19,3 +21,5 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Erro ao buscar imóveis' });
   }
 }
+// This API endpoint retrieves all properties from Firestore and returns them as JSON.
+// It includes error handling and a check to ensure the data is in the expected format.

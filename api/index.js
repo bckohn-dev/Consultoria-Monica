@@ -1,16 +1,5 @@
-import admin from 'firebase-admin';
-
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert({
-      projectId: process.env.FIREBASE_ADMIN_PROJECT_ID,
-      privateKey: process.env.FIREBASE_ADMIN_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      clientEmail: process.env.FIREBASE_ADMIN_CLIENT_EMAIL,
-    }),
-  });
-}
-
-const db = admin.firestore();
+// api/index.js
+import { db } from './_firebaseAdmin.js';
 
 export default async function handler(req, res) {
   try {
@@ -18,7 +7,6 @@ export default async function handler(req, res) {
 
     let query = db.collection('imoveis');
 
-    // Aplicar filtros
     if (quartos) query = query.where('quartos', '==', parseInt(quartos));
     if (precoMin) query = query.where('preco', '>=', parseFloat(precoMin));
     if (precoMax) query = query.where('preco', '<=', parseFloat(precoMax));
@@ -32,3 +20,4 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Erro no servidor', details: error.message });
   }
 }
+// This API endpoint retrieves properties from Firestore based on query parameters.
