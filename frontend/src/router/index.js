@@ -10,7 +10,7 @@ const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/catalogo', name: 'Catalogo', component: Catalogo },
   { path: '/admin', name: 'Admin', component: Admin },
-  { path: '/contato', name: 'Contato', component: Contato },
+  // { path: '/contato', name: 'Contato', component: Contato },
   { path: '/sobre', name: 'Sobre', component: Sobre },
 ];
 
