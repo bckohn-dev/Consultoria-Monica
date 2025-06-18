@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 const Home = () => import('../views/HomePage.vue');
-const Catalogo = () => import('../views/CatalogoPage.vue');
+const Catalogo = () => import('../views/CatalogPage.vue');
 const Admin = () => import('../views/AdminPage.vue');
 const Contato = () => import('../views/ContatoPage.vue');
 const Sobre = () => import('../views/SobrePage.vue');
