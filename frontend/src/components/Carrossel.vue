@@ -39,7 +39,8 @@ export default {
 
     onMounted(async () => {
       try {
-        const res = await axios.get(`${API_BASE}/carrossel`);
+        const res = await axios.get('https://consultoria-monica-api.vercel.app/api/carrossel');
+
         console.log("Dados do carrossel:", res.data);
 
         if (!Array.isArray(res.data) || res.data.length === 0) {
