@@ -69,7 +69,7 @@ export default {
       error.value = null;
 
       try {
-       const response = await axios.get(`${API_BASE}/imoveis`, {
+       const response = await axios.get(`${API_BASE}/api/imoveis`, {
         params: {
           quartos: filtros.value.quartos,
           precoMin: filtros.value.precoMin,
