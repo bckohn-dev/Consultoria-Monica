@@ -68,18 +68,15 @@ export default {
       error.value = null;
 
       try {
-        const response = await axios.get('/api/imoveis', {
-          params: {
-            quartos: filtros.value.quartos,
-            precoMin: filtros.value.precoMin,
-            precoMax: filtros.value.precoMax,
-          },
-        });
-
-        console.log("Resposta da API imóveis:", response.data);
-
-        // Aplicar filtro básico no frontend se necessário:
-        imoveis.value = Array.isArray(response.data) ? response.data : [];
+       const response = await axios.get('https://consultoria-monica-api.vercel.app/imoveis', {
+  params: {
+    quartos: filtros.value.quartos,
+    precoMin: filtros.value.precoMin,
+    precoMax: filtros.value.precoMax,
+  },
+});
+console.log("Resposta da API imóveis:", response.data);
+imoveis.value = Array.isArray(response.data) ? response.data : [];
 
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';

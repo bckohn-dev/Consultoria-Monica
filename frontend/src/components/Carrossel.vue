@@ -41,16 +41,14 @@ export default {
   },
   async created() {
     try {
-      const res = await axios.get('/api/carrossel');
+      const res = await axios.get('https://consultoria-monica-api.vercel.app/carrossel');
       console.log("Dados do carrossel:", res.data);
 
-      // Proteção: garantir que seja um array de links
       if (!Array.isArray(res.data) || res.data.length === 0) {
         console.warn("⚠ Nenhuma imagem retornada do carrossel");
         return;
       }
 
-      // Mapeia os links para objetos esperados pelo Swiper
       this.destaques = res.data.map((url, i) => ({
         id: `img-${i}`,
         nome: `Destaque ${i + 1}`,
