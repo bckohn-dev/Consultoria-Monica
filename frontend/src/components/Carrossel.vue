@@ -28,38 +28,42 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import axios from 'axios';
+import { ref, onMounted } from 'vue';
+
 
 export default {
   components: { Swiper, SwiperSlide },
   setup() {
-    return { SwiperNavigation: Navigation, SwiperPagination: Pagination };
-  },
-  data() {
-    return {
-      destaques: [], // Inicializa o array vazio
-    };
-  },
-  async created() {
-    try {
-      const res = await axios.get('https://consultoria-monica-api.vercel.app/carrossel');
-      console.log("Dados do carrossel:", res.data);
+    const destaques = ref([]);
+    const API_BASE = 'https://consultoria-monica-api.vercel.app';
 
-      if (!Array.isArray(res.data) || res.data.length === 0) {
-        console.warn("⚠ Nenhuma imagem retornada do carrossel");
-        return;
+    onMounted(async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/carrossel`);
+        console.log("Dados do carrossel:", res.data);
+
+        if (!Array.isArray(res.data) || res.data.length === 0) {
+          console.warn("⚠ Nenhuma imagem retornada do carrossel");
+          return;
+        }
+
+        destaques.value = res.data.map((url, i) => ({
+          id: `img-${i}`,
+          nome: `Destaque ${i + 1}`,
+          foto: url,
+        }));
+      } catch (err) {
+        console.error("Erro ao buscar carrossel:", err);
       }
+    });
 
-      this.destaques = res.data.map((url, i) => ({
-        id: `img-${i}`,
-        nome: `Destaque ${i + 1}`,
-        foto: url,
-      }));
-    } catch (err) {
-      console.error("Erro ao buscar carrossel:", err);
-    }
+    return {
+      SwiperNavigation: Navigation,
+      SwiperPagination: Pagination,
+      destaques
+    };
   }
 };
-
 </script>
 
 <style>

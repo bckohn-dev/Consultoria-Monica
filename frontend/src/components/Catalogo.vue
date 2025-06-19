@@ -53,6 +53,7 @@ import ImovelCard from './ImovelCard.vue';
 export default {
   components: { ImovelCard },
   setup() {
+    const API_BASE = 'https://consultoria-monica-api.vercel.app';
     const imoveis = ref([]);
     const filtros = ref({ quartos: '', precoMin: '', precoMax: '' });
     const loading = ref(false);
@@ -68,15 +69,15 @@ export default {
       error.value = null;
 
       try {
-       const response = await axios.get('https://consultoria-monica-api.vercel.app/imoveis', {
-  params: {
-    quartos: filtros.value.quartos,
-    precoMin: filtros.value.precoMin,
-    precoMax: filtros.value.precoMax,
-  },
-});
-console.log("Resposta da API imóveis:", response.data);
-imoveis.value = Array.isArray(response.data) ? response.data : [];
+       const response = await axios.get(`${API_BASE}/imoveis`, {
+        params: {
+          quartos: filtros.value.quartos,
+          precoMin: filtros.value.precoMin,
+          precoMax: filtros.value.precoMax,
+        },
+      });
+      console.log("Resposta da API imóveis:", response.data);
+      imoveis.value = Array.isArray(response.data) ? response.data : [];
 
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
