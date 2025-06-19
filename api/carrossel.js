@@ -20,6 +20,9 @@ export default async function handler(req, res) {
     console.error('Erro ao buscar imagens do carrossel:', error);
     res.status(500).json({ erro: 'Erro ao buscar imagens' });
   }
+  if (!files.length) {
+    return res.status(200).json([]);
+  }
 }
 // This API endpoint retrieves images from the 'carrossel' folder in Firebase Storage
 // and returns their signed URLs for use in the frontend.

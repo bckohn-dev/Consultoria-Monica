@@ -40,14 +40,28 @@ export default {
     };
   },
   async created() {
-    axios.get('/api/carrossel')
-      .then(res => {
-        console.log("Dados do carrossel:", res.data);
-        this.destaques = res.data || [];
-    })
-    .catch(err => console.error("Erro ao buscar carrossel:", err));
-  },
+    try {
+      const res = await axios.get('/api/carrossel');
+      console.log("Dados do carrossel:", res.data);
+
+      // Proteção: garantir que seja um array de links
+      if (!Array.isArray(res.data) || res.data.length === 0) {
+        console.warn("⚠ Nenhuma imagem retornada do carrossel");
+        return;
+      }
+
+      // Mapeia os links para objetos esperados pelo Swiper
+      this.destaques = res.data.map((url, i) => ({
+        id: `img-${i}`,
+        nome: `Destaque ${i + 1}`,
+        foto: url,
+      }));
+    } catch (err) {
+      console.error("Erro ao buscar carrossel:", err);
+    }
+  }
 };
+
 </script>
 
 <style>
