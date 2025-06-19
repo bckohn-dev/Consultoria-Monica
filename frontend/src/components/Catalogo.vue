@@ -63,8 +63,11 @@ export default {
       alert(`Detalhes do imóvel: ${imovel.nome}`);
     };
     const buscarImoveis = async () => {
+      const response = await axios.get('/api/imoveis');
+      console.log("Resposta da API imóveis:", response.data);
       loading.value = true;
       error.value = null;
+      
       try {
         // Ajuste para usar o endpoint relativo do Vercel
         const response = await axios.get('/api/imoveis', {
@@ -75,8 +78,8 @@ export default {
           },
         });
         const items = Array.isArray(response.data) ? response.data : [];
-        imoveis.value = items.filter(item => item.nome && typeof item.preco === 'number');
-
+        //imoveis.value = items.filter(item => item.nome && typeof item.preco === 'number');
+        imoveis.value = Array.isArray(response.data) ? response.data : [];
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
         console.error('Erro ao carregar imóveis:', err);
