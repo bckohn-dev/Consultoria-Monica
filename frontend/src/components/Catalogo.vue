@@ -88,7 +88,9 @@ export default {
       }
     };
 
-    buscarImoveis();
+    onMounted(() => {
+      buscarImoveis(); // ✅ só roda após o componente ser montado
+    });
 
     return {
       imoveis, filtros, loading, error, buscarImoveis, mostrarDetalhes
