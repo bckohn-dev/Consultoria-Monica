@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
-import ImovelCard from './ImovelCard.vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import ImovelCard from './ImovelCard.vue';
 
 export default {
   components: { ImovelCard },
@@ -62,14 +62,12 @@ export default {
       console.log('Imóvel selecionado:', imovel);
       alert(`Detalhes do imóvel: ${imovel.nome}`);
     };
+
     const buscarImoveis = async () => {
-      const response = await axios.get('/api/imoveis');
-      console.log("Resposta da API imóveis:", response.data);
       loading.value = true;
       error.value = null;
-      
+
       try {
-        // Ajuste para usar o endpoint relativo do Vercel
         const response = await axios.get('/api/imoveis', {
           params: {
             quartos: filtros.value.quartos,
@@ -77,9 +75,12 @@ export default {
             precoMax: filtros.value.precoMax,
           },
         });
-        const items = Array.isArray(response.data) ? response.data : [];
-        //imoveis.value = items.filter(item => item.nome && typeof item.preco === 'number');
+
+        console.log("Resposta da API imóveis:", response.data);
+
+        // Aplicar filtro básico no frontend se necessário:
         imoveis.value = Array.isArray(response.data) ? response.data : [];
+
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
         console.error('Erro ao carregar imóveis:', err);
@@ -88,14 +89,20 @@ export default {
       }
     };
 
+    // ✅ Executa a busca automática ao carregar o componente
     onMounted(() => {
-      buscarImoveis(); // ✅ só roda após o componente ser montado
+      buscarImoveis();
     });
 
     return {
-      imoveis, filtros, loading, error, buscarImoveis, mostrarDetalhes
+      imoveis,
+      filtros,
+      loading,
+      error,
+      buscarImoveis,
+      mostrarDetalhes
     };
-  },
+  }
 };
 </script>
 
