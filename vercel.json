@@ -1,7 +1,9 @@
 {
   "version": 2,
-  "devCommand": "vite",
-  "buildCommand": "vite build",
-  "outputDirectory": "dist",
-  "framework": "vite"
+  "projectSettings": {
+    "framework": "vite"
+  },
+  "buildCommand": "cd frontend && vite build",
+  "devCommand": "cd frontend && vite",
+  "outputDirectory": "frontend/dist"
 }
