@@ -53,7 +53,7 @@ import ImovelCard from './ImovelCard.vue';
 export default {
   components: { ImovelCard },
   setup() {
-    const API_BASE = 'https://consultoria-monica-api.vercel.app';
+    const API_BASE = '/api';
     const imoveis = ref([]);
     const filtros = ref({ quartos: '', precoMin: '', precoMax: '' });
     const loading = ref(false);
