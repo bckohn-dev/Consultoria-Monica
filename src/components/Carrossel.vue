@@ -35,11 +35,11 @@ export default {
   components: { Swiper, SwiperSlide },
   setup() {
     const destaques = ref([]);
-    const API_BASE = 'https://consultoria-monica-api.vercel.app';
+    const API_BASE = '/api/carrossel';
 
     onMounted(async () => {
       try {
-        const res = await axios.get('https://consultoria-monica-api.vercel.app/api/carrossel');
+        const res = await axios.get(API_BASE);
 
         console.log("Dados do carrossel:", res.data);
 

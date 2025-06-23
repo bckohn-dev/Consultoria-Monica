@@ -69,15 +69,14 @@ export default {
       error.value = null;
 
       try {
-       const response = await axios.get(`${API_BASE}/imoveis`, {
-        params: {
-          quartos: filtros.value.quartos,
-          precoMin: filtros.value.precoMin,
-          precoMax: filtros.value.precoMax,
-        },
-      });
-      console.log("Resposta da API imóveis:", response.data);
-      imoveis.value = Array.isArray(response.data) ? response.data : [];
+        const params = {};
+        if (filtros.value.quartos) params.quartos = filtros.value.quartos;
+        if (filtros.value.precoMin) params.precoMin = filtros.value.precoMin;
+        if (filtros.value.precoMax) params.precoMax = filtros.value.precoMax;
+
+        const response = await axios.get(`${API_BASE}/imoveis`, { params });
+        console.log("Resposta da API imóveis:", response.data);
+        imoveis.value = Array.isArray(response.data) ? response.data : [];
 
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
