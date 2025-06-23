@@ -3,7 +3,7 @@
     <div class="container mx-auto flex justify-between items-center py-2 px-4">
       <!-- Logo -->
       <img
-        src="@/assets/Logo.jpg"
+        :src="Logo" 
         alt="Monica Consultoria Imobiliária"
         class="main__logo object-contain"
       />
@@ -89,6 +89,8 @@
 </template>
 
 <script>
+import Logo from '@/assets/Logo.jpg';
+
 export default {
   name: 'Header',
   data() {
