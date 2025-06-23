@@ -1,21 +1,19 @@
 <template>
-  <div>
+  <div class="max-w-screen-md mx-auto px-4 py-8">
     <!-- Header -->
     <Header />
 
     <!-- Conteúdo principal -->
     <hr>
     <section class="container mx-auto my-16 px-4 bg-white text-black py-12 rounded-md">
-      <h2 class="text-5xl font-bold bg-navy text-gold py-4 px-6 rounded-md text-center mb-12">
-        Sobre a Nossa Consultoria Imobiliária
-      </h2>
+      <h1 class="text-3xl font-bold text-center mb-6">Sobre Nós</h1>
       
       <!-- Missão, Visão e Valores -->
       <div class="mb-12">
         <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Missão
         </h3>
-        <p class="text-lg leading-relaxed">
+        <p class="text-gray-700 leading-relaxed text-justify mb-4">
           Nossa missão é conectar pessoas aos imóveis dos seus sonhos, oferecendo um atendimento personalizado e soluções inovadoras no mercado imobiliário.
         </p>
       </div>
@@ -23,7 +21,7 @@
         <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
           Visão
         </h3>
-        <p class="text-lg leading-relaxed">
+        <p class="text-gray-700 leading-relaxed text-justify mb-4">
           Ser referência em consultoria imobiliária, reconhecida pela excelência no atendimento e pela confiança de nossos clientes.
         </p>
       </div>

@@ -7,7 +7,7 @@
       :alt="imovel.nome || 'Imagem do imóvel'"
       loading="lazy"
       @error="onImageError"
-      class="w-full h-48 object-cover rounded-md mb-4"
+      class="w-full h-[200px] object-cover rounded-md mb-2"
     />
     <div class="flex-grow">
       <h3 class="text-xl font-semibold text-navy">

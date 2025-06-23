@@ -2,7 +2,9 @@
     <div class="min-h-screen bg-gray-50 flex flex-col">
       <Header />
       <main class="flex-grow">
-        <Carrossel />
+        <section class="px-4 md:px-8">
+          <Carrossel />
+        </section>
         <Catalogo />
       </main>
       <Footer />

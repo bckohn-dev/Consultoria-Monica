@@ -31,7 +31,10 @@
             <router-link
               to="/"
               class="hover:text-gold transition-colors duration-300"
-              :class="{ 'font-bold underline': $route.path === '/' }"
+              :class="{
+                'shadow-md': $route.path === '/catalogo',
+                'bg-navy text-white': true
+              }"
             >
               Home
             </router-link>
@@ -92,6 +95,8 @@
 import Logo from '@/assets/Logo.jpg';
 
 export default {
+  content: ['./index.html', './src/**/*.{vue,js,ts}'],
+  safelist: ['shadow-md'],
   name: 'Header',
   data() {
     return {
