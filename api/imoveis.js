@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     snapshot.forEach(doc => {
       imoveis.push({ id: doc.id, ...doc.data() });
     });
-
+    console.log("📦 Dados buscados do Firestore:", imoveis);
     res.status(200).json(imoveis);
   } catch (error) {
     console.error('Erro ao buscar imóveis:', error);
