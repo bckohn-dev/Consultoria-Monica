@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-navy text-white shadow-md z-50">
+  <header class="bg-navy/90 text-white shadow-md z-50">
     <div class="container mx-auto flex justify-between items-center px-4 py-3">
       <!-- Logo -->
       <img :src="Logo" alt="Monica Consultoria Imobiliária" class="main__logo" />
@@ -16,7 +16,7 @@
       <!-- Navigation -->
       <nav
         :class="[
-          'sm:flex flex-col sm:flex-row absolute sm:static bg-navy sm:bg-transparent top-full right-0 w-full sm:w-auto transition-all duration-300 z-40',
+          'sm:flex flex-col sm:flex-row absolute sm:static top-full right-0 w-full sm:w-auto transition-all duration-300 z-40',
           menuAberto ? 'block' : 'hidden'
         ]"
       >
@@ -24,7 +24,7 @@
           <li v-for="item in menu" :key="item.nome">
             <router-link
               :to="item.rota"
-              class="block py-2 sm:py-0 px-2 sm:px-0 hover:text-gold transition-colors"
+              class="block py-2 px-4 rounded-md text-white hover:bg-gold hover:text-navy transition-colors duration-200 hover:underline"
             >
               {{ item.nome }}
             </router-link>
@@ -32,7 +32,7 @@
           <li>
             <button
               @click="abrirContato"
-              class="py-2 sm:py-0 hover:text-gold transition-colors"
+              class="py-2 px-4 rounded-md text-white hover:bg-gold hover:text-navy transition-colors duration-200"
             >
               Contato
             </button>
@@ -56,7 +56,7 @@
         </ul>
         <button
           @click="fecharContato"
-          class="mt-6 bg-navy text-white px-4 py-2 rounded hover:bg-gold hover:text-navy transition"
+          class="mt-6 text-white px-4 py-2 rounded hover:bg-gold hover:text-navy transition"
         >
           Fechar
         </button>
@@ -92,11 +92,14 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .main__logo {
   max-height: 70px;
   width: auto;
   max-width: 200px;
   object-fit: contain;
+}
+.bg-navy-force {
+  @apply bg-navy text-white !important;
 }
 </style>
