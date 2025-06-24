@@ -1,64 +1,38 @@
 <template>
-  <header :class="['bg-navy text-white', $route.path === '/catalogo' ? '' : 'shadow-md']">
-    <div class="container mx-auto flex justify-between items-center py-2 px-4">
+  <header class="bg-navy text-white shadow-md z-50">
+    <div class="container mx-auto flex justify-between items-center px-4 py-3">
       <!-- Logo -->
-      <img
-        :src="Logo"
-        alt="Monica Consultoria Imobiliária"
-        class="main__logo object-contain"
-      />
+      <img :src="Logo" alt="Monica Consultoria Imobiliária" class="main__logo" />
 
-      <!-- Ícone do menu (mobile) -->
-      <button
-        class="sm:hidden text-white focus:outline-none"
-        @click="menuAberto = !menuAberto"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+      <!-- Mobile menu button -->
+      <button class="sm:hidden" @click="menuAberto = !menuAberto">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4 6h16M4 12h16m-7 6h7" />
         </svg>
       </button>
 
-      <!-- Menu de navegação -->
+      <!-- Navigation -->
       <nav
         :class="[
-          'sm:flex',
-          menuAberto ? 'block' : 'hidden',
-          'absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-navy sm:bg-transparent z-40'
+          'sm:flex flex-col sm:flex-row absolute sm:static bg-navy sm:bg-transparent top-full right-0 w-full sm:w-auto transition-all duration-300 z-40',
+          menuAberto ? 'block' : 'hidden'
         ]"
       >
-        <ul class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 text-sm sm:text-base p-4 sm:p-0">
-          <li>
+        <ul class="flex flex-col sm:flex-row sm:space-x-6 p-4 sm:p-0">
+          <li v-for="item in menu" :key="item.nome">
             <router-link
-              to="/"
-              class="hover:text-gold transition-colors duration-300"
-              :class="{
-                'shadow-md': $route.path === '/catalogo',
-                'text-white': true
-              }"
+              :to="item.rota"
+              class="block py-2 sm:py-0 px-2 sm:px-0 hover:text-gold transition-colors"
             >
-              Home
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/catalogo"
-              class="hover:text-gold transition-colors duration-300 text-white"
-            >
-              Catálogo
-            </router-link>
-          </li>
-          <li>
-            <router-link
-              to="/sobre"
-              class="hover:text-gold transition-colors duration-300 text-white"
-            >
-              Sobre
+              {{ item.nome }}
             </router-link>
           </li>
           <li>
             <button
               @click="abrirContato"
-              class="hover:text-gold transition-colors duration-300 text-white"
+              class="py-2 sm:py-0 hover:text-gold transition-colors"
             >
               Contato
             </button>
@@ -82,7 +56,7 @@
         </ul>
         <button
           @click="fecharContato"
-          class="mt-6 bg-navy text-white px-4 py-2 rounded hover:bg-gold hover:text-navy transition-colors duration-300"
+          class="mt-6 bg-navy text-white px-4 py-2 rounded hover:bg-gold hover:text-navy transition"
         >
           Fechar
         </button>
@@ -100,6 +74,11 @@ export default {
     return {
       menuAberto: false,
       mostrarContato: false,
+      menu: [
+        { nome: 'Home', rota: '/' },
+        { nome: 'Catálogo', rota: '/catalogo' },
+        { nome: 'Sobre', rota: '/sobre' },
+      ]
     };
   },
   methods: {
@@ -108,31 +87,16 @@ export default {
     },
     fecharContato() {
       this.mostrarContato = false;
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
 .main__logo {
-  max-height: 80px;
-  width: 20%;
-  max-width: 220px;
-  margin: 0;
-  display: block;
+  max-height: 70px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
 }
-
-
-.text-gold {
-  color: #bfa14f;
-}
-
-.hover\:text-gold:hover {
-  color: #bfa14f;
-}
-
-.hover\:bg-gold:hover {
-  background-color: #bfa14f;
-}
-
 </style>
