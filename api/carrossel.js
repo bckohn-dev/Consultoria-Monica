@@ -1,11 +1,13 @@
 import { storage } from './_firebaseAdmin.js';
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://consultoria-monica.vercel.app');
-
   try {
     const bucket = storage.bucket();
     const [files] = await bucket.getFiles({ prefix: 'carrossel/' });
+
+    if (!files.length) {
+      return res.status(200).json([]);
+    }
 
     const urls = await Promise.all(
       files.map(file =>
