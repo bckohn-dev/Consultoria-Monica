@@ -122,13 +122,6 @@ export default {
   display: block;
 }
 
-.bg-navy {
-  background-color: #1a237e;
-}
-
-.text-navy {
-  color: #1a237e;
-}
 
 .text-gold {
   color: #bfa14f;
@@ -142,7 +135,4 @@ export default {
   background-color: #bfa14f;
 }
 
-.hover\:text-navy:hover {
-  color: #1a237e;
-}
 </style>
