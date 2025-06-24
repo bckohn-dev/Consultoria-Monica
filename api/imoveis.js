@@ -7,7 +7,7 @@ export default function handler(req, res) {
       nome: "Apartamento Teste",
       preco: 300000,
       quartos: 2,
-      foto: "https://via.placeholder.com/600x400"
+      foto: "/default-placeholder.jpg"
     }
   ]);
 }
