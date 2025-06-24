@@ -4,6 +4,7 @@ export default async function handler(req, res) {
   try {
     const bucket = storage.bucket();
     const [files] = await bucket.getFiles({ prefix: 'carrossel/' });
+    console.log('📦 Arquivos encontrados:', files.length);
 
     if (!files.length) {
       return res.status(200).json([]);
@@ -20,7 +21,12 @@ export default async function handler(req, res) {
 
     return res.status(200).json(urls);
   } catch (error) {
-    console.error('Erro ao buscar imagens do carrossel:', error);
+    console.error('❌ Firebase Admin erro no carrossel:', {
+      message: error.message,
+      stack: error.stack,
+      custom: error?.errors || error, // mostra se o Firebase retornou objeto estranho
+    });
     return res.status(500).json({ erro: 'Erro ao buscar imagens' });
   }
+
 }
