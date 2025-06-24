@@ -32,3 +32,6 @@ frontend/process.env
 backend/node_modules/
 
 .env
+
+# Componente para testes unitários do ImovelCard.vue
+ImovelCardPreview.vue

@@ -58,6 +58,7 @@ export default {
     const filtros = ref({ quartos: '', precoMin: '', precoMax: '' });
     const loading = ref(false);
     const error = ref(null);
+    // console.log("🔍 Parâmetros de busca:", params); // Removido pois 'params' não está definido neste escopo
 
     const mostrarDetalhes = (imovel) => {
       console.log('Imóvel selecionado:', imovel);
@@ -74,10 +75,10 @@ export default {
         if (filtros.value.precoMin) params.precoMin = filtros.value.precoMin;
         if (filtros.value.precoMax) params.precoMax = filtros.value.precoMax;
 
-        const response = await axios.get(`${API_BASE}/imoveis`, { params });
-        console.log("Resposta da API imóveis:", response.data);
-        imoveis.value = Array.isArray(response.data) ? response.data : [];
+        console.log("🔍 Parâmetros de busca:", params);
 
+        const response = await axios.get(`${API_BASE}/imoveis`, { params });
+        imoveis.value = Array.isArray(response.data) ? response.data : [];
       } catch (err) {
         error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
         console.error('Erro ao carregar imóveis:', err);
@@ -85,6 +86,7 @@ export default {
         loading.value = false;
       }
     };
+
 
     // ✅ Executa a busca automática ao carregar o componente
     onMounted(() => {
