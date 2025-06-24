@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-navy/90 text-white shadow-md z-50">
+  <header class="bg-mainblue text-white shadow-md z-50">
     <div class="container mx-auto flex justify-between items-center px-4 py-3">
       <!-- Logo -->
       <img :src="Logo" alt="Monica Consultoria Imobiliária" class="main__logo" />
@@ -24,7 +24,7 @@
           <li v-for="item in menu" :key="item.nome">
             <router-link
               :to="item.rota"
-              class="block py-2 px-4 rounded-md text-white hover:bg-gold hover:text-navy transition-colors duration-200 hover:underline"
+              class="block py-2 px-4 rounded-md text-white hover:bg-puregold hover:text-mainblue transition-colors duration-200"
             >
               {{ item.nome }}
             </router-link>
@@ -32,7 +32,7 @@
           <li>
             <button
               @click="abrirContato"
-              class="py-2 px-4 rounded-md text-white hover:bg-gold hover:text-navy transition-colors duration-200"
+              class="py-2 px-4 rounded-md text-white hover:bg-puregold hover:text-mainblue transition-colors duration-200"
             >
               Contato
             </button>
@@ -48,7 +48,7 @@
       @click.self="fecharContato"
     >
       <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 sm:w-1/2">
-        <h2 class="text-2xl font-bold text-navy mb-4">Contato</h2>
+        <h2 class="text-2xl font-bold text-mainblue mb-4">Contato</h2>
         <ul class="space-y-2 text-gray-700">
           <li><strong>Email:</strong> contato@consultoriaimobiliaria.com</li>
           <li><strong>Telefone:</strong> (11) 94539-3359</li>
@@ -56,7 +56,7 @@
         </ul>
         <button
           @click="fecharContato"
-          class="mt-6 text-white px-4 py-2 rounded hover:bg-gold hover:text-navy transition"
+          class="mt-6 bg-mainblue text-white px-4 py-2 rounded hover:bg-gold hover:text-mainblue transition"
         >
           Fechar
         </button>
@@ -98,8 +98,5 @@ export default {
   width: auto;
   max-width: 200px;
   object-fit: contain;
-}
-.bg-navy-force {
-  @apply bg-navy text-white !important;
 }
 </style>

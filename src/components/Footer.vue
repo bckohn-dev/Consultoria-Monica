@@ -30,7 +30,7 @@
         </a>
       </div>
 
-      <p class="text-white/60">CreciSP 266907</p>
+      <p class="text-white/70">CreciSP 266907</p>
     </div>
   </footer>
 </template>

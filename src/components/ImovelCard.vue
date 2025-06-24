@@ -1,43 +1,45 @@
 <template>
   <div
-    class="border border-gold rounded-lg p-4 shadow-md bg-white hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between h-[450px] mx-2 sm:mx-0"
+    class="border border-gold rounded-2xl p-4 shadow-md bg-white hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between h-[470px] mx-2 sm:mx-0"
   >
     <img
       :src="imovel.foto || fallbackImage"
       :alt="imovel.nome || 'Imagem do imóvel'"
       loading="lazy"
       @error="onImageError"
-      class="w-full h-[200px] object-cover rounded-md mb-2"
+      class="w-full h-[200px] object-cover rounded-xl mb-4 transition-transform duration-300 hover:scale-[1.01]"
     />
-    <div class="flex-grow">
-      <h3 class="text-xl font-semibold text-navy">
+
+    <div class="flex-grow space-y-2">
+      <h3 class="text-2xl font-semibold text-mainblue">
         {{ imovel.nome || 'Sem nome' }}
       </h3>
       <hr class="my-2 border-gold" />
-      <p class="text-gray-600">
-        Preço: {{ formattedPrice }}
-      </p>
-      <p class="text-gray-600 flex items-center">
+
+      <p class="text-gray-700">Preço: {{ formattedPrice }}</p>
+
+      <p class="text-gray-700 flex items-center">
         <HomeIcon class="w-5 h-5 mr-2" />
         Quartos: {{ typeof imovel.quartos === 'number' ? imovel.quartos : 'N/D' }}
       </p>
 
-      <p class="text-gray-600 flex items-center">
+      <p class="text-gray-700 flex items-center">
         <img src="../assets/icones/areaIcon.png" alt="Área" class="w-5 h-5 mr-2" />
         {{ imovel.area !== undefined ? `${imovel.area}m²` : 'Área N/D' }}
       </p>
-
     </div>
+
     <button
       aria-label="Ver detalhes do imóvel"
       :disabled="loading"
       @click="verDetalhes"
-      class="mt-4 bg-navy text-white px-4 py-2 rounded-md hover:bg-gold hover:text-navy transition-colors duration-300 disabled:opacity-50"
+      class="mt-4 bg-mainblue text-white px-4 py-2 h-11 rounded-md font-medium hover:bg-gold hover:text-mainblue transition-colors duration-300 disabled:opacity-50"
     >
       {{ loading ? 'Carregando...' : 'Ver Detalhes' }}
     </button>
   </div>
 </template>
+
 
 <script>
 import { HomeIcon } from '@heroicons/vue/24/outline';
@@ -90,20 +92,4 @@ export default {
 </script>
 
 <style>
-/* Adicionando cores personalizadas */
-.border-gold {
-  border-color: #BDB76B;
-}
-.text-navy {
-  color: #000080;
-}
-.bg-navy {
-  background-color: #000080;
-}
-.hover\:bg-gold:hover {
-  background-color: #BDB76B;
-}
-.hover\:text-navy:hover {
-  color: #000080;
-}
 </style>

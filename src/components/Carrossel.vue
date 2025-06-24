@@ -30,21 +30,25 @@ import 'swiper/css/pagination';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 
-
 export default {
   components: { Swiper, SwiperSlide },
   setup() {
     const destaques = ref([]);
     const API_BASE = '/api/carrossel';
+    const fallbackImagem = '/placeholder-carrossel.jpg'; // Coloque essa imagem em /public
 
     onMounted(async () => {
       try {
         const res = await axios.get(API_BASE);
-
         console.log("Dados do carrossel:", res.data);
 
         if (!Array.isArray(res.data) || res.data.length === 0) {
-          console.warn("⚠ Nenhuma imagem retornada do carrossel");
+          console.warn("⚠ Nenhuma imagem retornada do carrossel — usando imagem padrão");
+          destaques.value = [{
+            id: 'fallback',
+            nome: 'Destaque',
+            foto: fallbackImagem
+          }];
           return;
         }
 
@@ -55,6 +59,11 @@ export default {
         }));
       } catch (err) {
         console.error("Erro ao buscar carrossel:", err);
+        destaques.value = [{
+          id: 'erro',
+          nome: 'Erro ao carregar',
+          foto: fallbackImagem
+        }];
       }
     });
 
@@ -78,9 +87,9 @@ export default {
 }
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
-  background: rgba(0, 0, 128, 0.7); /* Fundo azul mais escuro */
+  background: rgba(0, 0, 128, 0.7);
 }
 .swiper-pagination-bullet-active {
-  background: #BDB76B; /* Cor dourada */
+  background: #BDB76B;
 }
 </style>

@@ -10,7 +10,7 @@
       
       <!-- Missão, Visão e Valores -->
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-mainblue text-gold py-3 px-4 rounded-md mb-6">
           Missão
         </h3>
         <p class="text-gray-700 leading-relaxed text-justify mb-4">
@@ -18,7 +18,7 @@
         </p>
       </div>
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-mainblue text-gold py-3 px-4 rounded-md mb-6">
           Visão
         </h3>
         <p class="text-gray-700 leading-relaxed text-justify mb-4">
@@ -26,7 +26,7 @@
         </p>
       </div>
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-mainblue text-gold py-3 px-4 rounded-md mb-6">
           Valores
         </h3>
         <ul class="list-disc list-inside text-lg leading-relaxed">
@@ -39,7 +39,7 @@
 
       <!-- Serviços -->
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-mainblue text-gold py-3 px-4 rounded-md mb-6">
           Nossos Serviços
         </h3>
         <ul class="list-disc list-inside text-lg leading-relaxed">
@@ -52,7 +52,7 @@
 
       <!-- Contato -->
       <div class="mb-12">
-        <h3 class="text-4xl font-semibold bg-navy text-gold py-3 px-4 rounded-md mb-6">
+        <h3 class="text-4xl font-semibold bg-mainblue text-gold py-3 px-4 rounded-md mb-6">
           Entre em Contato
         </h3>
         <p class="text-lg leading-relaxed">
