@@ -6,6 +6,7 @@ const {
   FIREBASE_ADMIN_PROJECT_ID,
   FIREBASE_ADMIN_CLIENT_EMAIL,
   FIREBASE_ADMIN_PRIVATE_KEY,
+  FIREBASE_STORAGE_BUCKET,
 } = process.env;
 
 let app;
@@ -16,21 +17,15 @@ if (privateKey?.includes('\\n')) {
   privateKey = privateKey.replace(/\\\\n/g, '\n');
 }
 
-// 🔐 Inicialização
 if (!getApps().length) {
   console.log("🔐 Inicializando Firebase Admin...");
-  console.log('🔐 Key length:', privateKey?.length);
-  console.log('🔐 Key preview:', privateKey?.slice(0, 50));
-  console.log('🔍 Raw private key env:', JSON.stringify(FIREBASE_ADMIN_PRIVATE_KEY).slice(0, 100));
-  console.log('🔍 Processed key preview:', JSON.stringify(privateKey).slice(0, 100));
-
   app = initializeApp({
     credential: cert({
       projectId: FIREBASE_ADMIN_PROJECT_ID,
       clientEmail: FIREBASE_ADMIN_CLIENT_EMAIL,
       privateKey,
     }),
-    storageBucket: `${FIREBASE_ADMIN_PROJECT_ID}.appspot.com`,
+    storageBucket: FIREBASE_STORAGE_BUCKET,
   });
 } else {
   app = getApps()[0];
