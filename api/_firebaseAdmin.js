@@ -18,11 +18,11 @@ if (privateKey?.includes('\\n')) {
 
 // 🔐 Inicialização
 if (!getApps().length) {
-  //console.log("🔐 Inicializando Firebase Admin...");
-  //console.log('🔐 Key length:', privateKey?.length);
-  //console.log('🔐 Key preview:', privateKey?.slice(0, 50));
-  //console.log('🔍 Raw private key env:', JSON.stringify(FIREBASE_ADMIN_PRIVATE_KEY).slice(0, 100));
-  //console.log('🔍 Processed key preview:', JSON.stringify(privateKey).slice(0, 100));
+  console.log("🔐 Inicializando Firebase Admin...");
+  console.log('🔐 Key length:', privateKey?.length);
+  console.log('🔐 Key preview:', privateKey?.slice(0, 50));
+  console.log('🔍 Raw private key env:', JSON.stringify(FIREBASE_ADMIN_PRIVATE_KEY).slice(0, 100));
+  console.log('🔍 Processed key preview:', JSON.stringify(privateKey).slice(0, 100));
 
   app = initializeApp({
     credential: cert({
