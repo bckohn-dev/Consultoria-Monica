@@ -1,13 +1,18 @@
-export default function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', 'https://consultoria-monica.vercel.app');
+import { db } from './_firebaseAdmin.js';
 
-  res.status(200).json([
-    {
-      id: "1",
-      nome: "Apartamento Teste",
-      preco: 300000,
-      quartos: 2,
-      foto: "/default-placeholder.jpg"
-    }
-  ]);
+export default async function handler(req, res) {
+  try {
+    const snapshot = await db.collection('imoveis').get();
+    const imoveis = [];
+
+    snapshot.forEach(doc => {
+      imoveis.push({ id: doc.id, ...doc.data() });
+    });
+
+    res.status(200).json(imoveis);
+  } catch (error) {
+    console.error('Erro ao buscar imóveis:', error);
+    res.status(500).json({ error: 'Erro ao buscar imóveis.' });
+  }
 }
+// Este endpoint busca todos os imóveis do Firestore e retorna como JSON
