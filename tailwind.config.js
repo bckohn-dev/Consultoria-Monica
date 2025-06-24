@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        gold: '#BDB76B', // Cor para detalhes
-        navy: '#1F234C', // Cor para títulos e botões
+        navy: '#1F234C',
+        gold: '#C5A947',
+        light: '#F4F4F4',
       },
     },
   },

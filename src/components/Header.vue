@@ -3,7 +3,7 @@
     <div class="container mx-auto flex justify-between items-center py-2 px-4">
       <!-- Logo -->
       <img
-        :src="Logo" 
+        :src="Logo"
         alt="Monica Consultoria Imobiliária"
         class="main__logo object-contain"
       />
@@ -23,7 +23,7 @@
         :class="[
           'sm:flex',
           menuAberto ? 'block' : 'hidden',
-          'absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-navy sm:bg-transparent'
+          'absolute sm:static top-16 right-0 sm:right-auto w-full sm:w-auto bg-navy sm:bg-transparent z-40'
         ]"
       >
         <ul class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6 text-sm sm:text-base p-4 sm:p-0">
@@ -33,7 +33,7 @@
               class="hover:text-gold transition-colors duration-300"
               :class="{
                 'shadow-md': $route.path === '/catalogo',
-                'bg-navy text-white': true
+                'text-white': true
               }"
             >
               Home
@@ -42,7 +42,7 @@
           <li>
             <router-link
               to="/catalogo"
-              class="hover:text-gold transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300 text-white"
             >
               Catálogo
             </router-link>
@@ -50,7 +50,7 @@
           <li>
             <router-link
               to="/sobre"
-              class="hover:text-gold transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300 text-white"
             >
               Sobre
             </router-link>
@@ -58,7 +58,7 @@
           <li>
             <button
               @click="abrirContato"
-              class="hover:text-gold transition-colors duration-300"
+              class="hover:text-gold transition-colors duration-300 text-white"
             >
               Contato
             </button>
@@ -95,13 +95,11 @@
 import Logo from '@/assets/Logo.jpg';
 
 export default {
-  content: ['./index.html', './src/**/*.{vue,js,ts}'],
-  safelist: ['shadow-md'],
   name: 'Header',
   data() {
     return {
-      menuAberto: false, // Controla a visibilidade do menu no mobile
-      mostrarContato: false, // Controla a visibilidade do modal de contato
+      menuAberto: false,
+      mostrarContato: false,
     };
   },
   methods: {
@@ -114,12 +112,37 @@ export default {
   },
 };
 </script>
-<style>
+
+<style scoped>
 .main__logo {
-  max-height: 80px; /* ajuste conforme necessário */
+  max-height: 80px;
   width: 20%;
-  max-width: 220px; /* limite opcional para não ficar exagerado */
+  max-width: 220px;
   margin: 0;
   display: block;
+}
+
+.bg-navy {
+  background-color: #1a237e;
+}
+
+.text-navy {
+  color: #1a237e;
+}
+
+.text-gold {
+  color: #bfa14f;
+}
+
+.hover\:text-gold:hover {
+  color: #bfa14f;
+}
+
+.hover\:bg-gold:hover {
+  background-color: #bfa14f;
+}
+
+.hover\:text-navy:hover {
+  color: #1a237e;
 }
 </style>
