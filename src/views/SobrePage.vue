@@ -4,7 +4,6 @@
     <!-- Content Div -->
     <div class="max-w-screen-md mx-auto px-4 py-8">
       <!-- Conteúdo principal -->
-      <hr>
       <section class="container mx-auto my-16 px-4 bg-white text-black py-12 rounded-md">
         <h1 class="text-3xl font-bold text-center mb-6">Sobre Nós</h1>
         

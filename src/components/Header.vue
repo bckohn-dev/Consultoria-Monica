@@ -2,7 +2,10 @@
   <header class="bg-mainblue text-white shadow-md z-50">
     <div class="container mx-auto flex justify-between items-center px-4 py-3">
       <!-- Logo -->
-      <img :src="Logo" alt="Monica Consultoria Imobiliária" class="main__logo" />
+       <div class="flex flex-col items-center sm:flex-row sm:items-center">
+        <img :src="Logo" class="main__logo"/>
+        <span class="text-white font-semibold tracking-wide">MÔNICA <br>Consultoria</span>
+      </div>
 
       <!-- Mobile menu button -->
       <button class="sm:hidden" @click="menuAberto = !menuAberto">
@@ -66,12 +69,13 @@
 </template>
 
 <script>
-import Logo from '@/assets/Logo.jpg';
+import Logo from '@/assets/Logo.png';
 
 export default {
   name: 'Header',
   data() {
     return {
+      Logo,
       menuAberto: false,
       mostrarContato: false,
       menu: [
@@ -94,9 +98,9 @@ export default {
 
 <style>
 .main__logo {
-  max-height: 70px;
+  max-height: 100px;
   width: auto;
-  max-width: 200px;
-  object-fit: contain;
+  margin: -20px;
+  margin-right: -22px;
 }
 </style>

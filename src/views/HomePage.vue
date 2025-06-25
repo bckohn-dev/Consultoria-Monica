@@ -10,7 +10,7 @@
         </p>
         <router-link
           to="/catalogo"
-          class="inline-block bg-mainblue text-white font-semibold px-6 py-3 rounded-md hover:bg-puregold transition"
+          class="inline-block bg-mainblue text-white font-semibold px-6 py-3 rounded-md hover:bg-puregold transition btn:hover"
         >
           Ver Imóveis
         </router-link>
@@ -35,3 +35,10 @@
     components: { Header, Carrossel, Catalogo, Footer },
   };
   </script>
+
+<style scoped>
+.btn:hover {
+  background-color: #F3C969;
+  color: #1C2541;
+}
+</style>
