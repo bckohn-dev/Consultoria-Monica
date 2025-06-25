@@ -3,30 +3,42 @@
     <h2 class="text-3xl font-bold text-mainblue mb-8 text-center">Busque seu imóvel</h2>
     <!-- Filtros -->
     <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8">
-      <select
-        v-model="filtros.quartos"
-        class="border border-puregold p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-mainblue"
-        @change="buscarImoveis"
-      >
-        <option value="">Quartos</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3+</option>
-      </select>
-      <input
-        v-model="filtros.precoMin"
-        type="number"
-        placeholder="Preço mín. (R$)"
-        class="border border-puregold p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-mainblue"
-        @input="buscarImoveis"
-      />
-      <input
-        v-model="filtros.precoMax"
-        type="number"
-        placeholder="Preço máx. (R$)"
-        class="border border-puregold p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-mainblue"
-        @input="buscarImoveis"
-      />
+      <!-- Quartos -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛏️</span>
+        <select
+          v-model="filtros.quartos"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @change="buscarImoveis"
+        >
+          <option value="">Quartos</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3+</option>
+        </select>
+      </div>
+        <!-- Preço mín -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
+        <input
+          v-model="filtros.precoMin"
+          type="number"
+          placeholder="Preço mín. (R$)"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @input="buscarImoveis"
+        />
+      </div>
+       <!-- Preço máx -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
+        <input
+          v-model="filtros.precoMax"
+          type="number"
+          placeholder="Preço máx. (R$)"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @input="buscarImoveis"
+        />
+      </div>
     </div>
     <!-- Lista de Imóveis -->
     <div v-if="loading" class="text-center text-gray-600">Carregando...</div>
