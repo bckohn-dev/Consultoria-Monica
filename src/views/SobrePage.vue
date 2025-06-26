@@ -64,7 +64,6 @@
             <ul class="text-lg leading-loose text-mainblue">
               <li>📧 <strong>Email:</strong> <a href="mailto:contato@consultoriaimobiliaria.com" class="underline hover:text-gold">contato@consultoriaimobiliaria.com</a></li>
               <li>📞 <strong>Telefone:</strong> <a href="tel:+551112345678" class="underline hover:text-gold">(11) 1234-5678</a></li>
-              <li>📍 <strong>Endereço:</strong> Rua dos Imóveis, 123, Centro, São Paulo - SP</li>
             </ul>
           </div>
         </div>

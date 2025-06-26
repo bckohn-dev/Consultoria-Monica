@@ -55,7 +55,6 @@
         <ul class="space-y-2 text-gray-700">
           <li><strong>Email:</strong> contato@consultoriaimobiliaria.com</li>
           <li><strong>Telefone:</strong> (11) 94539-3359</li>
-          <li><strong>Endereço:</strong> Rua dos Imóveis, 123, Centro, São Paulo - SP</li>
         </ul>
         <button
           @click="fecharContato"

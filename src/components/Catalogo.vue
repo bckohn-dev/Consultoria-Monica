@@ -17,7 +17,7 @@
           <option value="3">3+</option>
         </select>
       </div>
-        <!-- Preço mín -->
+      <!-- Preço mín -->
       <div class="relative w-full md:w-auto">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
         <input
@@ -28,7 +28,7 @@
           @input="buscarImoveis"
         />
       </div>
-       <!-- Preço máx -->
+      <!-- Preço máx -->
       <div class="relative w-full md:w-auto">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
         <input
@@ -38,6 +38,33 @@
           class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
           @input="buscarImoveis"
         />
+      </div>
+      <!-- Garagem -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🚗</span>
+        <select
+          v-model="filtros.garagem"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @change="buscarImoveis"
+        >
+          <option value="">Garagem?</option>
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
+      </div>
+
+      <!-- Suíte -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛁</span>
+        <select
+          v-model="filtros.suite"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @change="buscarImoveis"
+        >
+          <option value="">Suíte?</option>
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
       </div>
     </div>
     <!-- Lista de Imóveis -->
@@ -67,7 +94,7 @@ export default {
   setup() {
     const API_BASE = '/api';
     const imoveis = ref([]);
-    const filtros = ref({ quartos: '', precoMin: '', precoMax: '' });
+    const filtros = ref({ quartos: '', precoMin: '', precoMax: '', garagem: '', suite: ''});
     const loading = ref(false);
     const error = ref(null);
     // console.log("🔍 Parâmetros de busca:", params); // Removido pois 'params' não está definido neste escopo
@@ -86,6 +113,8 @@ export default {
         if (filtros.value.quartos) params.quartos = filtros.value.quartos;
         if (filtros.value.precoMin) params.precoMin = filtros.value.precoMin;
         if (filtros.value.precoMax) params.precoMax = filtros.value.precoMax;
+        if (filtros.value.garagem) params.garagem = filtros.value.garagem;
+        if (filtros.value.suite) params.suite = filtros.value.suite;
 
         console.log("🔍 Parâmetros de busca:", params);
 

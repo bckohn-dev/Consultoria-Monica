@@ -2,7 +2,7 @@ import { db } from "./_firebaseAdmin.js";
 
 export default async function handler(req, res) {
   try {
-    const { quartos, precoMin, precoMax } = req.query;
+    const { quartos, precoMin, precoMax, garagem, suite } = req.query;
 
     const snapshot = await db.collection('imoveis').get();
     const imoveis = [];
@@ -11,7 +11,6 @@ export default async function handler(req, res) {
       imoveis.push({ id: doc.id, ...doc.data() });
     });
 
-    // Aplica os filtros manualmente
     const resultado = imoveis.filter(imovel => {
       const quartosNum = Number(imovel.quartos);
       const precoNum = Number(imovel.preco);
@@ -35,6 +34,20 @@ export default async function handler(req, res) {
       if (precoMax) {
         const max = parseFloat(precoMax);
         if (!isNaN(max) && precoNum > max) return false;
+      }
+
+      // Filtro por garagem (com fallback seguro)
+      if (garagem !== undefined) {
+        const filtroGaragem = garagem === 'true';
+        const imovelGaragem = !!imovel.garagem; // converte undefined/null para false
+        if (imovelGaragem !== filtroGaragem) return false;
+      }
+
+      // Filtro por suíte (com fallback seguro)
+      if (suite !== undefined) {
+        const filtroSuite = suite === 'true';
+        const imovelSuite = !!imovel.suite;
+        if (imovelSuite !== filtroSuite) return false;
       }
 
       return true;
