@@ -2,7 +2,7 @@
   <section class="container mx-auto my-16">
     <h2 class="text-3xl font-bold text-mainblue mb-8 text-center">Busque seu imóvel</h2>
     <!-- Filtros -->
-    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-8">
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6 mb-10 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
       <!-- Quartos -->
       <div class="relative w-full md:w-auto">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛏️</span>
@@ -66,6 +66,10 @@
           <option value="false">Não</option>
         </select>
       </div>
+      <!-- Reset Filter -->
+      <button @click="resetarFiltros" class="text-sm text-red-600 underline hover:text-red-800">
+        Limpar filtros
+      </button>
     </div>
     <!-- Lista de Imóveis -->
     <div v-if="loading" class="text-center text-gray-600">Carregando...</div>
@@ -102,6 +106,10 @@ export default {
     const mostrarDetalhes = (imovel) => {
       console.log('Imóvel selecionado:', imovel);
       alert(`Detalhes do imóvel: ${imovel.nome}`);
+    };
+    const resetarFiltros = () => {
+      filtros.value = { quartos: '', precoMin: '', precoMax: '', garagem: '', suite: '' };
+      buscarImoveis();
     };
 
     const buscarImoveis = async () => {

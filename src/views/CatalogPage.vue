@@ -1,7 +1,10 @@
 <template>
-  <h1 class="text-2xl font-bold text-center mt-8 mb-4">Catálogo Completo</h1>
+  <Header />
   <div class="max-w-screen-xl mx-auto px-4 min-h-screen bg-gray-50">
-    <Header />
+    <h1 class="text-4xl font-bold text-center text-mainblue mt-8 mb-2 flex justify-center items-center gap-2">
+      🏠 Catálogo Completo
+    </h1>
+    <div class="w-24 h-1 bg-puregold mx-auto mb-6 rounded-full"></div>
     <main class="container mx-auto my-16">
       <Catalogo />
     </main>

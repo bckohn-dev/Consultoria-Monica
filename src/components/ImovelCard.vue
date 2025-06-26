@@ -7,7 +7,7 @@
       :alt="imovel.nome || 'Imagem do imóvel'"
       loading="lazy"
       @error="onImageError"
-      class="w-full h-[200px] object-cover rounded-xl mb-4 transition-transform duration-300 hover:scale-[1.01]"
+      class="w-full h-[200px] object-cover rounded-xl mb-4 transition-transform duration-300 hover:scale-[1.02]"
     />
 
     <div class="flex-grow space-y-2">
@@ -33,7 +33,7 @@
       aria-label="Ver detalhes do imóvel"
       :disabled="loading"
       @click="verDetalhes"
-      class="mt-4 bg-mainblue text-white px-4 py-2 h-11 rounded-md font-medium transform hover:scale-105 hover:bg-gold hover:text-mainblue transition-all duration-300 disabled:opacity-50"
+      class="mt-4 bg-mainblue text-white px-4 py-2 h-11 rounded-md font-medium transform hover:scale-105 hover:bg-gold hover:text-mainblue hover:shadow-lg transition-all duration-300 disabled:opacity-50"
     >
       {{ loading ? 'Carregando...' : 'Ver Detalhes' }}
     </button>
