@@ -61,15 +61,14 @@ export default {
     };
   },
   methods: {
-    methods: {
-      verDetalhes() {
-        this.$router.push(`/imovel/${this.imovel.id}`);
-        console.log('Ver detalhes do imóvel:', this.imovel.id);
-      },
-      onImageError(event) {
-        event.target.src = this.fallbackImage;
-      }
+    verDetalhes() {
+      this.$router.push(`/imovel/${this.imovel.id}`);
+      console.log('Ver detalhes do imóvel:', this.imovel.id);
     },
+    onImageError(event) {
+      event.target.src = this.fallbackImage;
+    }
+  },
   computed: {
     formattedPrice() {
       const price = this.imovel?.preco;
@@ -84,7 +83,6 @@ export default {
       img.addEventListener('error', this.onImageError);
     }
   }
-  },
 };
 </script>
 
