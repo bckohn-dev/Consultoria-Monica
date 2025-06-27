@@ -62,6 +62,7 @@ export default {
 
     const verDetalhes = () => {
       console.log('Ver detalhes do imóvel:', props.imovel.id);
+      console.log('Ver detalhes do imóvel:', this.imovel.id);
       router.push(`/imovel/${props.imovel.id}`);
     };
 

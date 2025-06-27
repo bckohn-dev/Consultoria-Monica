@@ -1,10 +1,10 @@
 import { db } from "./_firebaseAdmin.js";
 
 export default async function handler(req, res) {
-  const { id } = req.query;
+  const { id, quartos, precoMin, precoMax, garagem, suite } = req.query;
 
   try {
-    // 🔍 Se estiver buscando por ID (ex: /api/imoveis?id=abc123)
+    // 🔍 Se estiver buscando por ID específico
     if (id) {
       const doc = await db.collection('imoveis').doc(id).get();
       if (!doc.exists) {
@@ -13,15 +13,12 @@ export default async function handler(req, res) {
       return res.status(200).json({ id: doc.id, ...doc.data() });
     }
 
-    // 🔍 Se for listagem com filtros
-    const { quartos, precoMin, precoMax, garagem, suite } = req.query;
-
+    // 🔍 Caso contrário, listagem com filtros
     const snapshot = await db.collection('imoveis').get();
-    const imoveis = [];
-
-    snapshot.forEach(doc => {
-      imoveis.push({ id: doc.id, ...doc.data() });
-    });
+    const imoveis = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
     const resultado = imoveis.filter(imovel => {
       const quartosNum = Number(imovel.quartos);
@@ -48,14 +45,14 @@ export default async function handler(req, res) {
         if (!isNaN(max) && precoNum > max) return false;
       }
 
-      // Filtro por garagem (com fallback seguro)
+      // Filtro por garagem
       if (garagem !== undefined) {
         const filtroGaragem = garagem === 'true';
         const imovelGaragem = !!imovel.garagem;
         if (imovelGaragem !== filtroGaragem) return false;
       }
 
-      // Filtro por suíte (com fallback seguro)
+      // Filtro por suíte
       if (suite !== undefined) {
         const filtroSuite = suite === 'true';
         const imovelSuite = !!imovel.suite;
@@ -69,7 +66,7 @@ export default async function handler(req, res) {
     return res.status(200).json(resultado);
 
   } catch (error) {
-    console.error('Erro ao buscar imóveis com filtros:', error);
+    console.error('Erro ao buscar imóveis:', error);
     return res.status(500).json({ error: 'Erro ao buscar imóveis com filtros.' });
   }
 }
