@@ -61,19 +61,14 @@ export default {
     };
   },
   methods: {
-    async verDetalhes() {
-      this.loading = true;
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+    methods: {
+      verDetalhes() {
         this.$router.push(`/imovel/${this.imovel.id}`);
-      } finally {
-        this.loading = false;
+      },
+      onImageError(event) {
+        event.target.src = this.fallbackImage;
       }
     },
-    onImageError(event) {
-      event.target.src = this.fallbackImage;
-    },
-  },
   computed: {
     formattedPrice() {
       const price = this.imovel?.preco;
@@ -88,6 +83,7 @@ export default {
       img.addEventListener('error', this.onImageError);
     }
   }
+  },
 };
 </script>
 

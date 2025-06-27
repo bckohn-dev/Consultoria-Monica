@@ -1,7 +1,19 @@
 import { db } from "./_firebaseAdmin.js";
 
 export default async function handler(req, res) {
+  const { id } = req.query;
+
   try {
+    // 🔍 Se estiver buscando por ID (ex: /api/imoveis?id=abc123)
+    if (id) {
+      const doc = await db.collection('imoveis').doc(id).get();
+      if (!doc.exists) {
+        return res.status(404).json({ erro: 'Imóvel não encontrado' });
+      }
+      return res.status(200).json({ id: doc.id, ...doc.data() });
+    }
+
+    // 🔍 Se for listagem com filtros
     const { quartos, precoMin, precoMax, garagem, suite } = req.query;
 
     const snapshot = await db.collection('imoveis').get();
@@ -39,7 +51,7 @@ export default async function handler(req, res) {
       // Filtro por garagem (com fallback seguro)
       if (garagem !== undefined) {
         const filtroGaragem = garagem === 'true';
-        const imovelGaragem = !!imovel.garagem; // converte undefined/null para false
+        const imovelGaragem = !!imovel.garagem;
         if (imovelGaragem !== filtroGaragem) return false;
       }
 
