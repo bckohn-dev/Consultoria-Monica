@@ -44,6 +44,7 @@
 <script>
 import { HomeIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 
 export default {
   props: {
