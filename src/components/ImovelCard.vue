@@ -64,6 +64,7 @@ export default {
     methods: {
       verDetalhes() {
         this.$router.push(`/imovel/${this.imovel.id}`);
+        console.log('Ver detalhes do imóvel:', this.imovel.id);
       },
       onImageError(event) {
         event.target.src = this.fallbackImage;
