@@ -4,12 +4,13 @@ export default async function handler(req, res) {
   const { id, quartos, precoMin, precoMax, garagem, suite } = req.query;
 
   try {
-    // 🔍 Se estiver buscando por ID específico
+    // 🔍 Se estiver buscando por campo 'id' (slug público)
     if (id) {
-      const doc = await db.collection('imoveis').doc(id).get();
-      if (!doc.exists) {
-        return res.status(404).json({ erro: 'Imóvel não encontrado' });
+      const snapshot = await db.collection('imoveis').where('id', '==', id).limit(1).get();
+      if (snapshot.empty) {
+        return res.status(404).json({ error: 'Imóvel não encontrado.' });
       }
+      const doc = snapshot.docs[0];
       return res.status(200).json({ id: doc.id, ...doc.data() });
     }
 
@@ -24,7 +25,6 @@ export default async function handler(req, res) {
       const quartosNum = Number(imovel.quartos);
       const precoNum = Number(imovel.preco);
 
-      // Filtro por quartos
       if (quartos) {
         const filtroQuartos = parseInt(quartos);
         if (!isNaN(filtroQuartos)) {
@@ -33,26 +33,22 @@ export default async function handler(req, res) {
         }
       }
 
-      // Filtro por preço mínimo
       if (precoMin) {
         const min = parseFloat(precoMin);
         if (!isNaN(min) && precoNum < min) return false;
       }
 
-      // Filtro por preço máximo
       if (precoMax) {
         const max = parseFloat(precoMax);
         if (!isNaN(max) && precoNum > max) return false;
       }
 
-      // Filtro por garagem
       if (garagem !== undefined) {
         const filtroGaragem = garagem === 'true';
         const imovelGaragem = !!imovel.garagem;
         if (imovelGaragem !== filtroGaragem) return false;
       }
 
-      // Filtro por suíte
       if (suite !== undefined) {
         const filtroSuite = suite === 'true';
         const imovelSuite = !!imovel.suite;
