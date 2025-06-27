@@ -18,7 +18,7 @@
 
 <script>
 import Footer from '../components/Footer.vue';
-import { Header } from '..components/Header.vue';
+import Header from '..components/Header.vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
