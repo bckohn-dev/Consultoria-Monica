@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <section class="container mx-auto py-10">
     <div v-if="loading" class="text-center">Carregando detalhes...</div>
     <div v-else-if="erro" class="text-center text-red-600">{{ erro }}</div>
@@ -12,9 +13,12 @@
       <!-- Adicione outros campos conforme necessário -->
     </div>
   </section>
+  <Footer />
 </template>
 
 <script>
+import Footer from '../components/Footer.vue';
+import { Header } from '..components/Header.vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -42,7 +46,7 @@ export default {
     const formatPrice = (valor) =>
       typeof valor === 'number' ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'N/D';
 
-    return { imovel, erro, loading, fallback, formatPrice };
+    return { imovel, erro, loading, fallback, formatPrice, Header, Footer };
   }
 };
 </script>

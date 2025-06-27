@@ -9,13 +9,15 @@
       <Catalogo />
     </main>
   </div>
+  <Footer />
 </template>
   
 <script>
 import Header from '../components/Header.vue';
 import Catalogo from '../components/Catalogo.vue';
+import Footer from '../components/Footer.vue';
 
 export default {
-  components: { Header, Catalogo },
+  components: { Header, Catalogo, Footer },
 };
 </script>
