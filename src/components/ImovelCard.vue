@@ -44,7 +44,7 @@
 <script>
 import { HomeIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 
 export default {
   props: {
@@ -57,6 +57,10 @@ export default {
     HomeIcon,
   },
   setup(props) {
+    onMounted(() => {
+      console.log('[ImovelCard] Renderizado:', props.imovel?.id || 'sem ID');
+    });
+    // Fallback image in case the property image is not available
     const fallbackImage = '/default-placeholder.jpg';
     const router = useRouter();
 
