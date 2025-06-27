@@ -24,6 +24,7 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default {
+  components: { Footer, Header },
   setup() {
     const route = useRoute();
     const imovel = ref(null);
@@ -46,7 +47,7 @@ export default {
     const formatPrice = (valor) =>
       typeof valor === 'number' ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'N/D';
 
-    return { imovel, erro, loading, fallback, formatPrice, Header, Footer };
+    return { imovel, erro, loading, fallback, formatPrice };
   }
 };
 </script>
