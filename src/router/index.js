@@ -12,6 +12,7 @@ const routes = [
   { path: '/admin', name: 'Admin', component: Admin },
   // { path: '/contato', name: 'Contato', component: Contato },
   { path: '/sobre', name: 'Sobre', component: Sobre },
+  { path: '/imovel/:id', name: 'ImovelDetalhes', component: () => import('../views/ImovelDetalhes.vue')}
 ];
 
 const router = createRouter({

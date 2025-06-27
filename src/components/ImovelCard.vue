@@ -65,7 +65,7 @@ export default {
       this.loading = true;
       try {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        this.$emit('ver-detalhes', this.imovel);
+        this.$router.push(`/imovel/${this.imovel.id}`);
       } finally {
         this.loading = false;
       }

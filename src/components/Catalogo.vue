@@ -67,8 +67,11 @@
         </select>
       </div>
       <!-- Reset Filter -->
-      <button @click="resetarFiltros" class="text-sm text-red-600 underline hover:text-red-800">
-        Limpar filtros
+      <button
+        @click="resetarFiltros"
+        class="text-sm font-semibold text-red-500 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md px-4 py-2 transition duration-200"
+      >
+        ❌ Limpar filtros
       </button>
     </div>
     <!-- Lista de Imóveis -->
