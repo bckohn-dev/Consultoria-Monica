@@ -85,7 +85,6 @@
         v-for="imovel in imoveis"
         :key="imovel.id"
         :imovel="imovel"
-        @ver-detalhes="mostrarDetalhes"
       />
     </div>
   </section>
@@ -151,7 +150,8 @@ export default {
       loading,
       error,
       buscarImoveis,
-      mostrarDetalhes
+      mostrarDetalhes,
+      resetarFiltros
     };
   }
 };

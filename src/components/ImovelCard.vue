@@ -43,6 +43,7 @@
 
 <script>
 import { HomeIcon } from '@heroicons/vue/24/outline';
+import { useRouter } from 'vue-router';
 
 export default {
   props: {
@@ -54,35 +55,33 @@ export default {
   components: {
     HomeIcon,
   },
-  data() {
-    return {
-      loading: false,
-      fallbackImage: '/default-placeholder.jpg',
+  setup(props) {
+    const fallbackImage = '/default-placeholder.jpg';
+    const router = useRouter();
+
+    const verDetalhes = () => {
+      console.log('Ver detalhes do imóvel:', props.imovel.id);
+      router.push(`/imovel/${props.imovel.id}`);
     };
-  },
-  methods: {
-    verDetalhes() {
-      this.$router.push(`/imovel/${this.imovel.id}`);
-      console.log('Ver detalhes do imóvel:', this.imovel.id);
-    },
-    onImageError(event) {
-      event.target.src = this.fallbackImage;
-    }
-  },
-  computed: {
-    formattedPrice() {
-      const price = this.imovel?.preco;
+
+    const onImageError = (event) => {
+      event.target.src = fallbackImage;
+    };
+
+    const formattedPrice = computed(() => {
+      const price = props.imovel?.preco;
       return typeof price === 'number' && !isNaN(price)
         ? price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
         : 'Não informado';
-    }
+    });
+
+    return {
+      verDetalhes,
+      onImageError,
+      fallbackImage,
+      formattedPrice,
+    };
   },
-  mounted() {
-    const img = this.$el.querySelector('img');
-    if (img && !img.complete) {
-      img.addEventListener('error', this.onImageError);
-    }
-  }
 };
 </script>
 
