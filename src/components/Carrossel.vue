@@ -2,8 +2,8 @@
   <section class="container mx-auto my-16 pt-20">
     <Swiper
       :modules="[SwiperNavigation, SwiperPagination]"
-      navigation
-      pagination
+      :navigation="destaques.length > 1"
+      :pagination="destaques.length > 1"
       :loop="destaques.length >= 3"
       :slides-per-view="1"
       :slides-per-group="1"
@@ -35,28 +35,40 @@ export default {
   setup() {
     const destaques = ref([]);
     const API_BASE = '/api/carrossel';
-    const fallbackImagem = '/placeholder-carrossel.jpg'; // Coloque essa imagem em /public
+    const fallbackImagem = '/placeholder-carrossel.jpg'; // certifique-se que essa imagem está em /public
 
     onMounted(async () => {
       try {
         const res = await axios.get(API_BASE);
         console.log("Dados do carrossel:", res.data);
 
-        if (!Array.isArray(res.data) || res.data.length === 0) {
-          console.warn("⚠ Nenhuma imagem retornada do carrossel — usando imagem padrão");
+        let imagens = [];
+
+        // Verifica se res.data é um array direto
+        if (Array.isArray(res.data)) {
+          imagens = res.data;
+        }
+        // Ou se está dentro de um campo chamado 'imagens'
+        else if (Array.isArray(res.data.imagens)) {
+          imagens = res.data.imagens;
+        }
+
+        const imagensValidas = imagens.filter((url) => typeof url === 'string' && url.trim() !== '');
+
+        if (imagensValidas.length > 0) {
+          destaques.value = imagensValidas.slice(0, 3).map((url, i) => ({
+            id: `img-${i}`,
+            nome: `Destaque ${i + 1}`,
+            foto: url,
+          }));
+        } else {
+          console.warn("⚠ Nenhuma imagem válida — usando imagem padrão");
           destaques.value = [{
             id: 'fallback',
             nome: 'Destaque',
             foto: fallbackImagem
           }];
-          return;
         }
-
-        destaques.value = res.data.map((url, i) => ({
-          id: `img-${i}`,
-          nome: `Destaque ${i + 1}`,
-          foto: url,
-        }));
       } catch (err) {
         console.error("Erro ao buscar carrossel:", err);
         destaques.value = [{
@@ -79,8 +91,8 @@ export default {
 <style>
 .swiper-button-next,
 .swiper-button-prev {
-  color: #BDB76B; /* Cor dourada */
-  background: rgba(0, 0, 128, 0.5); /* Fundo azul marinho */
+  color: #BDB76B; /* Dourado */
+  background: rgba(0, 0, 128, 0.5); /* Azul marinho transparente */
   border-radius: 50%;
   padding: 20px;
   transition: background 0.3s ease;
