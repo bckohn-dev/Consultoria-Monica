@@ -4,12 +4,15 @@ export default async function handler(req, res) {
   const { id } = req.query;
 
   if (!id) {
-    return res.status(400).json({ error: 'ID não fornecido.' });
+    return res.status(400).json({ error: 'ID do imóvel não fornecido.' });
   }
 
   try {
-    // Procura pelo campo "id" do documento (ex: "bios-santo-amaro")
-    const snapshot = await db.collection('imoveis').where('id', '==', id).limit(1).get();
+    const snapshot = await db
+      .collection('imoveis')
+      .where('id', '==', id)
+      .limit(1)
+      .get();
 
     if (snapshot.empty) {
       return res.status(404).json({ error: 'Imóvel não encontrado.' });
@@ -19,7 +22,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ id: doc.id, ...doc.data() });
 
   } catch (error) {
-    console.error('Erro ao buscar imóvel por slug:', error);
-    return res.status(500).json({ error: 'Erro ao buscar imóvel.' });
+    console.error('Erro ao buscar imóvel:', error);
+    return res.status(500).json({ error: 'Erro interno ao buscar imóvel.' });
   }
 }
