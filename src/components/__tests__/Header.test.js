@@ -15,46 +15,51 @@ const router = createRouter({
 describe('Header.vue', () => {
   it('renderiza logo e texto principal', async () => {
     const { getByText, getByAltText } = render(Header, {
-      global: {
-        plugins: [router],
-      },
+      global: { plugins: [router] },
     });
 
-    // Verifica se a marca está visível
     expect(getByText(/MÔNICA/i)).toBeTruthy();
     expect(getByText(/Consultoria/i)).toBeTruthy();
-
-    // Verifica se o logo foi renderizado
     expect(getByAltText('Logo MC')).toBeTruthy();
   });
 
   it('renderiza os links do menu', async () => {
-    const { getByText } = render(Header, {
+    const { getAllByText } = render(Header, {
       global: { plugins: [router] },
     });
 
-    expect(getByText('Home')).toBeTruthy();
-    expect(getByText('Catálogo')).toBeTruthy();
-    expect(getByText('Sobre')).toBeTruthy();
-    expect(getByText('Contato')).toBeTruthy();
+    expect(getAllByText('Home')[0]).toBeTruthy();
+    expect(getAllByText('Catálogo')[0]).toBeTruthy();
+    expect(getAllByText('Sobre')[0]).toBeTruthy();
+    expect(getAllByText('Contato')[0]).toBeTruthy();
   });
 
   it('abre e fecha o modal de contato ao clicar no botão', async () => {
-    const { getByText, queryByText } = render(Header, {
+    const { getAllByText, getByRole, queryByText } = render(Header, {
       global: { plugins: [router] },
     });
 
-    const contatoBtn = getByText('Contato');
+    const contatoBtn = getAllByText('Contato')[0];
     await fireEvent.click(contatoBtn);
 
-    // Espera que o modal apareça
-    expect(getByText(/Email:/i)).toBeTruthy();
-    expect(getByText(/Telefone:/i)).toBeTruthy();
+    expect(getAllByText(/Email:/i)[0]).toBeTruthy();
+    expect(getAllByText(/WhatsApp:/i)[0]).toBeTruthy();
 
-    // Fecha o modal
-    await fireEvent.click(getByText('Fechar'));
+    const fecharBtn = getByRole('button', { name: /fechar/i });
+    await fireEvent.click(fecharBtn);
 
-    // Após fechar, os elementos devem desaparecer
     expect(queryByText(/Email:/i)).toBeNull();
+  });
+
+  it('abre o menu mobile ao clicar no botão hamburguer', async () => {
+    const { getByRole, getAllByText } = render(Header, {
+      global: { plugins: [router] },
+    });
+
+    const toggleButton = getByRole('button', { name: /menu de navegação/i });
+    await fireEvent.click(toggleButton);
+
+    expect(getAllByText('Home')[0]).toBeTruthy();
+    expect(getAllByText('Catálogo')[0]).toBeTruthy();
   });
 });

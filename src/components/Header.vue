@@ -80,17 +80,17 @@
         <!-- Título -->
         <div class="mb-6">
           <h2 class="text-2xl font-bold text-mainblue mb-1 flex items-center gap-2">
-            📞 Contato
+            <Phone class="w-6 h-6 text-mainblue" /> Contato
           </h2>
         </div>
 
         <!-- Lista de contato -->
         <ul class="space-y-4 text-gray-800 text-base">
           <li class="flex items-start gap-3">
-            <span class="text-xl">📨</span>
+            <Mail class="w-5 h-5 text-gray-600" />
             <div>
               <strong>Email:</strong>
-              <span class="ml-1">contato@consultoriaimobiliaria.com</span>
+              <span class="ml-1">monicanogueiravendas@gmail.com</span>
             </div>
           </li>
           <li class="flex items-center gap-2 mt-2">
@@ -124,10 +124,14 @@
 
 <script>
 import Logo from '@/assets/Logo.png';
-import { watch } from 'vue';
+import { Phone, Mail } from 'lucide-vue-next';
 
 export default {
   name: 'Header',
+  components: {
+    Phone,
+    Mail
+  },
   data() {
     return {
       Logo,
