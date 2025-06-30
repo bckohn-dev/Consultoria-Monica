@@ -53,11 +53,16 @@ export default {
         
         // 🔍 Normalizar para objetos válidos com id/nome/foto
         const destaquesNormalizados = imagens
-        .filter((item) => typeof item === 'object' && typeof item.foto === 'string' && item.foto.startsWith('https://'))
-        .map((item, i) => ({
-          id: item.id || `img-${i}`,
-          nome: item.nome || `Destaque ${i + 1}`,
-          foto: item.foto
+        .filter((url) =>
+          typeof url === 'string' &&
+          url.trim() !== '' &&
+          url.startsWith('https://') &&
+          /\.(jpe?g|png|webp|gif)$/i.test(url) // só extensões válidas
+        )
+        .map((url, i) => ({
+          id: `img-${i}`,
+          nome: `Destaque ${i + 1}`,
+          foto: url
         }));
 
 

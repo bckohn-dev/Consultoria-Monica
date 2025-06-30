@@ -11,12 +11,14 @@ export default async function handler(req, res) {
     }
 
     const urls = await Promise.all(
-      files.map(file =>
-        file.getSignedUrl({
-          action: 'read',
-          expires: '03-01-2500',
-        }).then(urls => urls[0])
-      )
+      files
+        .filter(file => /\.(jpe?g|png|webp|gif)$/i.test(file.name)) // 🔍 apenas arquivos de imagem
+        .map(file =>
+          file.getSignedUrl({
+            action: 'read',
+            expires: '03-01-2500',
+          }).then(urls => urls[0])
+        )
     );
 
     return res.status(200).json(urls);
@@ -24,9 +26,8 @@ export default async function handler(req, res) {
     console.error('❌ Firebase Admin erro no carrossel:', {
       message: error.message,
       stack: error.stack,
-      custom: error?.errors || error, // mostra se o Firebase retornou objeto estranho
+      custom: error?.errors || error,
     });
     return res.status(500).json({ erro: 'Erro ao buscar imagens' });
   }
-
 }
