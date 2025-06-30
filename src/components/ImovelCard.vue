@@ -52,6 +52,10 @@ export default {
       type: Object,
       required: true,
     },
+      loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   components: {
     HomeIcon,
@@ -85,6 +89,7 @@ export default {
       onImageError,
       fallbackImage,
       formattedPrice,
+      loading: props.loading
     };
   },
 };
