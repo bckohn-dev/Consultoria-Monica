@@ -79,6 +79,7 @@ export default {
           foto: fallbackImagem
         }];
       }
+      console.log('Resposta completa da API:', res.data);
     });
 
     return {
