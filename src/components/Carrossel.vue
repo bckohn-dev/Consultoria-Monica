@@ -44,23 +44,24 @@ export default {
 
         let imagens = [];
 
-        // Verifica se res.data é um array direto
+        // Tratar casos onde o backend retorna array de strings (urls) ou array de objetos
         if (Array.isArray(res.data)) {
           imagens = res.data;
-        }
-        // Ou se está dentro de um campo chamado 'imagens'
-        else if (Array.isArray(res.data.imagens)) {
+        } else if (Array.isArray(res.data.imagens)) {
           imagens = res.data.imagens;
         }
+        
+        // 🔍 Normalizar para objetos válidos com id/nome/foto
+        const destaquesNormalizados = imagens
+        .filter((item) => typeof item === 'string' && item.trim() !== '' && item.startsWith('https://'))
+        .map((url, i) => ({
+          id: `img-${i}`,
+          nome: `Destaque ${i + 1}`,
+          foto: url
+        }));
 
-        const imagensValidas = imagens.filter((url) => typeof url === 'string' && url.trim() !== '');
-
-        if (imagensValidas.length > 0) {
-          destaques.value = imagensValidas.slice(0, 3).map((url, i) => ({
-            id: `img-${i}`,
-            nome: `Destaque ${i + 1}`,
-            foto: url,
-          }));
+        if (destaquesNormalizados.length > 0) {
+          destaques.value = destaquesNormalizados;
         } else {
           console.warn("⚠ Nenhuma imagem válida — usando imagem padrão");
           destaques.value = [{
