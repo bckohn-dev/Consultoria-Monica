@@ -57,7 +57,7 @@ export default {
           typeof url === 'string' &&
           url.trim() !== '' &&
           url.startsWith('https://') &&
-          /\.(jpe?g|png|webp|gif)$/i.test(url) // só extensões válidas
+          /\.(jpe?g|png|webp|gif)(\?|$)/i.test(url)
         )
         .map((url, i) => ({
           id: `img-${i}`,
