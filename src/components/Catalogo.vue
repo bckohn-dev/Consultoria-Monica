@@ -17,6 +17,35 @@
           <option value="3">3+</option>
         </select>
       </div>
+
+      <!-- Garagem -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🚗</span>
+        <select
+          v-model="filtros.garagem"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @change="buscarImoveis"
+        >
+          <option value="">Garagem</option>
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
+      </div>
+
+      <!-- Suíte -->
+      <div class="relative w-full md:w-auto">
+        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛁</span>
+        <select
+          v-model="filtros.suite"
+          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          @change="buscarImoveis"
+        >
+          <option value="">Suíte</option>
+          <option value="true">Sim</option>
+          <option value="false">Não</option>
+        </select>
+      </div>
+
       <!-- Preço mín -->
       <div class="relative w-full md:w-auto">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
@@ -39,33 +68,7 @@
           @input="buscarImoveis"
         />
       </div>
-      <!-- Garagem -->
-      <div class="relative w-full md:w-auto">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🚗</span>
-        <select
-          v-model="filtros.garagem"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-          @change="buscarImoveis"
-        >
-          <option value="">Garagem?</option>
-          <option value="true">Sim</option>
-          <option value="false">Não</option>
-        </select>
-      </div>
 
-      <!-- Suíte -->
-      <div class="relative w-full md:w-auto">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛁</span>
-        <select
-          v-model="filtros.suite"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-          @change="buscarImoveis"
-        >
-          <option value="">Suíte?</option>
-          <option value="true">Sim</option>
-          <option value="false">Não</option>
-        </select>
-      </div>
       <!-- Reset Filter -->
       <button
         @click="resetarFiltros"
