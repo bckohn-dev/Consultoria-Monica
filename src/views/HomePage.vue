@@ -16,7 +16,7 @@
         </router-link>
       </section>
       <main class="flex-grow">
-        <section class="px-4 md:px-8 my-6 min-h-[300px]">
+        <section class="my-6 min-h-[300px]">
           <Carrossel />
         </section>
         <Catalogo class="mt-10" />

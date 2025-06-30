@@ -1,23 +1,29 @@
 <template>
-  <section class="container mx-auto my-16 pt-20">
-    <Swiper
-      :modules="[SwiperNavigation, SwiperPagination]"
-      :navigation="destaques.length > 1"
-      :pagination="destaques.length > 1"
-      :loop="destaques.length >= 3"
-      :slides-per-view="1"
-      :slides-per-group="1"
-      class="rounded-lg overflow-hidden"
-    >
-      <SwiperSlide v-for="item in destaques" :key="item.id">
-        <div class="relative">
-          <img :src="item.foto" :alt="item.nome" class="w-full h-[300px] sm:h-[500px] object-cover" />
-          <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-4 w-full">
-            <h3 class="text-2xl font-bold">{{ item.nome }}</h3>
+  <section class="w-full sm:w-full max-w-7xl mx-auto my-16 pt-20 px-4 sm:px-8">
+    <div class="mx-auto w-full max-w-[95%] sm:max-w-full">
+      <Swiper
+        :modules="[SwiperNavigation, SwiperPagination]"
+        :navigation="destaques.length > 1"
+        :pagination="destaques.length > 1"
+        :loop="destaques.length >= 3"
+        :slides-per-view="1"
+        :slides-per-group="1"
+        class="rounded-lg overflow-hidden"
+      >
+        <SwiperSlide v-for="item in destaques" :key="item.id">
+          <div class="relative h-[250px] w-full sm:h-auto sm:aspect-[16/6]">
+            <img
+              :src="item.foto"
+              :alt="item.nome"
+              class="w-full h-full object-cover object-center"
+            />
+            <div class="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white p-4 w-full">
+              <h3 class="text-2xl font-bold">{{ item.nome }}</h3>
+            </div>
           </div>
-        </div>
-      </SwiperSlide>
-    </Swiper>
+        </SwiperSlide>
+      </Swiper>
+    </div>
   </section>
 </template>
 
