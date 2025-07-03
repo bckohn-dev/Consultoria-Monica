@@ -4,8 +4,8 @@
     <!-- Content Div -->
     <div class="max-w-screen-md mx-auto px-4 py-8">
       <!-- Conteúdo principal -->
-      <section class="container mx-auto my-16 px-4 bg-white text-black py-12 rounded-md">
-        <h1 class="text-3xl font-bold text-center mb-6">Sobre Nós</h1>
+      <section class="container mx-auto my-16 px-4 bg-white text-mainblue py-12 rounded-md">
+        <h1 class="text-3xl font-bold text-center mb-6">Sobre</h1>
         
         <!-- Missão, Visão e Valores com layout em cards -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -36,7 +36,7 @@
         <hr><br>
         <!-- Nossos Serviços -->
         <div class="mb-12">
-          <h3 class="text-3xl font-bold text-mainblue text-center mb-8">Nossos Serviços</h3>
+          <h3 class="text-3xl font-bold text-mainblue text-center mb-8">Serviços</h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div class="bg-white border border-gold rounded-xl p-6 shadow-md flex flex-col items-center text-center">
               <img :src="compraIcon" alt="Compra e venda" class="w-12 h-12 mr-2" />
@@ -54,7 +54,7 @@
         <!-- Contato -->
         <hr><br>
         <div class="mb-12">
-          <h3 class="text-3xl font-bold text-mainblue text-center mb-8">Entre em Contato</h3>
+          <h3 class="text-3xl font-bold text-mainblue text-center mb-8">Contato</h3>
           <div class="bg-white border border-gold shadow-md rounded-xl p-6 text-center">
 
             <p class="text-gray-700 leading-relaxed mb-4">

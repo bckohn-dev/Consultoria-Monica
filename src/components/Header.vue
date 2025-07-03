@@ -5,7 +5,7 @@
       <div class="flex flex-col items-center gap-y-0.5 sm:flex-row sm:items-center sm:gap-x-2 text-center sm:text-left">
         <img :src="Logo" class="main__logo" alt="Logo MC" />
         <div class="sm:text-center sm:ml-2 leading-tight">
-          <div class="text-white font-semibold">MÔNICA</div>
+          <div class="text-white font-semibold">Mônica</div>
           <div class="text-white font-semibold">Consultoria</div>
         </div>
       </div>
