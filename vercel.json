@@ -18,7 +18,7 @@
       "dest": "/api/$1.js"
     },
     {
-      "src": "^$",
+      "src": "^(?!www).*",
       "headers": {
         "Location": "https://www.mcnimobiliaria.com.br"
       },
