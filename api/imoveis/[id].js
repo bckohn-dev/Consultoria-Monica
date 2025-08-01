@@ -1,6 +1,26 @@
+// api/imoveis/[id].js
+import Cors from 'cors';
+import initMiddleware from '../_initMiddleware';
 import { db } from '../_firebaseAdmin.js';
 
+const cors = initMiddleware(Cors({ origin: 'https://consultoria-monica.vercel.app' }));
+
 export default async function handler(req, res) {
+   // 1) Método
+  if (req.method !== 'GET') {
+    res.setHeader('Allow','GET');
+    return res.status(405).end('Method Not Allowed');
+  }
+
+  // 2) CORS
+  await cors(req, res);
+
+  // 3) Security headers (Helmet-like)
+  res.setHeader('X-Frame-Options','DENY');
+  res.setHeader('X-Content-Type-Options','nosniff');
+  res.setHeader('Referrer-Policy','no-referrer');
+  res.setHeader('Content-Security-Policy',"default-src 'self';");
+
   const { id } = req.query;
 
   if (!id) {
