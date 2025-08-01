@@ -17,10 +17,12 @@
       "src": "/api/(.*)",
       "dest": "/api/$1.js"
     },
-
     {
-      "src": "/(.*)",
-      "middlewarePath": "middleware"
+      "src": "^$",
+      "headers": {
+        "Location": "https://www.mcnimobiliaria.com.br"
+      },
+      "status": 308
     },
     {
       "src": "/(.*)",
