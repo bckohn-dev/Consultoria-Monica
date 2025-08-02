@@ -8,7 +8,7 @@
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛏️</span>
         <select
           v-model="filtros.quartos"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
           @change="buscarImoveis"
         >
           <option value="">Quartos</option>
@@ -23,7 +23,7 @@
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🚗</span>
         <select
           v-model="filtros.garagem"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
           @change="buscarImoveis"
         >
           <option value="">Garagem</option>
@@ -37,7 +37,7 @@
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛁</span>
         <select
           v-model="filtros.suite"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
           @change="buscarImoveis"
         >
           <option value="">Suíte</option>
@@ -168,5 +168,13 @@ export default {
   ring-color: #000080;
 }
 */
-/* Se você quiser customizar a cor do anel de foco, use Tailwind config ou uma classe utilitária */
+/* Ajustando texto dos filtros conforme tamanho da tela */
+@media (max-width: 1024px) {
+  .truncate-option option {
+    display: none;
+  }
+  .truncate-option option:first-child {
+    display: block;
+  }
+}
 </style>

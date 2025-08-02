@@ -146,7 +146,6 @@ export default {
   },
   methods: {
     alternarMenu() {
-      console.log('Menu clicado');
       this.menuAberto = !this.menuAberto;
     },
     abrirContato() {
