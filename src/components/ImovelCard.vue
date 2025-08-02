@@ -62,14 +62,12 @@ export default {
   },
   setup(props) {
     onMounted(() => {
-      console.log('[ImovelCard] Renderizado:', props.imovel?.id || 'sem ID');
     });
     // Fallback image in case the property image is not available
     const fallbackImage = '/default-placeholder.jpg';
     const router = useRouter();
 
     const verDetalhes = () => {
-      console.log('Ver detalhes do imóvel:', props.imovel.id);
       router.push(`/imovel/${props.imovel.id}`);
     };
 

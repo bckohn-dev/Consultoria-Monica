@@ -4,7 +4,6 @@ export default async function handler(req, res) {
   try {
     const bucket = storage.bucket();
     const [files] = await bucket.getFiles({ prefix: 'carrossel/' });
-    console.log('📦 Arquivos encontrados:', files.length);
 
     if (!files.length) {
       return res.status(200).json([]);

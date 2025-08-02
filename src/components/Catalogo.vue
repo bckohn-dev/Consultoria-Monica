@@ -106,7 +106,6 @@ export default {
     const filtros = ref({ quartos: '', precoMin: '', precoMax: '', garagem: '', suite: ''});
     const loading = ref(false);
     const error = ref(null);
-    // console.log("🔍 Parâmetros de busca:", params); // Removido pois 'params' não está definido neste escopo
 
     const mostrarDetalhes = (imovel) => {
       console.log('Imóvel selecionado:', imovel);
@@ -129,7 +128,6 @@ export default {
         if (filtros.value.garagem) params.garagem = filtros.value.garagem;
         if (filtros.value.suite) params.suite = filtros.value.suite;
 
-        console.log("🔍 Parâmetros de busca:", params);
 
         const response = await axios.get(`${API_BASE}/imoveis`, { params });
         imoveis.value = Array.isArray(response.data) ? response.data : [];

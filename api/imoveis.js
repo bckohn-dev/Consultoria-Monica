@@ -58,7 +58,6 @@ export default async function handler(req, res) {
       return true;
     });
 
-    console.log("📦 Imóveis após filtro:", resultado.length);
     return res.status(200).json(resultado);
 
   } catch (error) {

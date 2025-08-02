@@ -18,7 +18,6 @@ if (privateKey?.includes('\\n')) {
 }
 
 if (!getApps().length) {
-  console.log("🔐 Inicializando Firebase Admin...");
   app = initializeApp({
     credential: cert({
       projectId: FIREBASE_ADMIN_PROJECT_ID,
