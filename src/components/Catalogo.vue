@@ -169,12 +169,14 @@ export default {
 }
 */
 /* Ajustando texto dos filtros conforme tamanho da tela */
-@media (max-width: 1024px) {
-  .truncate-option option {
-    display: none;
+@media (max-width: 1300px) and (min-width: 768px) {
+  .truncate-option {
+    width: 3rem !important;
+    text-indent: -9999px;
   }
-  .truncate-option option:first-child {
-    display: block;
+
+  .truncate-placeholder::placeholder {
+    color: transparent;
   }
 }
 </style>
