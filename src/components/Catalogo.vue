@@ -4,7 +4,7 @@
     <!-- Filtros -->
     <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6 mb-10 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
       <!-- Quartos -->
-      <div class="relative w-full md:w-auto">
+      <div class="relative w-full md:w-auto" title="Quartos">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛏️</span>
         <select
           v-model="filtros.quartos"
@@ -19,7 +19,7 @@
       </div>
 
       <!-- Garagem -->
-      <div class="relative w-full md:w-auto">
+      <div class="relative w-full md:w-auto" title="Garagem">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🚗</span>
         <select
           v-model="filtros.garagem"
@@ -33,21 +33,21 @@
       </div>
 
       <!-- Suíte -->
-      <div class="relative w-full md:w-auto">
+      <div class="relative w-full md:w-auto" title="Suítes">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛁</span>
         <select
           v-model="filtros.suite"
           class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
           @change="buscarImoveis"
         >
-          <option value="">Suíte</option>
+          <option value="">Suítes</option>
           <option value="true">Sim</option>
           <option value="false">Não</option>
         </select>
       </div>
 
       <!-- Preço mín -->
-      <div class="relative w-full md:w-auto">
+      <div class="relative w-full md:w-auto" title="preço mínimo">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
         <input
           v-model="filtros.precoMin"
@@ -58,7 +58,7 @@
         />
       </div>
       <!-- Preço máx -->
-      <div class="relative w-full md:w-auto">
+      <div class="relative w-full md:w-auto" title="preço máximo">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
         <input
           v-model="filtros.precoMax"
@@ -72,6 +72,7 @@
       <!-- Reset Filter -->
       <button
         @click="resetarFiltros"
+        title="Limpar filtros"
         class="text-sm font-semibold text-red-500 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md px-4 py-2 transition duration-200"
       >
         ❌ Limpar filtros
