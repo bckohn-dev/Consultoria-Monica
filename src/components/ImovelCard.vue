@@ -1,7 +1,8 @@
 <template>
   <div
-    class="border border-gold rounded-2xl p-4 pb-6 shadow-md bg-white hover:shadow-[0_8px_20px_-4px_rgba(31,35,76,0.2)] transition-shadow duration-300 flex flex-col justify-between h-[470px] mx-2 sm:mx-0"
+    class="border border-gold rounded-2xl p-4 pb-6 shadow-md bg-white hover:shadow-[0_8px_20px_-4px_rgba(31,35,76,0.2)] transition-shadow duration-300 flex flex-col h-[470px] mx-2 sm:mx-0"
   >
+    <!-- Imagem do imóvel -->
     <img
       :src="imovel.foto || fallbackImage"
       :alt="imovel.nome || 'Imagem do imóvel'"
@@ -10,6 +11,7 @@
       class="w-full h-[200px] object-cover rounded-xl mb-4 transition-transform duration-300 hover:scale-[1.02]"
     />
 
+    <!-- Conteúdo principal que cresce -->
     <div class="flex-grow space-y-2">
       <h3 class="text-2xl font-semibold text-mainblue">
         {{ imovel.nome || 'Sem nome' }}
@@ -19,7 +21,7 @@
       <p class="text-gray-700">Preço: {{ formattedPrice }}</p>
 
       <p class="text-gray-700 flex items-center">
-        <HomeIcon class="w-6 h-6 mr-2" />
+        <img src="../assets/icones/quartoIcon.png" alt="Quartos" class="w-6 h-6 mr-2" />
         Quartos: {{ typeof imovel.quartos === 'number' ? imovel.quartos : 'N/D' }}
       </p>
 
@@ -46,6 +48,7 @@
       </p>
     </div>
 
+    <!-- Botão fixo na base do card -->
     <button
       aria-label="Ver detalhes do imóvel"
       :disabled="loading"
@@ -57,9 +60,7 @@
   </div>
 </template>
 
-
 <script>
-import { HomeIcon } from '@heroicons/vue/24/outline';
 import { useRouter } from 'vue-router';
 import { computed, onMounted } from 'vue';
 
@@ -69,18 +70,12 @@ export default {
       type: Object,
       required: true,
     },
-      loading: {
+    loading: {
       type: Boolean,
       default: false,
     },
   },
-  components: {
-    HomeIcon,
-  },
   setup(props) {
-    onMounted(() => {
-    });
-    // Fallback image in case the property image is not available
     const fallbackImage = '/default-placeholder.jpg';
     const router = useRouter();
 
@@ -104,11 +99,11 @@ export default {
       onImageError,
       fallbackImage,
       formattedPrice,
-      loading: props.loading
+      loading: props.loading,
     };
   },
 };
 </script>
 
-<style>
+<style scoped>
 </style>
