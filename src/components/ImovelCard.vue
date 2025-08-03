@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border border-gold rounded-2xl p-4 pb-6 shadow-md bg-white hover:shadow-[0_8px_20px_-4px_rgba(31,35,76,0.2)] transition-shadow duration-300 flex flex-col h-[470px] mx-2 sm:mx-0"
+    class="border border-gold rounded-2xl p-4 shadow-md bg-white hover:shadow-[0_8px_20px_-4px_rgba(31,35,76,0.2)] transition-shadow duration-300 flex flex-col mx-2 sm:mx-0 h-full"
   >
     <!-- Imagem do imóvel -->
     <img
@@ -12,7 +12,7 @@
     />
 
     <!-- Conteúdo principal que cresce -->
-    <div class="flex-grow space-y-2">
+    <div class="space-y-2">
       <h3 class="text-2xl font-semibold text-mainblue">
         {{ imovel.nome || 'Sem nome' }}
       </h3>
@@ -53,7 +53,7 @@
       aria-label="Ver detalhes do imóvel"
       :disabled="loading"
       @click="verDetalhes"
-      class="mt-4 bg-mainblue text-white px-4 py-2 h-11 rounded-md font-medium transform hover:scale-105 hover:bg-gold hover:text-mainblue hover:shadow-lg transition-all duration-300 disabled:opacity-50"
+      class="mt-auto bg-mainblue text-white px-4 py-2 h-11 rounded-md font-medium transform hover:scale-105 hover:bg-gold hover:text-mainblue hover:shadow-lg transition-all duration-300 disabled:opacity-50"
     >
       {{ loading ? 'Carregando...' : 'Ver Detalhes' }}
     </button>
