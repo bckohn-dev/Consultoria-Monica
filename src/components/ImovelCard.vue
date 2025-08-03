@@ -12,7 +12,7 @@
     />
 
     <!-- Conteúdo principal que cresce -->
-    <div class="space-y-2">
+    <div class="space-y-2 pb-4">
       <h3 class="text-2xl font-semibold text-mainblue">
         {{ imovel.nome || 'Sem nome' }}
       </h3>
