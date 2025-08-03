@@ -36,12 +36,12 @@
       </p>
 
       <p class="text-gray-700 flex items-center">
-        <img src="../assets/icones/garagemIcon.png" alt="Garagem" class="w-5 h-5 mr-2" />
+        <img src="../assets/icones/garagemIcon.png" alt="Garagem" class="w-8 h-8 mr-2" />
         Garagem: {{ imovel.garagem ? 'Sim' : 'Não' }}
       </p>
 
       <p class="text-gray-700 flex items-center">
-        <img src="../assets/icones/suiteIcon.png" alt="Suíte" class="w-5 h-5 mr-2" />
+        <img src="../assets/icones/suiteIcon.png" alt="Suíte" class="w-11 h-11 mr-2" />
         Suítes: {{ imovel.suite ? 'Sim' : 'Não' }}
       </p>
     </div>
