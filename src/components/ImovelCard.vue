@@ -42,7 +42,7 @@
         Garagem: {{ imovel.garagem ? 'Sim' : 'Não' }}
       </p>
 
-      <p class="text-gray-700 flex items-center">
+      <p class="text-gray-700 flex items-center mb-4">
         <img src="../assets/icones/suiteIcon.png" alt="Suíte" class="w-6 h-6 mr-2" />
         Suítes: {{ imovel.suite ? 'Sim' : 'Não' }}
       </p>
