@@ -19,12 +19,12 @@
       <p class="text-gray-700">Preço: {{ formattedPrice }}</p>
 
       <p class="text-gray-700 flex items-center">
-        <HomeIcon class="w-5 h-5 mr-2" />
+        <HomeIcon class="w-6 h-6 mr-2" />
         Quartos: {{ typeof imovel.quartos === 'number' ? imovel.quartos : 'N/D' }}
       </p>
 
       <p class="text-gray-700 flex items-center">
-        <img src="../assets/icones/areaIcon.png" alt="Área" class="w-5 h-5 mr-2" />
+        <img src="../assets/icones/areaIcon.png" alt="Área" class="w-6 h-6 mr-2" />
         <span>
           <template v-if="imovel.areaMin !== undefined && imovel.areaMax !== undefined">
             {{ imovel.areaMin }} a {{ imovel.areaMax }}m²
@@ -36,12 +36,12 @@
       </p>
 
       <p class="text-gray-700 flex items-center">
-        <img src="../assets/icones/garagemIcon.png" alt="Garagem" class="w-8 h-8 mr-2" />
+        <img src="../assets/icones/garagemIcon.png" alt="Garagem" class="w-6 h-6 mr-2" />
         Garagem: {{ imovel.garagem ? 'Sim' : 'Não' }}
       </p>
 
       <p class="text-gray-700 flex items-center">
-        <img src="../assets/icones/suiteIcon.png" alt="Suíte" class="w-11 h-11 mr-2" />
+        <img src="../assets/icones/suiteIcon.png" alt="Suíte" class="w-6 h-6 mr-2" />
         Suítes: {{ imovel.suite ? 'Sim' : 'Não' }}
       </p>
     </div>
