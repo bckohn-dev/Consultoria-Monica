@@ -5,17 +5,24 @@
     <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6 mb-10 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
       <!-- Quartos -->
       <div class="relative w-full md:w-auto" title="Quartos">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛏️</span>
-        <select
-          v-model="filtros.quartos"
-          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-          @change="buscarImoveis"
+        <label
+          for="quartos"
+          class="flex items-center pl-3 pr-2 py-2 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200"
         >
-          <option value="">Quartos</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3+</option>
-        </select>
+          <span class="text-gray-500">🛏️</span>
+          <span class="ml-2 truncate">Quartos</span>
+          <select
+            id="quartos"
+            v-model="filtros.quartos"
+            class="absolute inset-0 opacity-0 cursor-pointer"
+            @change="buscarImoveis"
+          >
+            <option value="">Quartos</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3+</option>
+          </select>
+        </label>
       </div>
 
       <!-- Garagem -->
