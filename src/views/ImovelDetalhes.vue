@@ -10,7 +10,10 @@
           <img :src="imovel.foto || fallback" alt="Foto do imóvel" class="w-full h-[350px] object-cover" />
           <div class="p-6 sm:p-8">
             <h1 class="text-3xl font-bold text-mainblue mb-2">{{ imovel.nome }}</h1>
-            <p class="text-lg text-gray-600 mb-4">{{ imovel.prazoEntrega ? 'Entrega prevista: ' + imovel.prazoEntrega : '' }}</p>
+            <div v-if="imovel.prazoEntrega" class="inline-block bg-mainblue text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
+              Entrega prevista: {{ imovel.prazoEntrega }}
+            </div>
+            <p v-if="imovel.descricao" class="text-gray-600 text-base mb-6">{{ imovel.descricao }}</p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-base">
               <div><span class="font-semibold">Preço:</span> {{ formatPrice(imovel.preco) }}</div>
