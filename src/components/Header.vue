@@ -105,7 +105,7 @@
               </svg>
 
               <strong>WhatsApp:</strong>
-              <span>(11) 99413-7942</span>
+              <span>(11) 94541-3470</span>
             </a>
           </li>
         </ul>
