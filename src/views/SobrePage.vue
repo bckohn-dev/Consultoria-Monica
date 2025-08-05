@@ -63,7 +63,7 @@
             </p>
             <ul class="text-lg leading-loose text-mainblue">
               <li>📧 <strong>Email:</strong> <a href="mailto:contato@consultoriaimobiliaria.com" class="underline hover:text-gold">contato@consultoriaimobiliaria.com</a></li>
-              <li>📞 <strong>Telefone:</strong> <a href="tel:+551112345678" class="underline hover:text-gold">(11) 1234-5678</a></li>
+              <li>📞 <strong>Telefone:</strong> <a href="tel: (11) 94541-3470" class="underline hover:text-gold">(11) 1234-5678</a></li>
             </ul>
           </div>
         </div>

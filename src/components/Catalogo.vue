@@ -3,12 +3,20 @@
     <h2 class="text-3xl font-bold text-mainblue mb-8 text-center">Busque seu imóvel</h2>
     <!-- Filtros -->
     <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6 mb-10 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-      <!-- Quartos -->
-      <div class="relative w-full md:w-auto" title="Quartos">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛏️</span>
+    <!-- Quartos -->
+    <div class="relative w-full md:w-auto" title="Quartos">
+      <label
+        for="quartos"
+        class="flex items-center h-[50px] pl-3 pr-3 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200 text-base"
+      >
+        <span class="text-gray-500">🛏️</span>
+        <span class="ml-2 truncate">
+          {{ filtros.quartos || 'Quartos' }}
+        </span>
         <select
+          id="quartos"
           v-model="filtros.quartos"
-          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          class="absolute inset-0 opacity-0 cursor-pointer"
           @change="buscarImoveis"
         >
           <option value="">Quartos</option>
@@ -16,68 +24,90 @@
           <option value="2">2</option>
           <option value="3">3+</option>
         </select>
-      </div>
+      </label>
+    </div>
 
-      <!-- Garagem -->
-      <div class="relative w-full md:w-auto" title="Garagem">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🚗</span>
+    <!-- Garagem -->
+    <div class="relative w-full md:w-auto" title="Garagem">
+      <label
+        for="garagem"
+        class="flex items-center h-[50px] pl-3 pr-3 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200 text-base"
+      >
+        <span class="text-gray-500">🚗</span>
+        <span class="ml-2 truncate">
+          {{ filtros.garagem === 'true' ? 'Sim' : filtros.garagem === 'false' ? 'Não' : 'Garagem' }}
+        </span>
         <select
+          id="garagem"
           v-model="filtros.garagem"
-          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          class="absolute inset-0 opacity-0 cursor-pointer"
           @change="buscarImoveis"
         >
           <option value="">Garagem</option>
           <option value="true">Sim</option>
           <option value="false">Não</option>
         </select>
-      </div>
+      </label>
+    </div>
 
-      <!-- Suíte -->
-      <div class="relative w-full md:w-auto" title="Suítes">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🛁</span>
+    <!-- Suíte -->
+    <div class="relative w-full md:w-auto" title="Suíte">
+      <label
+        for="suite"
+        class="flex items-center h-[50px] pl-3 pr-3 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200 text-base"
+      >
+        <span class="text-gray-500">🛁</span>
+        <span class="ml-2 truncate">
+          {{ filtros.suite === 'true' ? 'Sim' : filtros.suite === 'false' ? 'Não' : 'Suítes' }}
+        </span>
         <select
+          id="suite"
           v-model="filtros.suite"
-          class="truncate-option pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+          class="absolute inset-0 opacity-0 cursor-pointer"
           @change="buscarImoveis"
         >
           <option value="">Suítes</option>
           <option value="true">Sim</option>
           <option value="false">Não</option>
         </select>
-      </div>
-
-      <!-- Preço mín -->
-      <div class="relative w-full md:w-auto" title="preço mínimo">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
-        <input
-          v-model="filtros.precoMin"
-          type="number"
-          placeholder="Preço mín. (R$)"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-          @input="buscarImoveis"
-        />
-      </div>
-      <!-- Preço máx -->
-      <div class="relative w-full md:w-auto" title="preço máximo">
-        <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
-        <input
-          v-model="filtros.precoMax"
-          type="number"
-          placeholder="Preço máx. (R$)"
-          class="pl-10 border border-puregold p-3 rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-          @input="buscarImoveis"
-        />
-      </div>
-
-      <!-- Reset Filter -->
-      <button
-        @click="resetarFiltros"
-        title="Limpar filtros"
-        class="text-sm font-semibold text-red-500 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md px-4 py-2 transition duration-200"
-      >
-        ❌ Limpar filtros
-      </button>
+      </label>
     </div>
+
+    <!-- Preço mín -->
+    <div class="relative w-full md:w-auto" title="preço mínimo">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
+      <input
+        v-model="filtros.precoMin"
+        type="number"
+        placeholder="Preço mín. (R$)"
+        class="pl-10 border border-puregold h-[50px] text-base rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+        @input="buscarImoveis"
+      />
+    </div>
+
+
+    <!-- Preço máx -->
+    <div class="relative w-full md:w-auto" title="preço máximo">
+      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
+      <input
+        v-model="filtros.precoMax"
+        type="number"
+        placeholder="Preço máx. (R$)"
+        class="pl-10 border border-puregold h-[50px] text-base rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
+        @input="buscarImoveis"
+      />
+    </div>
+
+    <!-- Reset Filter -->
+    <button
+      @click="resetarFiltros"
+      title="Limpar filtros"
+      class="flex items-center h-[50px] text-base font-semibold text-red-500 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md px-4 transition duration-200"
+    >
+      ❌ Limpar filtros
+    </button>
+
+  </div>
     <!-- Lista de Imóveis -->
     <div v-if="loading" class="text-center text-gray-600">Carregando...</div>
     <div v-else-if="error" class="text-center text-red-600">{{ error }}</div>

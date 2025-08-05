@@ -1,24 +1,36 @@
 <template>
-  <div class="min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col bg-gray-50">
     <Header />
     <main class="flex-grow">
-      <section class="container mx-auto py-10">
-        <div v-if="loading" class="text-center">Carregando detalhes...</div>
+      <section class="container mx-auto py-10 px-4">
+        <div v-if="loading" class="text-center text-gray-600">Carregando detalhes...</div>
         <div v-else-if="erro" class="text-center text-red-600">{{ erro }}</div>
-        <div v-else-if="!imovel" class="text-center">Imóvel não encontrado.</div>
-        <div v-else class="max-w-4xl mx-auto bg-white shadow-md p-6 rounded-lg">
-          <img :src="imovel.foto || fallback" alt="Foto" class="w-full h-[300px] object-cover rounded mb-4" />
-          <h1 class="text-3xl font-bold text-mainblue mb-2">{{ imovel.nome }}</h1>
-          <p><strong>Preço:</strong> {{ formatPrice(imovel.preco) }}</p>
-          <p><strong>Quartos:</strong> {{ imovel.quartos }}</p>
-          <p><strong>Área:</strong> {{ imovel.area }}m²</p>
+        <div v-else-if="!imovel" class="text-center text-gray-600">Imóvel não encontrado.</div>
+        <div v-else class="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden">
+          <img :src="imovel.foto || fallback" alt="Foto do imóvel" class="w-full h-[350px] object-cover" />
+          <div class="p-6 sm:p-8">
+            <h1 class="text-3xl font-bold text-mainblue mb-2">{{ imovel.nome }}</h1>
+            <div v-if="imovel.prazoEntrega" class="inline-block bg-mainblue text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
+              Entrega prevista: {{ imovel.prazoEntrega }}
+            </div>
+            <p v-if="imovel.descricao" class="text-gray-600 text-base mb-6">{{ imovel.descricao }}</p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-base">
+              <div><span class="font-semibold">Preço:</span> {{ formatPrice(imovel.preco) }}</div>
+              <div><span class="font-semibold">Quartos:</span> {{ imovel.quartos }}</div>
+              <div><span class="font-semibold">Área:</span> {{ imovel.areaMin }}m² - {{ imovel.areaMax }}m²</div>
+              <div>
+                <span class="font-semibold">Vaga de Garagem:</span>
+                {{ imovel.vagaGaragem > 0 ? imovel.vagaGaragem : 'Sem vaga' }}
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
     <Footer />
   </div>
 </template>
-
 
 <script>
 import Footer from '../components/Footer.vue';

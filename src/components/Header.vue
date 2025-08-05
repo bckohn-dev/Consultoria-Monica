@@ -95,7 +95,7 @@
           </li>
           <li class="flex items-center gap-2 mt-2">
             <a
-              href="https://wa.me/5511994137942"
+              href="https://wa.me/5511945413470"
               target="_blank"
               class="flex items-center gap-2 text-green-600 hover:text-green-700 transition"
             >
