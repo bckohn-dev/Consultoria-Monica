@@ -90,7 +90,12 @@
             <Mail class="w-5 h-5 text-gray-600" />
             <div>
               <strong>Email:</strong>
-              <span class="ml-1">monicanogueiravendas@gmail.com</span>
+              <button 
+                @click="copiarEmail('monicanogueiravendas@gmail.com')" 
+                class="ml-1 text-mainblue underline hover:text-gold transition"
+              >
+                monicanogueiravendas@gmail.com
+              </button>
             </div>
           </li>
           <li class="flex items-center gap-2 mt-2">
@@ -105,7 +110,7 @@
               </svg>
 
               <strong>WhatsApp:</strong>
-              <span>(11) 99413-7942</span>
+              <span>(11) 94541-3470</span>
             </a>
           </li>
         </ul>
@@ -153,6 +158,15 @@ export default {
     },
     fecharContato() {
       this.mostrarContato = false;
+    },
+    copiarEmail(email) {
+      navigator.clipboard.writeText(email)
+        .then(() => {
+          alert('E-mail copiado!');
+        })
+        .catch(err => {
+          console.error('Erro ao copiar e-mail:', err);
+        });
     }
   },
   watch: {

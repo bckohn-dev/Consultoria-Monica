@@ -4,7 +4,7 @@
     <!-- Content Div -->
     <div class="max-w-screen-md mx-auto px-4 py-8">
       <!-- Conteúdo principal -->
-      <section class="container mx-auto my-16 px-4 bg-white text-mainblue py-12 rounded-md">
+      <section class="container mx-auto pt-10 sm:pt-16 px-4 bg-white text-mainblue py-12 rounded-md">
         <h1 class="text-3xl font-bold text-center mb-6">Sobre</h1>
         
         <!-- Missão, Visão e Valores com layout em cards -->
@@ -62,8 +62,8 @@
               Fale conosco pelos canais abaixo:
             </p>
             <ul class="text-lg leading-loose text-mainblue">
-              <li>📧 <strong>Email:</strong> <a href="mailto:contato@consultoriaimobiliaria.com" class="underline hover:text-gold">contato@consultoriaimobiliaria.com</a></li>
-              <li>📞 <strong>Telefone:</strong> <a href="tel: (11) 94541-3470" class="underline hover:text-gold">(11) 1234-5678</a></li>
+              <li>📧 <strong>Email:</strong> <a href="mailto:contato@consultoriaimobiliaria.com" class="underline hover:text-gold break-words truncate inline-block max-w-full">monicanogueiravendas@gmail.com</a></li>
+              <li>📞 <strong>Telefone:</strong> <a href="tel: (11) 94541-3470" class="underline hover:text-gold">(11) 94541-3470</a></li>
             </ul>
           </div>
         </div>
