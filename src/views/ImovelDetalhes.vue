@@ -18,7 +18,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-base">
               <div><span class="font-semibold">Preço:</span> {{ formatPrice(imovel.preco) }}</div>
               <div><span class="font-semibold">Quartos:</span> {{ imovel.quartos }}</div>
-              <div><span class="font-semibold">Área:</span> {{ imovel.areaMin }}m² - {{ imovel.areaMax }}m²</div>
+              <div><span class="font-semibold">Área:</span> {{ areaTratada }}</div>
               <div>
                 <span class="font-semibold">Vaga de Garagem:</span>
                 {{ imovel.vagaGaragem > 0 ? imovel.vagaGaragem : 'Sem vaga' }}
@@ -38,6 +38,7 @@ import Header from '../components/Header.vue';
 import axios from 'axios';
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 export default {
   components: { Footer, Header },
@@ -47,6 +48,15 @@ export default {
     const erro = ref(null);
     const loading = ref(true);
     const fallback = '/default-placeholder.jpg';
+
+    const areaTratada = computed(() => {
+      if (imovel.value?.areaMin !== undefined && imovel.value?.areaMax !== undefined) {
+        const min = imovel.value.areaMin;
+        const max = imovel.value.areaMax;
+        return min === max ? `${min} m²` : `${min} a ${max} m²`;
+      }
+      return 'Área N/D';
+    });
 
     onMounted(async () => {
       try {
@@ -63,7 +73,7 @@ export default {
     const formatPrice = (valor) =>
       typeof valor === 'number' ? valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'N/D';
 
-    return { imovel, erro, loading, fallback, formatPrice };
+    return { imovel, erro, loading, fallback, formatPrice, areaTratada };
   }
 };
 </script>

@@ -27,14 +27,7 @@
 
       <p class="text-gray-700 flex items-center">
         <img src="../assets/icones/areaIcon.png" alt="Área" class="w-6 h-6 mr-2" />
-        <span>
-          <template v-if="imovel.areaMin !== undefined && imovel.areaMax !== undefined">
-            {{ imovel.areaMin }} a {{ imovel.areaMax }}m²
-          </template>
-          <template v-else>
-            Área N/D
-          </template>
-        </span>
+        <span>{{ areaTratada }}</span>
       </p>
 
       <p class="text-gray-700 flex items-center">
@@ -62,7 +55,7 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 
 export default {
   props: {
@@ -94,11 +87,22 @@ export default {
         : 'Não informado';
     });
 
+    const areaTratada = computed(() => {
+      const { areaMin, areaMax } = props.imovel;
+      if (typeof areaMin === 'number' && typeof areaMax === 'number') {
+        return areaMin === areaMax
+          ? `${areaMin} m²`
+          : `${areaMin} a ${areaMax} m²`;
+      }
+      return 'Área N/D';
+    });
+
     return {
       verDetalhes,
       onImageError,
       fallbackImage,
       formattedPrice,
+      areaTratada,
       loading: props.loading,
     };
   },
