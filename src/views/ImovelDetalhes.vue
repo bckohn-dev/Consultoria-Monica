@@ -21,7 +21,7 @@
               <div><span class="font-semibold">Área:</span> {{ areaTratada }}</div>
               <div>
                 <span class="font-semibold">Vaga de Garagem:</span>
-                {{ imovel.vagaGaragem > 0 ? imovel.vagaGaragem : 'Sem vaga' }}
+                {{ imovel.vagaGaragem > 0 ? 'Sim' : 'Sem vaga' }}
               </div>
             </div>
           </div>

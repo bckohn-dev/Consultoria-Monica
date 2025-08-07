@@ -32,7 +32,7 @@
 
       <p class="text-gray-700 flex items-center">
         <img src="../assets/icones/garagemIcon.png" alt="Garagem" class="w-6 h-6 mr-2" />
-        Garagem: {{ imovel.garagem ? 'Sim' : 'Não' }}
+        Garagem: {{ imovel.vagaGaragem ? 'Sim' : 'Não' }}
       </p>
 
       <p class="text-gray-700 flex items-center">
