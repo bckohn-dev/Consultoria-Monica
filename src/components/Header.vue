@@ -92,7 +92,7 @@
               <strong>Email:</strong>
               <button 
                 @click="copiarEmail('monicanogueiravendas@gmail.com')" 
-                class="ml-1 text-mainblue underline hover:text-gold transition"
+                class="ml-1 text-mainblue underline hover:text-gold transition leading-loose"
               >
                 monicanogueiravendas@gmail.com
               </button>
