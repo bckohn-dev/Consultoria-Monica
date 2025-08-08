@@ -1,10 +1,14 @@
 import { db } from '../_firebaseAdmin.js';
 
 export default async function handler(req, res) {
-  const {
-    query: { id }
-  } = req;
-  console.log('ID recebido pela rota dinâmica:', id); // 👈 adicione isso
+  const { url = '' } = req;
+
+  // 🧠 Extrai o ID da URL da requisição
+  const matches = url.match(/\/api\/imoveis\/([^/?]+)/);
+  const id = matches?.[1];
+
+  console.log('ID extraído:', id);
+
   if (!id) {
     return res.status(400).json({ error: 'ID do imóvel não fornecido.' });
   }
