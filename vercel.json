@@ -6,6 +6,10 @@
   "framework": "vite",
   "routes": [
     {
+      "src": "/api/imoveis/([^/]+)$",
+      "dest": "/api/imoveis/[id].js"
+    },
+    {
       "handle": "filesystem"
     },
     {
