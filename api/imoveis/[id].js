@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   const {
     query: { id }
   } = req;
-
+  console.log('ID recebido pela rota dinâmica:', id); // 👈 adicione isso
   if (!id) {
     return res.status(400).json({ error: 'ID do imóvel não fornecido.' });
   }
