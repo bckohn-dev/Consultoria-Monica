@@ -3,5 +3,18 @@
   "buildCommand": "npm run build",
   "devCommand": "vite",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "framework": "vite",
+  "routes": [
+    {
+      "src": "/api/imoveis/([^/]+)$",
+      "dest": "/api/imoveis/[id].js"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
