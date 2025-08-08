@@ -3,5 +3,11 @@
   "buildCommand": "npm run build",
   "devCommand": "vite",
   "outputDirectory": "dist",
-  "framework": "vite"
+  "framework": "vite",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }
