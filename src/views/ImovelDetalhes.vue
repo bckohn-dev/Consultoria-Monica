@@ -9,7 +9,6 @@
         <div v-else class="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden">
           <!-- Galeria de imagens -->
           <div class="bg-black/5">
-            <!-- Imagem principal -->
             <div class="relative w-full h-[350px] sm:h-[420px] overflow-hidden">
               <img
                 :src="images[activeIndex]"
@@ -47,6 +46,7 @@
               </button>
             </div>
           </div>
+
           <div class="p-6 sm:p-8">
             <h1 class="text-3xl font-bold text-mainblue mb-2">{{ imovel.nome }}</h1>
             <div v-if="imovel.prazoEntrega" class="inline-block bg-mainblue text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">
@@ -76,7 +76,7 @@ import Footer from '../components/Footer.vue'
 import Header from '../components/Header.vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
-import { ref, onMounted, computed, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 const route = useRoute()
 const imovel = ref(null)
@@ -85,14 +85,33 @@ const loading = ref(true)
 const fallback = '/default-placeholder.jpg'
 const activeIndex = ref(0)
 
+// Capa + lista, sem duplicar, com fallback
 const images = computed(() => {
-  const lista = Array.isArray(imovel.value?.fotos) && imovel.value.fotos.length > 0
-    ? imovel.value.fotos
-    : (imovel.value?.foto ? [imovel.value.foto] : [])
-  return lista.length > 0 ? lista : [fallback]
+  const lista = []
+  if (imovel.value?.foto) lista.push(imovel.value.foto)
+  if (Array.isArray(imovel.value?.fotos)) lista.push(...imovel.value.fotos)
+  const unicas = Array.from(new Set(lista.filter(Boolean)))
+  return unicas.length > 0 ? unicas : [fallback]
 })
 
+// zera o índice quando o imóvel mudar
 watch(() => imovel.value?.id, () => { activeIndex.value = 0 })
+
+async function fetchImovel(id) {
+  loading.value = true
+  erro.value = null
+  try {
+    const res = await axios.get(`/api/imoveis/${id}`)
+    imovel.value = res.data
+  } catch (e) {
+    erro.value = 'Erro ao carregar imóvel'
+  } finally {
+    loading.value = false
+  }
+}
+
+// carrega na 1ª vez e quando o parâmetro mudar
+watch(() => route.params.id, (id) => { if (id) fetchImovel(id) }, { immediate: true })
 
 function onMainImageError(e) { e.target.src = fallback }
 function onThumbError(i) { return (e) => { if (images.value[i] !== fallback) e.target.src = fallback } }
@@ -104,18 +123,6 @@ const areaTratada = computed(() => {
     return min === max ? `${min} m²` : `${min} a ${max} m²`
   }
   return 'Área N/D'
-})
-
-onMounted(async () => {
-  try {
-    const { id } = route.params
-    const res = await axios.get(`/api/imoveis/${id}`)
-    imovel.value = res.data
-  } catch (err) {
-    erro.value = 'Erro ao carregar imóvel'
-  } finally {
-    loading.value = false
-  }
 })
 
 const formatPrice = (valor) =>
