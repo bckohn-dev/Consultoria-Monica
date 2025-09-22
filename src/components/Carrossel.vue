@@ -59,9 +59,9 @@ export default {
     const destaques = ref([])
     const loading = ref(true)
     const erro = ref('')
-    const API_BASE = '/api/destaques'   // ⇦ novo endpoint que retorna [{ id, nome, foto }]
-    const ROTA_BASE = '/imoveis'        // ⇦ ajuste se sua rota de detalhes for outra
-    const fallbackImagem = '/placeholder-carrossel.jpg' // coloque em /public
+    const API_BASE = '/api/destaques'
+    const ROTA_BASE = '/imovel'
+    const fallbackImagem = '/placeholder-carrossel.jpg'
 
     async function carregarDestaques() {
       try {
