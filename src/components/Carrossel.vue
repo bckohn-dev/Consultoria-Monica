@@ -29,28 +29,19 @@
               class="w-full h-full object-cover object-center"
             />
 
-            <!-- Título do imóvel (subiu para não colidir com a faixa VIBRA) -->
+            <!-- título do imóvel, elevado para não colidir com a faixa -->
             <div
               class="absolute inset-x-0 bottom-10 sm:bottom-12
-                    bg-gradient-to-t from-black/70 via-black/40 to-transparent
-                    text-white p-4 sm:p-6"
+                     bg-gradient-to-t from-black/70 via-black/40 to-transparent
+                     text-white p-4 sm:p-6"
             >
               <h3 class="text-xl sm:text-2xl font-bold drop-shadow">
                 {{ item.nome || 'Imóvel' }}
               </h3>
             </div>
 
-            <!-- Faixa VIBRA fixa no rodapé -->
-            <div
-              class="absolute inset-x-0 bottom-0 h-10 sm:h-12
-                    bg-[#FF7A22] border-t border-black/20
-                    flex items-center"
-              aria-hidden="true"
-            >
-              <span class="pl-4 text-white font-bold tracking-widest text-lg sm:text-xl">
-                VIBRA
-              </span>
-            </div>
+            <!-- faixa de marca -->
+            <FaixaMarca :marca="item.marca" />
           </div>
         </SwiperSlide>
       </Swiper>
@@ -66,11 +57,11 @@ import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-
-import { api } from '@/services/api' // <<< usar o cliente centralizado
+import { api } from '@/services/api'
+import FaixaMarca from '@/components/FaixaMarca.vue'
 
 export default {
-  components: { Swiper, SwiperSlide },
+  components: { Swiper, SwiperSlide, FaixaMarca },
   setup() {
     const router = useRouter()
     const destaques = ref([])
@@ -83,7 +74,6 @@ export default {
       loading.value = true
       erro.value = ''
       try {
-        // API /destaques já retorna [{ id, nome, foto }]
         const { data } = await api.get('/destaques')
         const lista = Array.isArray(data) ? data : (data?.destaques || [])
         const normalizados = (lista || [])
@@ -91,16 +81,16 @@ export default {
           .map(it => ({
             id: String(it.id),
             nome: it.nome ? String(it.nome) : `Imóvel ${it.id}`,
-            foto: String(it.foto)
+            foto: String(it.foto),
+            marca: (it.marca || '').toLowerCase()
           }))
-
         destaques.value = normalizados.length
           ? normalizados
-          : [{ id: 'fallback', nome: 'Destaque', foto: fallbackImagem }]
+          : [{ id: 'fallback', nome: 'Destaque', foto: fallbackImagem, marca: '' }]
       } catch (e) {
         console.error('Erro ao buscar destaques:', e)
         erro.value = 'Não foi possível carregar os destaques.'
-        destaques.value = [{ id: 'erro', nome: 'Erro ao carregar', foto: fallbackImagem }]
+        destaques.value = [{ id: 'erro', nome: 'Erro ao carregar', foto: fallbackImagem, marca: '' }]
       } finally {
         loading.value = false
       }
@@ -111,9 +101,7 @@ export default {
       router.push(`${ROTA_BASE}/${item.id}`)
     }
 
-    onMounted(() => {
-      carregarDestaques()
-    })
+    onMounted(carregarDestaques)
 
     return {
       SwiperNavigation: Navigation,
