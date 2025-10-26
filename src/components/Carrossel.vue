@@ -19,20 +19,18 @@
             class="relative h-[250px] w-full sm:h-auto sm:aspect-[16/6] cursor-pointer"
             @click="irParaImovel(item)"
             role="button"
-            :aria-label="`Ver detalhes de ${item.nome}`"
+            :aria-label="`Ver detalhes de ${item.nome || item.id}`"
             tabindex="0"
             @keyup.enter="irParaImovel(item)"
           >
             <img
               :src="item.foto"
-              :alt="item.nome"
+              :alt="`Imagem do imóvel ${item.nome || item.id}`"
               class="w-full h-full object-cover object-center"
             />
-
-            <!-- Faixa com o nome do imóvel -->
             <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent text-white p-4 sm:p-6">
               <h3 class="text-xl sm:text-2xl font-bold drop-shadow">
-                {{ item.nome }}
+                {{ item.nome || 'Imóvel' }}
               </h3>
             </div>
           </div>
@@ -43,14 +41,15 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import axios from 'axios'
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+
+import { api } from '@/services/api' // <<< usar o cliente centralizado
 
 export default {
   components: { Swiper, SwiperSlide },
@@ -59,23 +58,27 @@ export default {
     const destaques = ref([])
     const loading = ref(true)
     const erro = ref('')
-    const API_BASE = '/api/destaques'
     const ROTA_BASE = '/imovel'
     const fallbackImagem = '/placeholder-carrossel.jpg'
 
     async function carregarDestaques() {
+      loading.value = true
+      erro.value = ''
       try {
-        const res = await axios.get(API_BASE)
-        const dados = Array.isArray(res.data) ? res.data : (res.data?.destaques || [])
-        const normalizados = (dados || [])
-          .filter(it => it && it.id && it.nome && it.foto)
-          .map(it => ({ id: String(it.id), nome: String(it.nome), foto: String(it.foto) }))
+        // API /destaques já retorna [{ id, nome, foto }]
+        const { data } = await api.get('/destaques')
+        const lista = Array.isArray(data) ? data : (data?.destaques || [])
+        const normalizados = (lista || [])
+          .filter(it => it && it.id && it.foto)
+          .map(it => ({
+            id: String(it.id),
+            nome: it.nome ? String(it.nome) : `Imóvel ${it.id}`,
+            foto: String(it.foto)
+          }))
 
-        if (normalizados.length === 0) {
-          destaques.value = [{ id: 'fallback', nome: 'Destaque', foto: fallbackImagem }]
-        } else {
-          destaques.value = normalizados
-        }
+        destaques.value = normalizados.length
+          ? normalizados
+          : [{ id: 'fallback', nome: 'Destaque', foto: fallbackImagem }]
       } catch (e) {
         console.error('Erro ao buscar destaques:', e)
         erro.value = 'Não foi possível carregar os destaques.'
@@ -90,7 +93,9 @@ export default {
       router.push(`${ROTA_BASE}/${item.id}`)
     }
 
-    onMounted(carregarDestaques)
+    onMounted(() => {
+      carregarDestaques()
+    })
 
     return {
       SwiperNavigation: Navigation,
