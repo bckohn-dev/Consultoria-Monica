@@ -28,10 +28,28 @@
               :alt="`Imagem do imóvel ${item.nome || item.id}`"
               class="w-full h-full object-cover object-center"
             />
-            <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent text-white p-4 sm:p-6">
+
+            <!-- Título do imóvel (subiu para não colidir com a faixa VIBRA) -->
+            <div
+              class="absolute inset-x-0 bottom-10 sm:bottom-12
+                    bg-gradient-to-t from-black/70 via-black/40 to-transparent
+                    text-white p-4 sm:p-6"
+            >
               <h3 class="text-xl sm:text-2xl font-bold drop-shadow">
                 {{ item.nome || 'Imóvel' }}
               </h3>
+            </div>
+
+            <!-- Faixa VIBRA fixa no rodapé -->
+            <div
+              class="absolute inset-x-0 bottom-0 h-10 sm:h-12
+                    bg-[#FF7A22] border-t border-black/20
+                    flex items-center"
+              aria-hidden="true"
+            >
+              <span class="pl-4 text-white font-bold tracking-widest text-lg sm:text-xl">
+                VIBRA
+              </span>
             </div>
           </div>
         </SwiperSlide>
