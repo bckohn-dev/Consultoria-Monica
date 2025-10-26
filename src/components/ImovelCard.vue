@@ -2,14 +2,25 @@
   <div
     class="border border-gold rounded-2xl p-4 shadow-md bg-white hover:shadow-[0_8px_20px_-4px_rgba(31,35,76,0.2)] transition-shadow duration-300 flex flex-col mx-2 sm:mx-0 h-full"
   >
-    <!-- Imagem do imóvel -->
-    <img
-      :src="imovel.foto || fallbackImage"
-      :alt="imovel.nome || 'Imagem do imóvel'"
-      loading="lazy"
-      @error="onImageError"
-      class="w-full h-[200px] object-cover rounded-xl mb-4 transition-transform duration-300 hover:scale-[1.02]"
-    />
+    <!-- Wrapper da imagem (para sobrepor a faixa VIBRA) -->
+    <div class="relative rounded-xl overflow-hidden mb-4">
+      <img
+        :src="imovel.foto || fallbackImage"
+        :alt="imovel.nome ? `Imagem do imóvel ${imovel.nome}` : 'Imagem do imóvel'"
+        loading="lazy"
+        @error="onImageError"
+        class="w-full h-[200px] object-cover object-center transition-transform duration-300 hover:scale-[1.02]"
+      />
+      <!-- Faixa VIBRA fixa na base da imagem -->
+      <div
+        class="absolute inset-x-0 bottom-0 h-8 sm:h-9 bg-[#FF7A22] border-t border-black/20 flex items-center"
+        aria-hidden="true"
+      >
+        <span class="pl-3 sm:pl-4 text-white font-bold tracking-widest text-xs sm:text-sm">
+          VIBRA
+        </span>
+      </div>
+    </div>
 
     <!-- Conteúdo principal que cresce -->
     <div class="space-y-2 pb-4">
@@ -59,20 +70,15 @@ import { computed } from 'vue';
 
 export default {
   props: {
-    imovel: {
-      type: Object,
-      required: true,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+    imovel: { type: Object, required: true },
+    loading: { type: Boolean, default: false },
   },
   setup(props) {
     const fallbackImage = '/default-placeholder.jpg';
     const router = useRouter();
 
     const verDetalhes = () => {
+      if (!props.imovel?.id) return;
       router.push(`/imovel/${props.imovel.id}`);
     };
 
@@ -88,26 +94,14 @@ export default {
     });
 
     const areaTratada = computed(() => {
-      const { areaMin, areaMax } = props.imovel;
+      const { areaMin, areaMax } = props.imovel || {};
       if (typeof areaMin === 'number' && typeof areaMax === 'number') {
-        return areaMin === areaMax
-          ? `${areaMin} m²`
-          : `${areaMin} a ${areaMax} m²`;
+        return areaMin === areaMax ? `${areaMin} m²` : `${areaMin} a ${areaMax} m²`;
       }
       return 'Área N/D';
     });
 
-    return {
-      verDetalhes,
-      onImageError,
-      fallbackImage,
-      formattedPrice,
-      areaTratada,
-      loading: props.loading,
-    };
+    return { verDetalhes, onImageError, fallbackImage, formattedPrice, areaTratada, loading: props.loading };
   },
 };
 </script>
-
-<style scoped>
-</style>
