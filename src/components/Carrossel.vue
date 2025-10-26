@@ -49,7 +49,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 
-import { api } from '../services/api' // <<< usar o cliente centralizado
+import { api } from '@/services/api' // <<< usar o cliente centralizado
 
 export default {
   components: { Swiper, SwiperSlide },
