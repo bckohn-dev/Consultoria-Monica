@@ -29,11 +29,12 @@
               class="w-full h-full object-cover object-center"
             />
 
-            <!-- título do imóvel, elevado para não colidir com a faixa -->
+            <!-- título do imóvel, só sobe se houver faixa -->
             <div
-              class="absolute inset-x-0 bottom-10 sm:bottom-12
-                     bg-gradient-to-t from-black/70 via-black/40 to-transparent
-                     text-white p-4 sm:p-6"
+              class="absolute inset-x-0
+                    bg-gradient-to-t from-black/70 via-black/40 to-transparent
+                    text-white p-4 sm:p-6"
+              :class="item.marca ? 'bottom-10 sm:bottom-12' : 'bottom-0'"
             >
               <h3 class="text-xl sm:text-2xl font-bold drop-shadow">
                 {{ item.nome || 'Imóvel' }}
