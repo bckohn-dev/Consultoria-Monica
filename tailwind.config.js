@@ -10,6 +10,12 @@ export default {
         puregold: '#bfa14f',
         light: '#F4F4F4',
       },
+      fontFamily: {
+        brand: ['"Manrope"', 'system-ui', 'ui-sans-serif', 'sans-serif'],
+      },
+      letterSpacing: {
+        widebrand: '0.08em',
+      },
     },
   },
   plugins: [],
