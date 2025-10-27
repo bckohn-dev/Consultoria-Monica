@@ -2,16 +2,19 @@
   <div
     class="border border-gold rounded-2xl p-4 shadow-md bg-white hover:shadow-[0_8px_20px_-4px_rgba(31,35,76,0.2)] transition-shadow duration-300 flex flex-col mx-2 sm:mx-0 h-full"
   >
-    <!-- Imagem do imóvel -->
-    <img
-      :src="imovel.foto || fallbackImage"
-      :alt="imovel.nome || 'Imagem do imóvel'"
-      loading="lazy"
-      @error="onImageError"
-      class="w-full h-[200px] object-cover rounded-xl mb-4 transition-transform duration-300 hover:scale-[1.02]"
-    />
+    <!-- imagem com faixa de marca -->
+    <div class="relative rounded-xl overflow-hidden mb-4">
+      <img
+        :src="imovel.foto || fallbackImage"
+        :alt="imovel.nome ? `Imagem do imóvel ${imovel.nome}` : 'Imagem do imóvel'"
+        loading="lazy"
+        @error="onImageError"
+        class="w-full h-[200px] object-cover object-center transition-transform duration-300 hover:scale-[1.02]"
+      />
+      <FaixaMarca :marca="imovel.marca" />
+    </div>
 
-    <!-- Conteúdo principal que cresce -->
+    <!-- conteúdo -->
     <div class="space-y-2 pb-4">
       <h3 class="text-2xl font-semibold text-mainblue">
         {{ imovel.nome || 'Sem nome' }}
@@ -41,7 +44,7 @@
       </p>
     </div>
 
-    <!-- Botão fixo na base do card -->
+    <!-- botão -->
     <button
       aria-label="Ver detalhes do imóvel"
       :disabled="loading"
@@ -54,60 +57,45 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
-import { computed } from 'vue';
+import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import FaixaMarca from '@/components/FaixaMarca.vue'
 
 export default {
+  components: { FaixaMarca },
   props: {
-    imovel: {
-      type: Object,
-      required: true,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+    imovel: { type: Object, required: true },
+    loading: { type: Boolean, default: false },
   },
   setup(props) {
-    const fallbackImage = '/default-placeholder.jpg';
-    const router = useRouter();
+    const fallbackImage = '/default-placeholder.jpg'
+    const router = useRouter()
 
     const verDetalhes = () => {
-      router.push(`/imovel/${props.imovel.id}`);
-    };
+      if (!props.imovel?.id) return
+      router.push(`/imovel/${props.imovel.id}`)
+    }
 
     const onImageError = (event) => {
-      event.target.src = fallbackImage;
-    };
+      event.target.src = fallbackImage
+    }
 
     const formattedPrice = computed(() => {
-      const price = props.imovel?.preco;
+      const price = props.imovel?.preco
       return typeof price === 'number' && !isNaN(price)
         ? price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-        : 'Não informado';
-    });
+        : 'Não informado'
+    })
 
     const areaTratada = computed(() => {
-      const { areaMin, areaMax } = props.imovel;
+      const { areaMin, areaMax } = props.imovel || {}
       if (typeof areaMin === 'number' && typeof areaMax === 'number') {
-        return areaMin === areaMax
-          ? `${areaMin} m²`
-          : `${areaMin} a ${areaMax} m²`;
+        return areaMin === areaMax ? `${areaMin} m²` : `${areaMin} a ${areaMax} m²`
       }
-      return 'Área N/D';
-    });
+      return 'Área N/D'
+    })
 
-    return {
-      verDetalhes,
-      onImageError,
-      fallbackImage,
-      formattedPrice,
-      areaTratada,
-      loading: props.loading,
-    };
+    return { verDetalhes, onImageError, fallbackImage, formattedPrice, areaTratada, loading: props.loading }
   },
-};
+}
 </script>
-
-<style scoped>
-</style>
