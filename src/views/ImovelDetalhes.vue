@@ -24,6 +24,10 @@
               >
                 {{ activeIndex + 1 }} / {{ images.length }}
               </div>
+              
+              <!-- FAIXA DE MARCA EMBAIXO DA FOTO -->
+              <FaixaMarca :marca="imovel?.marca" />
+
             </div>
 
             <!-- Miniaturas -->
@@ -72,6 +76,7 @@
 </template>
 
 <script setup>
+import FaixaMarca from '../components/FaixaMarca.vue'
 import Footer from '../components/Footer.vue'
 import Header from '../components/Header.vue'
 import axios from 'axios'
