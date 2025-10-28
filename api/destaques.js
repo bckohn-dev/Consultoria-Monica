@@ -36,10 +36,13 @@ export default async function handler(req, res) {
     const destaques = snap.docs
       .map((doc) => {
         const data = doc.data();
+        // normaliza marca (somente se existir; vazio = sem faixa no front)
+        const marcaRaw = (data.marca ?? '').toString().trim().toLowerCase();
         return {
-          id: data.id ?? doc.id,                  // seu slug público já usado pela rota de detalhes
+          id: data.id ?? doc.id, // slug público
           nome: data.nome ?? 'Imóvel',
           foto: data.foto ?? data.imagens?.[0] ?? null,
+          marca: marcaRaw || ''
         };
       })
       .filter((d) => d.foto); // só envia se tiver imagem

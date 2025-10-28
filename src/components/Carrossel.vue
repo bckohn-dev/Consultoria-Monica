@@ -29,11 +29,12 @@
               class="w-full h-full object-cover object-center"
             />
 
-            <!-- título do imóvel, elevado para não colidir com a faixa -->
+            <!-- Titulo imovel -->
             <div
-              class="absolute inset-x-0 bottom-10 sm:bottom-12
-                     bg-gradient-to-t from-black/70 via-black/40 to-transparent
-                     text-white p-4 sm:p-6"
+              class="absolute inset-x-0 bottom-0
+                    bg-gradient-to-t from-black/70 via-black/40 to-transparent
+                    text-white p-4 sm:p-6"
+              :class="item.marca ? 'pb-10 sm:pb-12' : ''"
             >
               <h3 class="text-xl sm:text-2xl font-bold drop-shadow">
                 {{ item.nome || 'Imóvel' }}
