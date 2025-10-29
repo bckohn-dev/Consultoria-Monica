@@ -59,7 +59,7 @@
             <p v-if="imovel.descricao" class="text-gray-600 text-base mb-6">{{ imovel.descricao }}</p>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-gray-700 text-base">
-              <div><span class="font-semibold">Preço:</span> {{ formatPrice(imovel.preco) }}</div>
+              <div><span class="font-semibold">Preços a partir de:</span> {{ formatPrice(imovel.preco) }}</div>
               <div><span class="font-semibold">Quartos:</span> {{ imovel.quartos }}</div>
               <div><span class="font-semibold">Área:</span> {{ areaTratada }}</div>
               <div>
