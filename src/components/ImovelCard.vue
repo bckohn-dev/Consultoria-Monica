@@ -21,7 +21,7 @@
       </h3>
       <hr class="my-2 border-gold" />
 
-      <p class="text-gray-700">Preço: {{ formattedPrice }}</p>
+      <p class="text-gray-700">A partir de: {{ formattedPrice }}</p>
 
       <p class="text-gray-700 flex items-center">
         <img src="../assets/icones/quartoIcon.png" alt="Quartos" class="w-6 h-6 mr-2" />
