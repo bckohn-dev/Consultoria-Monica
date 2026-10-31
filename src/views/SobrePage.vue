@@ -1,98 +1,37 @@
 <template>
-  <div>
+  <div class="site-page">
     <Header />
-    <!-- Content Div -->
-    <div class="max-w-screen-md mx-auto px-4 py-8">
-      <!-- Conteúdo principal -->
-      <section class="container mx-auto pt-10 sm:pt-16 px-4 bg-white text-mainblue py-12 rounded-md">
-        <h1 class="text-3xl font-bold text-center mb-6">Sobre</h1>
-        
-        <!-- Missão, Visão e Valores com layout em cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div class="bg-white shadow-lg rounded-xl p-6 border-t-4 border-gold text-center">
-            <h3 class="text-2xl font-semibold text-mainblue mb-2">🏆 Missão</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">
-              Conectar pessoas aos imóveis dos seus sonhos, com atendimento personalizado e soluções inovadoras.
-            </p>
-          </div>
-
-          <div class="bg-white shadow-lg rounded-xl p-6 border-t-4 border-gold text-center">
-            <h3 class="text-2xl font-semibold text-mainblue mb-2">🌟 Visão</h3>
-            <p class="text-gray-700 text-sm leading-relaxed">
-              Ser referência em consultoria imobiliária, reconhecida pela excelência e confiança dos clientes.
-            </p>
-          </div>
-
-          <div class="bg-white shadow-lg rounded-xl p-6 border-t-4 border-gold text-center">
-            <h3 class="text-2xl font-semibold text-mainblue mb-2">💡 Valores</h3>
-            <ul class="text-gray-700 text-sm space-y-1 text-left list-disc list-inside">
-              <li>Ética e transparência</li>
-              <li>Compromisso com o cliente</li>
-              <li>Inovação e qualidade</li>
-              <li>Respeito e responsabilidade social</li>
-            </ul>
-          </div>
-        </div>
-        <hr><br>
-        <!-- Nossos Serviços -->
-        <div class="mb-12">
-          <h3 class="text-3xl font-bold text-mainblue text-center mb-8">Serviços</h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div class="bg-white border border-gold rounded-xl p-6 shadow-md flex flex-col items-center text-center">
-              <img :src="compraIcon" alt="Compra e venda" class="w-12 h-12 mr-2" />
-              <h4 class="text-lg font-semibold text-mainblue mb-2">Compra e Venda</h4>
-              <p class="text-sm text-gray-700">Consultoria completa na compra e venda de imóveis residenciais e comerciais.</p>
-            </div>
-            <div class="bg-white border border-gold rounded-xl p-6 shadow-md flex flex-col items-center text-center">
-              <img :src="negociacaoIcon" alt="Avaliação de imóveis" class="w-12 h-12 mr-2" />
-              <h4 class="text-lg font-semibold text-mainblue mb-2">Intermediação</h4>
-              <p class="text-sm text-gray-700">Apoio em negociações seguras e transparentes entre as partes envolvidas.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Contato -->
-        <hr><br>
-        <div class="mb-12">
-          <h3 class="text-3xl font-bold text-mainblue text-center mb-8">Contato</h3>
-          <div class="bg-white border border-gold shadow-md rounded-xl p-6 text-center">
-
-            <p class="text-gray-700 leading-relaxed mb-4">
-              Estamos à disposição para ajudar você a encontrar o imóvel ideal.<br>
-              Fale conosco pelos canais abaixo:
-            </p>
-            <ul class="text-lg leading-loose text-mainblue">
-              <li>📧 <strong>Email:</strong> <a href="mailto:contato@consultoriaimobiliaria.com" class="underline hover:text-gold break-words truncate inline-block max-w-full">monicanogueiravendas@gmail.com</a></li>
-              <li>📞 <strong>Telefone:</strong> <a href="tel: (11) 94541-3470" class="underline hover:text-gold">(11) 94541-3470</a></li>
-            </ul>
-          </div>
-        </div>
-
-
+    <main id="conteudo" class="about-shell">
+      <section class="about-intro" aria-labelledby="about-title">
+        <div><p class="eyebrow">SOBRE A MÔNICA CONSULTORIA</p><h1 id="about-title">Imóveis conectam.<br /><em>Pessoas fazem a diferença.</em></h1></div>
+        <div class="about-intro-copy"><p>Encontrar um imóvel é escolher onde seus próximos capítulos vão acontecer. Por isso, nossa consultoria coloca seus planos no centro de cada conversa.</p><p>Atendimento personalizado, transparência e proximidade para ajudar você a encontrar o imóvel ideal.</p><a href="https://wa.me/5511945413470" target="_blank" rel="noopener noreferrer" class="about-text-link">Conheça nosso atendimento <ArrowUpRight :size="18" aria-hidden="true" /></a></div>
       </section>
-    </div>
-    
+      <section class="about-principles" aria-label="Missão, visão e valores">
+        <article><span class="principle-number">01 / PROPÓSITO</span><Target :size="26" aria-hidden="true" /><h2>Missão</h2><p>Conectar pessoas aos imóveis dos seus sonhos, com atendimento personalizado e soluções inovadoras.</p></article>
+        <article><span class="principle-number">02 / DIREÇÃO</span><Compass :size="26" aria-hidden="true" /><h2>Visão</h2><p>Ser referência em consultoria imobiliária, reconhecida pela excelência e confiança dos clientes.</p></article>
+        <article><span class="principle-number">03 / ESSÊNCIA</span><HeartHandshake :size="26" aria-hidden="true" /><h2>Valores</h2><ul><li>Ética e transparência</li><li>Compromisso com o cliente</li><li>Inovação e qualidade</li><li>Respeito e responsabilidade social</li></ul></article>
+      </section>
+      <section class="about-services" aria-labelledby="services-title">
+        <div class="about-section-heading"><p class="eyebrow">COMO PODEMOS AJUDAR</p><h2 id="services-title">Uma orientação próxima.<br />Em cada etapa da sua escolha.</h2><p>Conheça os serviços da nossa consultoria imobiliária.</p></div>
+        <div class="service-list">
+          <article><span class="service-icon"><House :size="25" aria-hidden="true" /></span><div><h3>Compra e venda</h3><p>Consultoria completa na compra e venda de imóveis residenciais e comerciais.</p></div></article>
+          <article><span class="service-icon"><Handshake :size="25" aria-hidden="true" /></span><div><h3>Intermediação</h3><p>Apoio em negociações seguras e transparentes entre as partes envolvidas.</p></div></article>
+        </div>
+      </section>
+      <section class="about-contact" aria-labelledby="about-contact-title">
+        <div><p class="eyebrow">O PRÓXIMO PASSO É UMA CONVERSA</p><h2 id="about-contact-title">Vamos falar sobre<br />os seus planos?</h2><p>Estamos à disposição para ajudar você a encontrar o imóvel ideal.</p></div>
+        <div class="about-contact-actions">
+          <a href="https://wa.me/5511945413470" target="_blank" rel="noopener noreferrer" class="button-primary">Conversar pelo WhatsApp <ArrowUpRight :size="18" aria-hidden="true" /></a>
+          <a href="mailto:monicanogueiravendas@gmail.com"><Mail :size="18" aria-hidden="true" /><span>monicanogueiravendas@gmail.com</span></a>
+          <a href="tel:+5511945413470"><Phone :size="18" aria-hidden="true" /><span>(11) 94541-3470</span></a>
+        </div>
+      </section>
+    </main>
     <Footer />
   </div>
 </template>
-
-<script>
-import Header from '../components/Header.vue';
-import Footer from '../components/Footer.vue';
-import compraIcon from '@/assets/icones/compra.png';
-import negociacaoIcon from '@/assets/icones/negociacao.png';
-
-export default {
-  name: 'SobrePage',
-  components: {
-    Header,
-    Footer,
-  },
-  data() {
-    return {
-      compraIcon,
-      negociacaoIcon,
-    };
-  },
-};
+<script setup>
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import { ArrowUpRight, Target, Compass, HeartHandshake, House, Handshake, Mail, Phone } from 'lucide-vue-next'
 </script>
