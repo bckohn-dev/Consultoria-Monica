@@ -1,60 +1,21 @@
 <template>
-  <section class="featured-carousel">
-    <div class="mx-auto w-full max-w-[95%] sm:max-w-full">
-      <div v-if="loading" class="text-center text-gray-600 py-8">Carregando destaques...</div>
-      <div v-else-if="erro" class="text-center text-red-600 py-8">{{ erro }}</div>
-
-      <Swiper
-        v-else
-        :modules="[SwiperNavigation, SwiperPagination]"
-        :navigation="destaques.length > 1"
-        :pagination="destaques.length > 1"
-        :loop="destaques.length >= 3"
-        :slides-per-view="1"
-        :slides-per-group="1"
-        class="rounded-lg overflow-hidden"
-      >
-        <SwiperSlide v-for="item in destaques" :key="item.id">
-          <div
-            class="relative h-[250px] w-full sm:h-auto sm:aspect-[16/6] cursor-pointer"
-            @click="irParaImovel(item)"
-            role="button"
-            :aria-label="`Ver detalhes de ${item.nome || item.id}`"
-            tabindex="0"
-            @keyup.enter="irParaImovel(item)"
-          >
-            <img
-              :src="item.foto"
-              :alt="`Imagem do imóvel ${item.nome || item.id}`"
-              class="w-full h-full object-cover object-center"
-            />
-
-            <!-- Titulo imovel -->
-            <div
-              class="absolute inset-x-0 bottom-0
-                    bg-gradient-to-t from-black/70 via-black/40 to-transparent
-                    text-white p-4 sm:p-6"
-              :class="item.marca ? 'pb-10 sm:pb-12' : ''"
-            >
-              <h3 class="text-xl sm:text-2xl font-bold drop-shadow">
-                {{ item.nome || 'Imóvel' }}
-              </h3>
-            </div>
-
-            <!-- faixa de marca -->
-            <FaixaMarca :marca="item.marca" />
-          </div>
-        </SwiperSlide>
-      </Swiper>
-    </div>
+  <section class="featured-carousel" aria-label="Imóveis em destaque">
+    <div v-if="loading" class="feature-state" role="status">Carregando destaques...</div>
+    <div v-else-if="erro" class="feature-state"><p>{{ erro }}</p><router-link to="/catalogo">Explorar o catálogo →</router-link></div>
+    <Swiper v-else :modules="[SwiperNavigation, SwiperPagination, SwiperA11y, SwiperKeyboard]" :keyboard="{ enabled: true, onlyInViewport: true }" :navigation="destaques.length > 1" :pagination="destaques.length > 1 ? { clickable: true } : false" :a11y="{ prevSlideMessage: 'Imóvel anterior', nextSlideMessage: 'Próximo imóvel', paginationBulletMessage: 'Ir para o destaque {{index}}' }" :loop="destaques.length >= 3" :slides-per-view="1">
+      <SwiperSlide v-for="item in destaques" :key="item.id">
+        <router-link :to="['fallback', 'erro'].includes(item.id) ? '/catalogo' : '/imovel/' + encodeURIComponent(item.id)" class="feature-image-link" :aria-label="'Ver detalhes de ' + item.nome">
+          <img :src="item.foto" :alt="'Imagem do imóvel ' + item.nome" width="900" height="700" />
+          <div class="feature-caption"><FaixaMarca :marca="item.marca" /><span class="feature-title">{{ item.nome }}</span><span class="feature-discover">Conhecer imóvel <span aria-hidden="true">↗</span></span></div>
+        </router-link>
+      </SwiperSlide>
+    </Swiper>
   </section>
 </template>
-
 <script>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Navigation, Pagination } from 'swiper/modules'
+import { Navigation, Pagination, A11y, Keyboard } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -64,11 +25,9 @@ import FaixaMarca from '@/components/FaixaMarca.vue'
 export default {
   components: { Swiper, SwiperSlide, FaixaMarca },
   setup() {
-    const router = useRouter()
     const destaques = ref([])
     const loading = ref(true)
     const erro = ref('')
-    const ROTA_BASE = '/imovel'
     const fallbackImagem = '/placeholder-carrossel.jpg'
 
     async function carregarDestaques() {
@@ -97,39 +56,17 @@ export default {
       }
     }
 
-    function irParaImovel(item) {
-      if (!item?.id || ['fallback', 'erro'].includes(item.id)) return
-      router.push(`${ROTA_BASE}/${item.id}`)
-    }
-
     onMounted(carregarDestaques)
 
     return {
       SwiperNavigation: Navigation,
+      SwiperA11y: A11y,
+      SwiperKeyboard: Keyboard,
       SwiperPagination: Pagination,
       destaques,
       loading,
-      erro,
-      irParaImovel
+      erro
     }
   }
 }
 </script>
-
-<style>
-.swiper-button-next,
-.swiper-button-prev {
-  color: #BDB76B; /* Dourado */
-  background: rgba(0, 0, 128, 0.5); /* Azul marinho transparente */
-  border-radius: 50%;
-  padding: 20px;
-  transition: background 0.3s ease;
-}
-.swiper-button-next:hover,
-.swiper-button-prev:hover {
-  background: rgba(0, 0, 128, 0.7);
-}
-.swiper-pagination-bullet-active {
-  background: #BDB76B;
-}
-</style>

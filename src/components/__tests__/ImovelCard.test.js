@@ -30,6 +30,7 @@ describe('ImovelCard.vue', () => {
     expect(getByText(/Quartos: 2/)).toBeTruthy();
     expect(getByText(/75 m²/)).toBeTruthy();
     expect(getByAltText('Apartamento Central')).toBeTruthy();
+    expect(getByAltText('Apartamento Central').closest('a').getAttribute('href')).toBe('/imovel/apto-001');
   });
 
   it('mostra imagem de fallback se houver erro na imagem', async () => {

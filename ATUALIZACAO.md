@@ -25,3 +25,13 @@
 - A API/Firebase real não foi validada nesta cópia. Vite sozinho não executa as funções da Vercel.
 - GitHub CLI informou token inválido. Nenhum push, PR ou deploy foi realizado.
 - Antes da publicação: conferir desktop e celular com API, galerias, contato e regras de acesso do Firebase/admin.
+
+## Refinamento visual solicitado por imagens
+- Cabeçalho com símbolo vetorial de casa, assinatura tipográfica e navegação mais leve.
+- Destaques sem moldura dupla, com setas discretas e título sobre gradiente.
+- Marcas em etiquetas compactas em vez de faixas coloridas.
+- Fotos dos cartões são links para os detalhes, com indicação visual em hover e foco.
+- Detalhes com galeria, miniaturas, características e painel de interesse.
+- Contato em diálogo nativo com foco contido, Escape e links diretos.
+- 22 testes passaram, incluindo galeria, interesse por WhatsApp e diálogo.
+- Preview permanece na branch preview/catalogo-design-2026-10; main preservada.

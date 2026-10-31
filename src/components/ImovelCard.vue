@@ -1,9 +1,10 @@
 <template>
   <article class="property-card">
-    <div class="property-photo">
+    <router-link :to="'/imovel/' + encodeURIComponent(imovel.id)" class="property-photo" :aria-label="'Ver fotos e detalhes de ' + (imovel.nome || 'imóvel')">
       <img :src="imovel.foto || fallbackImage" :alt="imovel.nome || 'Imagem do imóvel'" loading="lazy" width="600" height="400" @error="onImageError" />
       <FaixaMarca :marca="imovel.marca" />
-    </div>
+      <span class="photo-link-hint">Conhecer imóvel <ArrowUpRight :size="16" aria-hidden="true" /></span>
+    </router-link>
     <div class="property-content">
       <p class="eyebrow">ENCONTRE SEU LUGAR</p>
       <h3>{{ imovel.nome || 'Imóvel disponível' }}</h3>
