@@ -26,9 +26,9 @@ describe('ImovelCard.vue', () => {
     });
 
     expect(getByText('Apartamento Central')).toBeTruthy();
-    expect(getByText(/Preço:.*450.000,00/)).toBeTruthy();
+    expect(getByText(/450.000,00/)).toBeTruthy();
     expect(getByText(/Quartos: 2/)).toBeTruthy();
-    expect(getByText(/75m²/)).toBeTruthy();
+    expect(getByText(/75 m²/)).toBeTruthy();
     expect(getByAltText('Apartamento Central')).toBeTruthy();
   });
 

@@ -45,7 +45,7 @@ export default async function handler(req, res) {
 
       if (garagem !== undefined) {
         const filtroGaragem = garagem === 'true';
-        const imovelGaragem = !!imovel.garagem;
+        const imovelGaragem = !!(imovel.vagaGaragem ?? imovel.garagem);
         if (imovelGaragem !== filtroGaragem) return false;
       }
 

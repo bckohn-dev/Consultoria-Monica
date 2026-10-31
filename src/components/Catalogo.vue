@@ -1,213 +1,79 @@
 <template>
-  <section class="container mx-auto my-16">
-    <h2 class="text-3xl font-bold text-mainblue mb-8 text-center">Busque seu imóvel</h2>
-    <!-- Filtros -->
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg p-6 mb-10 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0">
-    <!-- Quartos -->
-    <div class="relative w-full md:w-auto" title="Quartos">
-      <label
-        for="quartos"
-        class="flex items-center h-[50px] pl-3 pr-3 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200 text-base"
-      >
-        <span class="text-gray-500">🛏️</span>
-        <span class="ml-2 truncate">
-          {{ filtros.quartos || 'Quartos' }}
-        </span>
-        <select
-          id="quartos"
-          v-model="filtros.quartos"
-          class="absolute inset-0 opacity-0 cursor-pointer"
-          @change="buscarImoveis"
-        >
-          <option value="">Quartos</option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3+</option>
-        </select>
-      </label>
+  <section id="catalogo" class="catalog-shell" aria-labelledby="catalog-title">
+    <div class="section-heading">
+      <div><p class="eyebrow">IMÓVEIS PARA O SEU MOMENTO</p><h2 id="catalog-title">Seu próximo endereço começa aqui.</h2></div>
+      <p>Explore as opções e encontre o espaço que combina com você.</p>
     </div>
-
-    <!-- Garagem -->
-    <div class="relative w-full md:w-auto" title="Garagem">
-      <label
-        for="garagem"
-        class="flex items-center h-[50px] pl-3 pr-3 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200 text-base"
-      >
-        <span class="text-gray-500">🚗</span>
-        <span class="ml-2 truncate">
-          {{ filtros.garagem === 'true' ? 'Sim' : filtros.garagem === 'false' ? 'Não' : 'Garagem' }}
-        </span>
-        <select
-          id="garagem"
-          v-model="filtros.garagem"
-          class="absolute inset-0 opacity-0 cursor-pointer"
-          @change="buscarImoveis"
-        >
-          <option value="">Garagem</option>
-          <option value="true">Sim</option>
-          <option value="false">Não</option>
-        </select>
-      </label>
+    <form class="search-panel" @submit.prevent="buscarImoveis">
+      <label>Quartos<select v-model="filtros.quartos" @change="buscarImoveis"><option value="">Todos</option><option value="1">1 quarto</option><option value="2">2 quartos</option><option value="3">3 ou mais</option></select></label>
+      <label>Garagem<select v-model="filtros.garagem" @change="buscarImoveis"><option value="">Todas</option><option value="true">Com garagem</option><option value="false">Sem garagem</option></select></label>
+      <label>Suíte<select v-model="filtros.suite" @change="buscarImoveis"><option value="">Todas</option><option value="true">Com suíte</option><option value="false">Sem suíte</option></select></label>
+      <label>Preço mínimo (R$)<input v-model="filtros.precoMin" type="number" min="0" step="any" placeholder="Sem mínimo" @input="agendarBusca" /></label>
+      <label>Preço máximo (R$)<input v-model="filtros.precoMax" type="number" min="0" step="any" placeholder="Sem máximo" @input="agendarBusca" /></label>
+      <button type="submit" class="button-primary">Buscar imóveis</button>
+      <button type="button" class="clear-filters" @click="resetarFiltros">Limpar filtros</button>
+    </form>
+    <p v-if="validacao" class="state-box" role="alert">{{ validacao }}</p>
+    <div class="results-bar">
+      <p role="status">{{ loading ? 'Buscando imóveis…' : imoveis.length + (imoveis.length === 1 ? ' imóvel encontrado' : ' imóveis encontrados') }}</p>
+      <label>Ordenar por <select v-model="ordem"><option value="">Ordem do catálogo</option><option value="menor">Menor preço</option><option value="maior">Maior preço</option></select></label>
     </div>
-
-    <!-- Suíte -->
-    <div class="relative w-full md:w-auto" title="Suíte">
-      <label
-        for="suite"
-        class="flex items-center h-[50px] pl-3 pr-3 border border-puregold rounded-md w-full cursor-pointer hover:shadow-md transition-shadow duration-200 text-base"
-      >
-        <span class="text-gray-500">🛁</span>
-        <span class="ml-2 truncate">
-          {{ filtros.suite === 'true' ? 'Sim' : filtros.suite === 'false' ? 'Não' : 'Suítes' }}
-        </span>
-        <select
-          id="suite"
-          v-model="filtros.suite"
-          class="absolute inset-0 opacity-0 cursor-pointer"
-          @change="buscarImoveis"
-        >
-          <option value="">Suítes</option>
-          <option value="true">Sim</option>
-          <option value="false">Não</option>
-        </select>
-      </label>
-    </div>
-
-    <!-- Preço mín -->
-    <div class="relative w-full md:w-auto" title="preço mínimo">
-      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
-      <input
-        v-model="filtros.precoMin"
-        type="number"
-        placeholder="Preço mín. (R$)"
-        class="pl-10 border border-puregold h-[50px] text-base rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-        @input="buscarImoveis"
-      />
-    </div>
-
-
-    <!-- Preço máx -->
-    <div class="relative w-full md:w-auto" title="preço máximo">
-      <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">💰</span>
-      <input
-        v-model="filtros.precoMax"
-        type="number"
-        placeholder="Preço máx. (R$)"
-        class="pl-10 border border-puregold h-[50px] text-base rounded-md w-full focus:outline-none focus:ring-2 focus:ring-mainblue"
-        @input="buscarImoveis"
-      />
-    </div>
-
-    <!-- Reset Filter -->
-    <button
-      @click="resetarFiltros"
-      title="Limpar filtros"
-      class="flex items-center h-[50px] text-base font-semibold text-red-500 hover:text-red-700 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md px-4 transition duration-200"
-    >
-      ❌ Limpar filtros
-    </button>
-
-  </div>
-    <!-- Lista de Imóveis -->
-    <div v-if="loading" class="text-center text-gray-600">Carregando...</div>
-    <div v-else-if="error" class="text-center text-red-600">{{ error }}</div>
-    <div v-else-if="imoveis.length === 0" class="text-center text-gray-600">
-      Nenhum imóvel encontrado.
-    </div>
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <ImovelCard
-        v-for="imovel in imoveis"
-        :key="imovel.id"
-        :imovel="imovel"
-      />
-    </div>
+    <div v-if="loading" class="state-box" role="status">Carregando...</div>
+    <div v-else-if="error" class="state-box" role="alert"><p>{{ error }}</p><button class="button-primary" @click="buscarImoveis">Tentar novamente</button></div>
+    <div v-else-if="imoveis.length === 0" class="state-box"><h3>Nenhum imóvel encontrado.</h3><p>Experimente ampliar a faixa de preço ou limpar os filtros.</p><button class="clear-filters" @click="resetarFiltros">Limpar filtros</button></div>
+    <div v-else class="property-grid"><ImovelCard v-for="imovel in ordenados" :key="imovel.id" :imovel="imovel" /></div>
   </section>
 </template>
-
-<script>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import ImovelCard from './ImovelCard.vue';
-
-export default {
-  components: { ImovelCard },
-  setup() {
-    const API_BASE = '/api';
-    const imoveis = ref([]);
-    const filtros = ref({ quartos: '', precoMin: '', precoMax: '', garagem: '', suite: ''});
-    const loading = ref(false);
-    const error = ref(null);
-
-    const mostrarDetalhes = (imovel) => {
-      console.log('Imóvel selecionado:', imovel);
-      alert(`Detalhes do imóvel: ${imovel.nome}`);
-    };
-    const resetarFiltros = () => {
-      filtros.value = { quartos: '', precoMin: '', precoMax: '', garagem: '', suite: '' };
-      buscarImoveis();
-    };
-
-    const buscarImoveis = async () => {
-      loading.value = true;
-      error.value = null;
-
-      try {
-        const params = {};
-        if (filtros.value.quartos) params.quartos = filtros.value.quartos;
-        if (filtros.value.precoMin) params.precoMin = filtros.value.precoMin;
-        if (filtros.value.precoMax) params.precoMax = filtros.value.precoMax;
-        if (filtros.value.garagem) params.garagem = filtros.value.garagem;
-        if (filtros.value.suite) params.suite = filtros.value.suite;
-
-
-        const response = await axios.get(`${API_BASE}/imoveis`, { params });
-        imoveis.value = Array.isArray(response.data) ? response.data : [];
-      } catch (err) {
-        error.value = err.response?.data?.error || 'Erro ao buscar imóveis. Tente novamente.';
-        console.error('Erro ao carregar imóveis:', err);
-      } finally {
-        loading.value = false;
-      }
-    };
-
-
-    // ✅ Executa a busca automática ao carregar o componente
-    onMounted(() => {
-      buscarImoveis();
-    });
-
-    return {
-      imoveis,
-      filtros,
-      loading,
-      error,
-      buscarImoveis,
-      mostrarDetalhes,
-      resetarFiltros
-    };
+<script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import axios from 'axios'
+import ImovelCard from './ImovelCard.vue'
+const vazio = () => ({ quartos: '', precoMin: '', precoMax: '', garagem: '', suite: '' })
+const imoveis = ref([]), filtros = ref(vazio()), loading = ref(false), error = ref(null), validacao = ref(''), ordem = ref('')
+let timer, controller, request = 0
+const ordenados = computed(() => {
+  if (!ordem.value) return imoveis.value
+  const price = item => item.preco !== '' && item.preco != null && Number.isFinite(Number(item.preco)) ? Number(item.preco) : null
+  return [...imoveis.value].sort((a,b) => {
+    const x = price(a), y = price(b)
+    if (x === null) return y === null ? 0 : 1
+    if (y === null) return -1
+    return ordem.value === 'menor' ? x-y : y-x
+  })
+})
+function agendarBusca() {
+  clearTimeout(timer)
+  // Invalidate in-flight responses immediately while the visitor is typing.
+  request++
+  controller?.abort()
+  timer = setTimeout(buscarImoveis, 350)
+}
+async function buscarImoveis() {
+  clearTimeout(timer)
+  const current = ++request
+  controller?.abort()
+  validacao.value = ''
+  const { precoMin, precoMax } = filtros.value
+  if ((precoMin !== '' && Number(precoMin) < 0) || (precoMax !== '' && Number(precoMax) < 0) ||
+      (precoMin !== '' && precoMax !== '' && Number(precoMin) > Number(precoMax))) {
+    validacao.value = 'Informe uma faixa de preço válida: o mínimo deve ser menor ou igual ao máximo.'
+    loading.value = false
+    return
   }
-};
+  controller = new AbortController()
+  loading.value = true
+  error.value = null
+  try {
+    const params = Object.fromEntries(Object.entries(filtros.value).filter(([,v]) => v !== ''))
+    const response = await axios.get('/api/imoveis', { params, signal: controller.signal })
+    if (current === request) imoveis.value = Array.isArray(response.data) ? response.data : []
+  } catch (err) {
+    if (current === request && err.code !== 'ERR_CANCELED') error.value = 'Erro ao buscar imóveis. Tente novamente.'
+  } finally {
+    if (current === request) loading.value = false
+  }
+}
+function resetarFiltros() { filtros.value = vazio(); buscarImoveis() }
+onMounted(buscarImoveis)
+onBeforeUnmount(() => { clearTimeout(timer); request++; controller?.abort() })
 </script>
-
-<style>
-/* Adicionando cores personalizadas */
-.border-gold {
-  border-color: #BDB76B;
-}
-/* 
-.focus\:ring-navy:focus {
-  ring-color: #000080;
-}
-*/
-/* Ajustando texto dos filtros conforme tamanho da tela */
-@media (max-width: 1300px) and (min-width: 768px) {
-  .truncate-option {
-    width: 3rem !important;
-    text-indent: -9999px;
-  }
-
-  .truncate-placeholder::placeholder {
-    color: transparent;
-  }
-}
-</style>

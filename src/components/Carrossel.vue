@@ -1,5 +1,5 @@
 <template>
-  <section class="w-full sm:w-full max-w-7xl mx-auto my-16 pt-20 px-4 sm:px-8">
+  <section class="featured-carousel">
     <div class="mx-auto w-full max-w-[95%] sm:max-w-full">
       <div v-if="loading" class="text-center text-gray-600 py-8">Carregando destaques...</div>
       <div v-else-if="erro" class="text-center text-red-600 py-8">{{ erro }}</div>
@@ -98,7 +98,7 @@ export default {
     }
 
     function irParaImovel(item) {
-      if (!item?.id) return
+      if (!item?.id || ['fallback', 'erro'].includes(item.id)) return
       router.push(`${ROTA_BASE}/${item.id}`)
     }
 

@@ -1,44 +1,27 @@
 <template>
-    <div class="min-h-screen bg-gray-50 flex flex-col">
-      <Header />
-      <section class="text-center py-10 px-4 bg-white">
-        <h1 class="text-3xl md:text-4xl font-bold text-mainblue mb-4">
-          Encontre seu novo lar com confiança
-        </h1>
-        <p class="text-gray-700 max-w-xl mx-auto mb-6">
-          Trabalhamos para ajudar você a encontrar o imóvel ideal com atendimento humano e ágil.
-        </p>
-        <router-link
-          to="/catalogo"
-          class="inline-block bg-mainblue text-white font-semibold px-6 py-3 rounded-md hover:bg-puregold transition btn:hover"
-        >
-          Ver Imóveis
-        </router-link>
+  <div class="site-page">
+    <Header />
+    <main id="conteudo">
+      <section class="home-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">MÔNICA CONSULTORIA IMOBILIÁRIA</p>
+          <h1>Um novo endereço.<br /><em>Novas possibilidades.</em></h1>
+          <p class="hero-description">Encontre o imóvel que acompanha seus planos. Conte com uma consultoria próxima, do primeiro contato à escolha do seu novo lar.</p>
+          <div class="hero-actions"><a href="#catalogo" class="button-primary">Explorar imóveis <span aria-hidden="true">↗</span></a><a href="https://wa.me/5511945413470" target="_blank" rel="noopener noreferrer" class="button-outline">Conversar com a Mônica</a></div>
+          <div class="hero-note"><span aria-hidden="true">✦</span> Atendimento humano. Escolhas com confiança.</div>
+        </div>
+        <div class="hero-feature"><p class="eyebrow">CONHEÇA OS DESTAQUES</p><Carrossel /></div>
       </section>
-      <main class="flex-grow">
-        <section class="my-6 min-h-[300px]">
-          <Carrossel />
-        </section>
-        <Catalogo class="mt-10" />
-      </main>
-      <Footer />
-    </div>
-  </template>
-  
-  <script>
-  import Header from '../components/Header.vue';
-  import Carrossel from '../components/Carrossel.vue';
-  import Catalogo from '../components/Catalogo.vue';
-  import Footer from '../components/Footer.vue';
-  
-  export default {
-    components: { Header, Carrossel, Catalogo, Footer },
-  };
-  </script>
-
-<style scoped>
-.btn:hover {
-  background-color: #F3C969;
-  color: #1C2541;
-}
-</style>
+      <div class="trust-strip"><span>Consultoria personalizada</span><span>Imóveis para diferentes planos</span><span>Proximidade em cada etapa</span></div>
+      <Catalogo />
+      <section class="contact-banner"><div><p class="eyebrow">VAMOS CONVERSAR?</p><h2>O imóvel ideal começa com uma boa conversa.</h2><p>Conte o que você procura. Vamos explorar as possibilidades juntos.</p></div><a href="https://wa.me/5511945413470" target="_blank" rel="noopener noreferrer" class="button-primary">Falar pelo WhatsApp ↗</a></section>
+    </main>
+    <Footer />
+  </div>
+</template>
+<script setup>
+import Header from '../components/Header.vue'
+import Footer from '../components/Footer.vue'
+import Catalogo from '../components/Catalogo.vue'
+import Carrossel from '../components/Carrossel.vue'
+</script>

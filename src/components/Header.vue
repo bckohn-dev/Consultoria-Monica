@@ -14,7 +14,7 @@
       </router-link>
 
       <!-- Mobile menu button -->
-      <button class="sm:hidden" @click="alternarMenu" aria-label="Abrir menu de navegação">
+      <button class="sm:hidden" @click="alternarMenu" :aria-expanded="menuAberto" aria-controls="menu-mobile" aria-label="Abrir menu de navegação" @keydown.esc="menuAberto = false">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2"
           viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -23,7 +23,7 @@
       </button>
 
       <!-- Navigation - Mobile -->
-      <nav
+      <nav id="menu-mobile"
         :class="[
           'sm:hidden bg-[#1c2140] w-full absolute top-full right-0 transition-all duration-300 z-40 shadow-xl border-t border-puregold rounded-b-lg',
           menuAberto ? 'block' : 'hidden'
@@ -105,7 +105,7 @@
           <li class="flex items-center gap-2 mt-2">
             <a
               href="https://wa.me/5511945413470"
-              target="_blank"
+              target="_blank" rel="noopener noreferrer"
               class="flex items-center gap-2 text-green-600 hover:text-green-700 transition"
             >
               <!-- Ícone WhatsApp -->
@@ -151,7 +151,7 @@ export default {
   },
   methods: {
     alternarMenu() { this.menuAberto = !this.menuAberto },
-    abrirContato() { this.mostrarContato = true },
+    abrirContato() { this.menuAberto = false; this.mostrarContato = true },
     fecharContato() { this.mostrarContato = false },
     copiarEmail(email) {
       navigator.clipboard.writeText(email)

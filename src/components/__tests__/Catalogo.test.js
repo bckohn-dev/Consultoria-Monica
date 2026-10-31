@@ -96,7 +96,7 @@ describe('Catalogo.vue', () => {
 
     // 3ª resposta: volta 2 imóveis
     axios.get.mockResolvedValueOnce({ data: fakeImoveis })
-    const btnReset = screen.getByRole('button', { name: /limpar filtros/i })
+    const btnReset = screen.getAllByRole('button', { name: /limpar filtros/i })[0]
     await fireEvent.click(btnReset)
     await waitFor(() => {
       const cards = screen.getAllByTestId('card')
@@ -105,5 +105,30 @@ describe('Catalogo.vue', () => {
 
     // select voltou para vazio
     expect(selects[0].value).toBe('')
+  })
+})
+
+describe('Integridade da busca', () => {
+  beforeEach(() => vi.resetAllMocks())
+  it('ignora respostas antigas que chegam depois da busca atual', async () => {
+    const old = deferred(), current = deferred()
+    axios.get.mockReturnValueOnce(old.promise).mockReturnValueOnce(current.promise)
+    render(Catalogo)
+    await fireEvent.update(screen.getByLabelText('Quartos'), '2')
+    current.resolve({ data: [{ id: 'novo', nome: 'Resultado atual' }] })
+    await screen.findByText('Resultado atual')
+    old.resolve({ data: [{ id: 'antigo', nome: 'Resultado antigo' }] })
+    await waitFor(() => expect(screen.queryByText('Resultado antigo')).toBeNull())
+    expect(screen.getByText('Resultado atual')).toBeTruthy()
+  })
+  it('não consulta a API com preço mínimo maior que o máximo', async () => {
+    axios.get.mockResolvedValue({ data: [] })
+    render(Catalogo)
+    await screen.findByText('Nenhum imóvel encontrado.')
+    await fireEvent.update(screen.getByLabelText('Preço mínimo (R$)'), '500000')
+    await fireEvent.update(screen.getByLabelText('Preço máximo (R$)'), '100000')
+    await fireEvent.click(screen.getByRole('button', { name: 'Buscar imóveis' }))
+    expect(screen.getByRole('alert').textContent).toContain('faixa de preço válida')
+    expect(axios.get).toHaveBeenCalledTimes(1)
   })
 })
