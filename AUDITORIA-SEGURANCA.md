@@ -42,3 +42,8 @@ Referência: https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educat
 - Arquivos órfãos e lixeira não são apagados automaticamente. Definir rotina de revisão e retenção antes de acumular dados reais.
 - Backups e restauração, conta final da proprietária e ADMIN_EMAILS de Production devem ser conferidos antes de promover o painel.
 - Overrides de gRPC/glob/minimatch devem ser reavaliados quando os pacotes superiores incorporarem as versões corrigidas.
+
+## Exposição histórica de credenciais
+A busca no histórico Git encontrou duas chaves privadas em backend/serviceAccountKey.json (commits antigos). Apenas project_id, client_email e private_key_id foram examinados; os valores privados não foram exibidos nem usados para autenticar.
+No Google Cloud, ambas as chaves correspondentes estão Disabled, com motivo Exposta. Não se confirmou uso indevido nem vazamento de uma chave atualmente ativa. As outras chaves listadas não foram revogadas, pois é necessário identificar seu uso antes de uma rotação.
+O arquivo permanece recuperável no histórico; limpar o histórico sozinho não substitui revogar credenciais. Foram acrescentadas exclusões de arquivos de credenciais ao .gitignore.

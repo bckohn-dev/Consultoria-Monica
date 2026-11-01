@@ -36,3 +36,10 @@ backend/node_modules/
 # Componente para testes unitários do ImovelCard.vue
 ImovelCardPreview.vue
 .vercel
+
+# Credential files must never be committed.
+.env.*
+!.env.example
+**/serviceAccount*.json
+*.pem
+*.key

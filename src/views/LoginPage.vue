@@ -51,7 +51,7 @@ async function login(action) {
     await adminRequest('get',{params:{action:'session'}})
     await router.replace('/admin')
   } catch (e) {
-    console.warn('Admin login failure', {stage,code:typeof e.code==='string'?e.code:'unknown'})
+    console.warn('Admin login failure '+JSON.stringify({stage,code:typeof e.code==='string'?e.code:'unknown'}))
     if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') error.value=authMessage(e)
     // An unverified account stays signed in only to request email verification.
     if (!needsVerification.value) await signOut(adminAuth)
