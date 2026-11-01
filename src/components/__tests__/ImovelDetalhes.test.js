@@ -6,7 +6,7 @@ import Details from '../../views/ImovelDetalhes.vue'
 vi.mock('axios')
 vi.mock('../Header.vue', () => ({ default: { template: '<header />' } }))
 vi.mock('../Footer.vue', () => ({ default: { template: '<footer />' } }))
-const property = { id: 'teste', nome: 'Jardim São Paulo', preco: 400000, quartos: 2, areaMin: 40, areaMax: 50, fotos: ['/segunda.jpg'], foto: '/capa.jpg', marca: 'vibra', vagaGaragem: true }
+const property = { id: 'teste', nome: 'Jardim São Paulo', preco: 400000, quartos: 2, areaMin: 40, areaMax: 50, fotos: ['/segunda.jpg'], foto: '/capa.jpg', marca: 'vibra', vagaGaragem: true, descricao: 'Diferenciais:\\nPerto do metrô\\n\\nLazer completo.\nVisite.' }
 beforeEach(() => vi.resetAllMocks())
 async function setup() {
   const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/imovel/:id', component: Details }, { path: '/catalogo', component: { template: '<div />' } }] })
@@ -20,6 +20,10 @@ describe('Detalhes do imóvel', () => {
     expect(await screen.findByRole('heading', { name: property.nome })).toBeTruthy()
     expect(screen.getByText('40 a 50 m²')).toBeTruthy()
     expect(screen.getByText('Com vaga')).toBeTruthy()
+    expect(screen.getByText('Marca do empreendimento')).toBeTruthy()
+    const description = screen.getByText(/Diferenciais:/).textContent
+    expect(description).toBe('Diferenciais:\nPerto do metrô\n\nLazer completo.\nVisite.')
+    expect(description).not.toContain('\\n')
     await fireEvent.click(screen.getByRole('button', { name: 'Próxima foto' }))
     expect(screen.getByAltText('Jardim São Paulo — foto 2').getAttribute('src')).toBe('/segunda.jpg')
     await fireEvent.click(screen.getByRole('button', { name: 'Próxima foto' }))

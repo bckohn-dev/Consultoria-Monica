@@ -7,7 +7,7 @@
       <div v-else-if="erro" class="state-box" role="alert"><p>{{ erro }}</p><button class="button-primary" @click="fetchImovel(route.params.id)">Tentar novamente</button></div>
       <p v-else-if="!imovel" class="state-box">Imóvel não encontrado.</p>
       <template v-else>
-        <div class="detail-heading"><div><p class="eyebrow">UM NOVO CAPÍTULO COMEÇA AQUI</p><h1>{{ imovel.nome }}</h1></div><FaixaMarca :marca="imovel.marca" /></div>
+        <div class="detail-heading"><div><p class="eyebrow">UM NOVO CAPÍTULO COMEÇA AQUI</p><h1>{{ imovel.nome }}</h1></div><FaixaMarca :marca="imovel.marca" com-rotulo /></div>
         <div class="detail-layout">
           <div class="detail-main">
             <section class="detail-gallery" aria-label="Fotos do imóvel">
@@ -31,7 +31,7 @@
                 <div><CarFront :size="22" aria-hidden="true" /><strong>{{ temGaragem ? 'Com vaga' : 'Sem vaga' }}</strong><span>Garagem</span></div>
                 <div><Bath :size="22" aria-hidden="true" /><strong>{{ imovel.suite ? 'Com suíte' : 'Sem suíte' }}</strong><span>Suíte</span></div>
               </div>
-              <h3>Sobre o imóvel</h3><p>{{ imovel.descricao || 'Fale com a Mônica para conhecer todos os detalhes deste imóvel.' }}</p>
+              <h3>Sobre o imóvel</h3><p>{{ descricaoFormatada }}</p>
             </section>
           </div>
           <aside class="detail-inquiry" aria-label="Preço e atendimento">
@@ -116,6 +116,12 @@ const areaTratada = computed(() => {
 const formatPrice = valor =>
   valor != null && valor !== '' && Number.isFinite(Number(valor))
     ? Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : 'Sob consulta'
+const descricaoFormatada = computed(() => {
+  const texto = imovel.value?.descricao
+  if (!texto) return 'Fale com a Mônica para conhecer todos os detalhes deste imóvel.'
+  // Normalize escaped newlines from stored copy; retain Vue's safe text rendering.
+  return String(texto).replace(/\\r\\n|\\n|\\r/g, '\n').replace(/\r\n?/g, '\n')
+})
 const temGaragem = computed(() => Boolean(imovel.value?.vagaGaragem ?? imovel.value?.garagem))
 const contatoUrl = computed(() => 'https://wa.me/5511945413470?text=' + encodeURIComponent('Olá, Mônica! Tenho interesse no imóvel ' + (imovel.value?.nome || '') + '. Pode me passar mais informações?'))
 function mudarFoto(delta) { activeIndex.value = (activeIndex.value + delta + images.value.length) % images.value.length }
