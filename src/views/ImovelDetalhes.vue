@@ -101,7 +101,7 @@ async function fetchImovel(id) {
 watch(() => route.params.id, (id) => { if (id) fetchImovel(id) }, { immediate: true })
 
 function onMainImageError(e) { e.target.onerror = null; if (!e.target.src.endsWith(fallback)) e.target.src = fallback }
-function onThumbError(i) { return (e) => { if (images.value[i] !== fallback) e.target.src = fallback } }
+function onThumbError(i) { return (e) => { e.target.onerror = null; if (!e.target.src.endsWith(fallback)) e.target.src = fallback } }
 
 const areaTratada = computed(() => {
   if (imovel.value?.areaMin !== undefined && imovel.value?.areaMax !== undefined) {

@@ -50,6 +50,6 @@ export default async function handler(req, res) {
     return res.status(200).json(destaques);
   } catch (error) {
     console.error('Erro ao buscar destaques:', error);
-    return res.status(500).json({ error: 'Erro ao buscar destaques', detail: error?.message });
+    return res.status(500).json({ error: 'Erro ao buscar destaques' });
   }
 }

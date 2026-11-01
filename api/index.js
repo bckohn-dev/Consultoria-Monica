@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     res.status(200).json(imoveis);
   } catch (error) {
     console.error('Erro ao acessar Firestore:', error);
-    res.status(500).json({ error: 'Erro no servidor', details: error.message });
+    res.status(500).json({ error: 'Erro no servidor' });
   }
 }
 // This API endpoint retrieves properties from Firestore based on query parameters.

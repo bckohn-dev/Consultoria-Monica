@@ -7,7 +7,6 @@ export default async function handler(req, res) {
   const matches = url.match(/\/api\/imoveis\/([^/?]+)/);
   const id = matches?.[1];
 
-  console.log('ID extraído:', id);
 
   if (!id) {
     return res.status(400).json({ error: 'ID do imóvel não fornecido.' });

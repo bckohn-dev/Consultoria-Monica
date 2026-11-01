@@ -12,9 +12,9 @@ const {
 let app;
 let privateKey = FIREBASE_ADMIN_PRIVATE_KEY;
 
-// 🔄 Corrige formatação da chave privada (caso venha do Vercel com \\n)
-if (privateKey?.includes('\\n')) {
-  privateKey = privateKey.replace(/\\\\n/g, '\n');
+// Accept PEM line breaks and escaped newlines from environment variable forms.
+if (privateKey) {
+  privateKey = privateKey.replace(/\\+n/g, '\n');
 }
 
 if (!getApps().length) {
