@@ -23,8 +23,8 @@
 - O teste antigo do carrossel ainda gera avisos de rede e router; não valida a integração real.
 - O navegador não conseguiu alcançar localhost; inspeção visual da nova versão pendente.
 - A API/Firebase real não foi validada nesta cópia. Vite sozinho não executa as funções da Vercel.
-- GitHub CLI informou token inválido. Nenhum push, PR ou deploy foi realizado.
-- Antes da publicação: conferir desktop e celular com API, galerias, contato e regras de acesso do Firebase/admin.
+- GitHub CLI informou token inválido; o envio funciona pela credencial do Git. Previews publicados e aprovados pelo usuário.
+- A área administrativa e as regras de acesso do Firebase não foram auditadas nesta entrega; uma proteção de rota no frontend não substitui essas regras.
 
 ## Refinamento visual solicitado por imagens
 - Cabeçalho com símbolo vetorial de casa, assinatura tipográfica e navegação mais leve.
@@ -35,3 +35,10 @@
 - Contato em diálogo nativo com foco contido, Escape e links diretos.
 - 22 testes passaram, incluindo galeria, interesse por WhatsApp e diálogo.
 - Preview permanece na branch preview/catalogo-design-2026-10; main preservada.
+
+## Revisão para produção
+- Publicação na main autorizada pelo usuário.
+- Build aprovado e 27 testes passaram.
+- Normalização da chave privada do Firebase corrigida; erros públicos sem detalhes internos.
+- Fallback das miniaturas protegido contra tentativas repetidas.
+- Revisão visual baseada nas imagens e aprovação do usuário; navegador do chat exige login para previews.
