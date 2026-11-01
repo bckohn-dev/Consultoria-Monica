@@ -135,7 +135,8 @@ async function save(){
   finally{saving.value=false}
 }
 async function remove(item){
-  if((dirty.value && editing.value!==item.docId) || saving.value || uploading.value){error.value='Salve ou cancele as alterações antes de excluir outro imóvel.';return}\n  if(!mayDiscard() || !window.confirm('Excluir “'+item.nome+'” do catálogo? Uma cópia será guardada para recuperação.'))return
+  if((dirty.value && editing.value!==item.docId) || saving.value || uploading.value){error.value='Salve ou cancele as alterações antes de excluir outro imóvel.';return}
+  if(!mayDiscard() || !window.confirm('Excluir “'+item.nome+'” do catálogo? Uma cópia será guardada para recuperação.'))return
   saving.value=true;error.value='';message.value=''
   try{
     await adminRequest('delete',{params:{id:item.docId}})
