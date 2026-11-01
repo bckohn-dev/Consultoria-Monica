@@ -10,6 +10,7 @@ const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/catalogo', name: 'Catalogo', component: Catalogo },
   { path: '/admin', name: 'Admin', component: Admin, meta: { admin: true } },
+  { path: '/privacidade', name: 'Privacidade', component: () => import('../views/PrivacyPage.vue') },
   { path: '/login', name: 'Login', component: () => import('../views/LoginPage.vue') },
   // { path: '/contato', name: 'Contato', component: Contato },
   { path: '/sobre', name: 'Sobre', component: Sobre },

@@ -1,3 +1,4 @@
+vi.mock('../../api/_adminRateLimit.js',()=>({limitAdminWrites:vi.fn()}))
 import { describe,it,expect,vi,beforeEach,afterEach } from 'vitest'
 const mocks=vi.hoisted(()=>({
   requireAdmin:vi.fn(), create:vi.fn(), update:vi.fn(), collection:vi.fn(), transactionGet:vi.fn(), transactionSet:vi.fn(), transactionDelete:vi.fn(), save:vi.fn()
@@ -9,7 +10,7 @@ vi.mock('../../api/_firebaseAdmin.js',()=>({
 }))
 import handler from '../../api/admin.js'
 import { propertyInput,imageInput } from '../../api/_propertyValidation.js'
-const valid=()=>({id:'new-home',nome:'Apartamento',descricao:'Descrição',preco:100,quartos:2,areaMin:30,areaMax:40,destaqueOrdem:0,marca:'vibra',prazoEntrega:'',vagaGaragem:true,suite:false,destaque:true,foto:'https://example.com/a.jpg',fotos:['https://example.com/a.jpg']})
+const valid=()=>({id:'new-home',nome:'Apartamento',descricao:'Descrição',preco:100,quartos:2,areaMin:30,areaMax:40,destaqueOrdem:0,marca:'vibra',prazoEntrega:'',vagaGaragem:true,suite:false,destaque:true,foto:'https://firebasestorage.googleapis.com/v0/b/test/o/a.jpg',fotos:['https://firebasestorage.googleapis.com/v0/b/test/o/a.jpg']})
 function response(){return {setHeader:vi.fn(),status:vi.fn().mockReturnThis(),json:vi.fn()}}
 beforeEach(()=>{
   vi.clearAllMocks();vi.stubEnv('VERCEL_ENV','preview')
@@ -57,7 +58,7 @@ describe('Protected admin API',()=>{
   })
 })
 describe('Property and upload validation',()=>{
-  it.each([{preco:-1},{areaMax:1},{quartos:1.5},{foto:'javascript:alert(1)'},{nome:''},{fotos:Array(21).fill('https://example.com/a.jpg')},{suite:'true'}])('rejects malformed property input',patch=>{
+  it.each([{preco:-1},{areaMax:1},{quartos:1.5},{foto:'javascript:alert(1)'},{nome:''},{fotos:Array(21).fill('https://firebasestorage.googleapis.com/v0/b/test/o/a.jpg')},{suite:'true'}])('rejects malformed property input',patch=>{
     expect(()=>propertyInput({...valid(),...patch})).toThrow()
   })
   it('ignores unrecognized fields and preserves safe description text',()=>{

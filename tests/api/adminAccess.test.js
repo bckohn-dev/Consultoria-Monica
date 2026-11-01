@@ -22,3 +22,12 @@ describe('Admin authorization',()=>{
     expect(verifyIdToken).toHaveBeenCalledWith('token',true)
   })
 })
+
+describe('Cross-site request protections',()=>{
+ it('rejects cross-origin requests even with a token',async()=>{
+  await expect(requireAdmin({headers:{origin:'https://attacker.invalid',host:'catalog.example',authorization:'Bearer token'}})).rejects.toMatchObject({status:403})
+ })
+ it('rejects opaque origins',async()=>{
+  await expect(requireAdmin({headers:{origin:'null',host:'catalog.example',authorization:'Bearer token'}})).rejects.toMatchObject({status:403})
+ })
+})

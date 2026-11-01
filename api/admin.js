@@ -1,3 +1,4 @@
+import { limitAdminWrites } from './_adminRateLimit.js';
 import { randomUUID } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
 import { db, storage } from './_firebaseAdmin.js';
@@ -23,6 +24,8 @@ export default async function handler(req, res) {
     }
     let body = req.body;
     if (typeof body === 'string') { try { body = JSON.parse(body); } catch { throw Object.assign(new Error('Dados inválidos.'),{status:400}); } }
+    if (action === 'seed' && !isPreview()) return res.status(403).json({error:'Disponível apenas no ambiente de teste.'});
+    await limitAdminWrites(db, user.uid);
     if (req.method === 'POST' && action === 'seed') {
       if (!isPreview()) return res.status(403).json({ error: 'Disponível apenas no ambiente de teste.' });
       const existing = await collection.limit(1).get();
@@ -70,6 +73,7 @@ export default async function handler(req, res) {
     if (error.code === 6 || error.code === 'already-exists') return res.status(409).json({error:'Este identificador já existe. Escolha outro.'});
     if (error.code === 5 || error.code === 'not-found') return res.status(404).json({error:'Imóvel não encontrado.'});
     const status = error.status || 500;
+    if (status === 429) res.setHeader('Retry-After','60');
     if (status === 500) console.error('Falha na API administrativa:', error.code || 'internal');
     return res.status(status).json({ error: status === 500 ? 'Não foi possível concluir. Tente novamente.' : error.message });
   }

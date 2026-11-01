@@ -23,7 +23,10 @@ export function propertyInput(value) {
     if (typeof url !== 'string' || url.length > 3000) invalid('Imagem inválida.');
     try {
       const parsed = new URL(url);
-      if (parsed.protocol !== 'https:') invalid('As imagens devem usar HTTPS.');
+      if (parsed.protocol !== 'https:' || parsed.username || parsed.password ||
+          !['firebasestorage.googleapis.com','storage.googleapis.com'].includes(parsed.hostname)) {
+        invalid('Use imagens enviadas ao armazenamento do catálogo.');
+      }
     } catch { invalid('Endereço de imagem inválido.'); }
     return url;
   }

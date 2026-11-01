@@ -77,3 +77,11 @@ describe('ImovelCard.vue', () => {
     expect(btn.textContent).toMatch(/carregando/i);
   });
 });
+
+it('renders injected markup as text without creating executable elements', () => {
+ const payload = '<img src=x onerror=alert(1)><script>alert(1)</script>'
+ const { container, getByText } = render(ImovelCard, { props: { imovel: { ...mockImovel, nome: payload } }, global: { plugins: [router] } })
+ expect(getByText(payload)).toBeTruthy()
+ expect(container.querySelector('script')).toBeNull()
+ expect(container.querySelector('img[onerror]')).toBeNull()
+})

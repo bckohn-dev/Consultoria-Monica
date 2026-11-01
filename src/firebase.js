@@ -1,5 +1,3 @@
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage';
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics"; // Uncomment if used
 
@@ -19,7 +17,5 @@ const firebaseApp = initializeApp(firebaseConfig);
 // Optional analytics
 // const analytics = getAnalytics(firebaseApp);
 
-export const db = getFirestore(firebaseApp);
-export const storage = getStorage(firebaseApp);
 
 export { firebaseApp };

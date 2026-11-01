@@ -3,6 +3,11 @@ import { propertyCollection } from './_properties.js';
 import { db } from './_firebaseAdmin.js';
 
 export default async function handler(req, res) {
+  res.setHeader?.('X-Content-Type-Options','nosniff');
+  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader?.('Allow','GET, HEAD');
+    return res.status(405).json({ error:'Método não permitido.' });
+  }
   try {
     const ordenar = (req.query.ordenar ?? 'sim') !== 'nao';
     let snap;
