@@ -24,8 +24,9 @@ Esta revisão não é certificação, não garante ausência de falhas e não in
 - Após regras: API pública de produção mantém nove imóveis e imagem pública responde HTTP 200.
 - SDK real Firebase Admin rejeitou JWT forjado sem assinatura válida.
 - Testes de ausência de token, conta externa, e-mail não verificado, revogação, origem externa/opaque, IDs maliciosos, XSS como texto, arquivos inválidos, campos extras, duplicação, exclusão com arquivo de recuperação e limite de operações.
-- Build e testes da aplicação executados após as atualizações.
-- Os testes com mocks não substituem os testes integrados; alterações no preview precisam preservar o login Google e os uploads reais.
+- Build e 66 testes da aplicação aprovados após as atualizações; teste adicional de inicialização do Firebase Auth sem require(esm) aprovado (67 casos no total).
+- Integração no preview corrigido: login Google da conta autorizada, leitura dos nove imóveis, upload de imagem local não pessoal pela API e salvamento de imóvel aprovados após fechar as regras. A imagem de teste foi retirada da galeria e a configuração original restaurada; o arquivo permanece no prefixo de teste do Storage, conforme a retenção de arquivos para recuperação. Acesso sem token retorna mensagem de autenticação, sem erro de inicialização.
+- Os testes com mocks não substituem os testes integrados; manter a validação de login e upload em futuras atualizações.
 
 ## Decisão sobre cookies e aceite
 Não foi adicionado consentimento fictício ou aceite obrigatório para simples consulta ao catálogo. Nesta versão, não há analytics nem publicidade comportamental no código. Há autenticação administrativa, infraestrutura necessária e imagens remotas, explicadas na política.
@@ -42,6 +43,7 @@ Referência: https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educat
 - Arquivos órfãos e lixeira não são apagados automaticamente. Definir rotina de revisão e retenção antes de acumular dados reais.
 - Backups e restauração, conta final da proprietária e ADMIN_EMAILS de Production devem ser conferidos antes de promover o painel.
 - Overrides de gRPC/glob/minimatch devem ser reavaliados quando os pacotes superiores incorporarem as versões corrigidas.
+- Compatibilidade Vercel: jwks-rsa usa jose 5.10 via override restrito a essa dependência, pois o carregamento CommonJS de jose 6 falhou no runtime observado. A importação com require(esm) desativado é coberta por teste; npm audit continua sem alertas conhecidos. Reavaliar o override quando houver suporte do runtime/pacote.
 
 ## Exposição histórica de credenciais
 A busca no histórico Git encontrou duas chaves privadas em backend/serviceAccountKey.json (commits antigos). Apenas project_id, client_email e private_key_id foram examinados; os valores privados não foram exibidos nem usados para autenticar.
