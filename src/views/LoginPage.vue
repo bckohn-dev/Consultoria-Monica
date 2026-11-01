@@ -35,10 +35,11 @@ function authMessage(e) {
   if (e.code === 'auth/operation-not-allowed' || e.code === 'auth/configuration-not-found') return 'Este método de entrada ainda precisa ser habilitado no Firebase.'
   if (e.code === 'auth/popup-blocked') return 'Permita a janela de login do Google e tente novamente.'
   if (e.code === 'auth/too-many-requests') return 'Muitas tentativas. Aguarde um pouco antes de tentar novamente.'
-  return e.code?.startsWith('auth/') ? 'Não foi possível entrar. Confira a conta e tente novamente.' : e.message
+  return e.code?.startsWith('auth/') ? 'Não foi possível entrar. Confira a conta e tente novamente.' : (typeof e.message === 'string' ? e.message : 'Não foi possível entrar. Tente novamente.')
 }
 async function login(action) {
   busy.value=true; error.value=''; message.value=''; needsVerification.value=false
+  let stage='provider'
   try {
     await setPersistence(adminAuth,browserSessionPersistence)
     await action()
@@ -46,9 +47,11 @@ async function login(action) {
       needsVerification.value=true
       throw new Error('Confirme seu e-mail antes de entrar. Use o botão abaixo para receber o link.')
     }
+    stage='authorization'
     await adminRequest('get',{params:{action:'session'}})
     await router.replace('/admin')
   } catch (e) {
+    console.warn('Admin login failure', {stage,code:typeof e.code==='string'?e.code:'unknown'})
     if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') error.value=authMessage(e)
     // An unverified account stays signed in only to request email verification.
     if (!needsVerification.value) await signOut(adminAuth)

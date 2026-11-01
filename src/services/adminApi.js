@@ -11,7 +11,11 @@ export async function adminRequest(method = 'get', options = {}) {
     const response = await axios({ url: '/api/admin', method, ...options, headers: { Authorization: 'Bearer ' + token }, timeout: 60000 })
     return response.data
   } catch (error) {
-    throw new Error(error.response?.data?.error || 'Não foi possível concluir. Verifique sua conexão e tente novamente.')
+    const detail = error.response?.data?.error
+    const safe = typeof detail === 'string' ? detail : 'Não foi possível concluir. Verifique sua conexão e tente novamente.'
+    const failure = new Error(safe)
+    failure.code = 'admin/http-' + (error.response?.status || 'network')
+    throw failure
   }
 }
 export async function prepareImage(file) {
