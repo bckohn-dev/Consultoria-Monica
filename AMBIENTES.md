@@ -26,4 +26,17 @@ Para uma barreira mais forte, criar um segundo projeto Firebase exclusivo de des
 
 Ao migrar para outro projeto, o botão de cópia lê somente o projeto configurado naquele ambiente; portanto a carga inicial de produção deve ser uma importação explícita de campos públicos, feita uma vez por uma ferramenta confiável. Não conceder acesso permanente à produção à API de teste para fazer espelhamento automático.
 
-Essa criação de projeto e migração de credenciais não foi feita nesta alteração. Nenhum dado existente foi recopiado ou apagado.
+## Projeto Dev criado em 1/11/2026
+
+- Projeto independente catalogo-imoveis-dev, plano Spark sem faturamento, sem Analytics ou Gemini.
+- Aplicativo Catalogo Web Dev registrado; configuração pública em config/firebase-dev.public.json. Esses identificadores públicos não substituem autenticação nem permissões; a chave privada Admin nunca deve ir para esse arquivo.
+- Firestore Standard criado em southamerica-east1 (São Paulo), com regras negando acesso direto; leitura REST anônima confirmada com HTTP 403.
+- Google ativado, com localhost e o domínio atual do preview autorizados. A API continuará verificando o e-mail permitido, assinatura e revogação do token.
+- Storage não provisionado: o usuário decidiu não ativar faturamento. FIREBASE_STORAGE_ENABLED=false impede upload no servidor e oculta o seletor de novas fotos no painel. Fotos existentes podem ser mantidas; novos cadastros aceitam capa padrão.
+- CATALOG_SEED_SNAPSHOT=true usa fixtures/catalogo-dev.json (nove imóveis, somente campos públicos consultados na API pública em 1/11/2026). Não requer credenciais ou leituras do Firebase de produção; a cópia inicial mantém a proteção contra sobrescrita. As URLs das fotos públicas são apenas referências de leitura.
+- FIREBASE_EXPECTED_PROJECT_ID=catalogo-imoveis-dev faz o servidor recusar credenciais configuradas para outro projeto.
+- VITE_FIREBASE_CONFIG seleciona a configuração pública do cliente por ambiente. Nunca usar prefixo VITE_ para chaves privadas.
+
+Pendência de conexão: o download automatizado da chave do projeto Dev não ficou disponível. Foi solicitado ao usuário baixar o JSON localmente pelo Chrome/Brave; nenhuma chave privada foi impressa ou adicionada ao repositório. Até a configuração e validação das credenciais do Dev no Vercel, o preview existente continua usando as coleções de teste do projeto anterior. Não considerar a migração concluída só porque o projeto novo foi criado.
+
+Antes da promoção para main: conferir a conta final da proprietária, o ADMIN_EMAILS de Production e o fluxo real no domínio próprio. As credenciais e flags de Dev não devem ser copiadas para Production.

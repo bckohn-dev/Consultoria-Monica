@@ -20,6 +20,32 @@ beforeEach(()=>{
 })
 afterEach(()=>vi.unstubAllEnvs())
 describe('Protected admin API',()=>{
+  it('rejects uploads when storage is disabled for a no-billing sandbox',async()=>{
+    vi.stubEnv('FIREBASE_STORAGE_ENABLED','false')
+    const res=response();await handler({method:'POST',query:{action:'upload'},body:{}},res)
+    expect(res.status).toHaveBeenCalledWith(503)
+    expect(mocks.save).not.toHaveBeenCalled()
+  })
+  it('seeds an empty sandbox from public fixtures without reading production',async()=>{
+    vi.stubEnv('CATALOG_SEED_SNAPSHOT','true')
+    const batch={create:vi.fn(),commit:vi.fn().mockResolvedValue()}
+    const {db}=await import('../../api/_firebaseAdmin.js')
+    db.batch=()=>batch
+    mocks.collection.mockReturnValue({limit:()=>({get:async()=>({empty:true})}),doc:id=>({id})})
+    const res=response();await handler({method:'POST',query:{action:'seed'}},res)
+    expect(res.status).toHaveBeenCalledWith(200)
+    expect(batch.create).toHaveBeenCalledTimes(9)
+    expect(batch.commit).toHaveBeenCalledOnce()
+    expect(mocks.collection).not.toHaveBeenCalledWith('imoveis')
+  })
+  it('never overwrites a sandbox that is already populated',async()=>{
+    vi.stubEnv('CATALOG_SEED_SNAPSHOT','true')
+    mocks.collection.mockReturnValue({limit:()=>({get:async()=>({empty:false})})})
+    const res=response();await handler({method:'POST',query:{action:'seed'}},res)
+    expect(res.status).toHaveBeenCalledWith(409)
+    expect(mocks.create).not.toHaveBeenCalled()
+    expect(mocks.update).not.toHaveBeenCalled()
+  })
   it.each(['GET','POST','PATCH','DELETE'])('rejects unauthorized %s before database access',async method=>{
     mocks.requireAdmin.mockRejectedValue(Object.assign(new Error('No access'),{status:403}))
     const res=response();await handler({method,query:{},body:valid()},res)

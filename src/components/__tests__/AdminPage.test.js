@@ -16,6 +16,13 @@ beforeEach(()=>{
   request.mockImplementation(async method=>method==='patch'?{ok:true}:{preview:true,imoveis:[property]})
 })
 describe('Painel administrativo',()=>{
+  it('hides upload when the test environment has no Storage enabled',async()=>{
+    request.mockResolvedValue({preview:true,uploadsEnabled:false,imoveis:[property]})
+    await setup()
+    expect(await screen.findByText(/O envio de novas fotos está indisponível/)).toBeTruthy()
+    expect(screen.queryByLabelText('Adicionar fotos')).toBeNull()
+    expect(screen.getByAltText('Capa padrão do catálogo')).toBeTruthy()
+  })
   it('edits by original document ID and preserves gallery without reupload',async()=>{
     await setup()
     await screen.findByRole('button',{name:'Editar Apartamento atual'})

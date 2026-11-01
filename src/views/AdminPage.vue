@@ -38,7 +38,7 @@
               <label>Descrição<textarea v-model="form.descricao" rows="8" maxlength="12000" placeholder="Apresente o imóvel, localização, diferenciais e lazer. Use Enter para separar as linhas."></textarea><small>{{ form.descricao.length }} / 12.000 caracteres</small></label>
               <section class="admin-photos" aria-label="Fotos do imóvel">
                 <div><h3>Fotos do imóvel</h3><p class="admin-muted">Sem fotos, usamos a imagem padrão do catálogo. A primeira foto enviada será a capa. Até 20 fotos, JPG, PNG ou WebP. Cada arquivo pode ter até 15 MB; as imagens serão otimizadas antes do envio.</p></div>
-                <label class="admin-upload"><ImagePlus :size="21" aria-hidden="true" /><span>Adicionar fotos</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="upload" /></label>
+                <p v-if="!uploadsEnabled" class="admin-environment" role="status">O envio de novas fotos está indisponível neste ambiente de teste. Você pode manter as fotos existentes ou usar a capa padrão.</p><label v-else class="admin-upload"><ImagePlus :size="21" aria-hidden="true" /><span>Adicionar fotos</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="upload" /></label>
                 <div class="admin-photo-grid"><div v-if="!photos.length" class="admin-photo"><img :src="'/default-placeholder.jpg'" alt="Capa padrão do catálogo" /><span class="admin-photo-cover">Capa padrão</span></div><div v-for="(url,index) in photos" :key="url" class="admin-photo"><img :src="url" :alt="'Foto ' + (index + 1)" @error="imageFallback" /><span v-if="index === 0" class="admin-photo-cover">Capa</span><div><button type="button" v-if="index > 0" @click="makeCover(index)" :aria-label="'Usar foto ' + (index + 1) + ' como capa'">Usar como capa</button><button type="button" @click="removePhoto(index)" :aria-label="'Remover foto ' + (index + 1)"><X :size="16" /></button></div></div></div>
               </section>
               <div class="admin-save-actions"><button class="button-primary" type="submit">{{ saving ? 'Salvando…' : 'Salvar imóvel' }} <Check :size="17" aria-hidden="true" /></button><button class="clear-filters" type="button" @click="create">Cancelar alterações</button></div>
@@ -59,6 +59,7 @@ import { adminAuth, adminRequest, prepareImage } from '../services/adminApi'
 import { Plus, Pencil, Trash2, LogOut, ArrowUpRight, ImagePlus, X, Check, FlaskConical } from 'lucide-vue-next'
 const router=useRouter()
 const items=ref([]), search=ref(''), loading=ref(true), saving=ref(false), uploading=ref(false), preview=ref(false)
+const uploadsEnabled=ref(true)
 const message=ref(''), error=ref(''), editing=ref(null), photos=ref([])
 const empty=()=>({nome:'',preco:0,quartos:1,areaMin:0,areaMax:0,descricao:'',marca:'',prazoEntrega:'',vagaGaragem:false,suite:false,destaque:false,destaqueOrdem:0})
 const form=ref(empty()), baseline=ref('')
@@ -73,7 +74,7 @@ async function load() {
   loading.value=true
   try {
     const data=await adminRequest()
-    preview.value=data.preview
+    preview.value=data.preview; uploadsEnabled.value=data.uploadsEnabled !== false
     items.value=data.imoveis.sort((a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR'))
     return true
   } catch(e) {error.value=e.message; return false}

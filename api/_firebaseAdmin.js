@@ -9,6 +9,11 @@ const {
   FIREBASE_STORAGE_BUCKET,
 } = process.env;
 
+// Fail closed if deployment credentials point to the wrong Firebase project.
+if (process.env.FIREBASE_EXPECTED_PROJECT_ID && FIREBASE_ADMIN_PROJECT_ID !== process.env.FIREBASE_EXPECTED_PROJECT_ID) {
+  throw new Error('Firebase project does not match the configured environment.');
+}
+
 let app;
 let privateKey = FIREBASE_ADMIN_PRIVATE_KEY;
 

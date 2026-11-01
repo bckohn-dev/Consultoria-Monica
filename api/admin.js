@@ -5,6 +5,8 @@ import { db, storage } from './_firebaseAdmin.js';
 import { requireAdmin } from './_adminAccess.js';
 import { propertyCollection, isPreview, archiveCollectionName, imagePrefix } from './_properties.js';
 import { propertyInput, documentId, imageInput } from './_propertyValidation.js';
+import seedSnapshot from '../fixtures/catalogo-dev.json' with { type: 'json' };
+import { publicProperty } from './_publicProperty.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'private, no-store');
@@ -17,10 +19,11 @@ export default async function handler(req, res) {
     const user = await requireAdmin(req);
     const collection = propertyCollection(db);
     const action = req.query?.action;
+    const uploadsEnabled = process.env.FIREBASE_STORAGE_ENABLED !== 'false';
     if (req.method === 'GET') {
-      if (action === 'session') return res.status(200).json({ email: user.email, preview: isPreview() });
+      if (action === 'session') return res.status(200).json({ email: user.email, preview: isPreview(), uploadsEnabled });
       const snapshot = await collection.get();
-      return res.status(200).json({ preview: isPreview(), imoveis: snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id })) });
+      return res.status(200).json({ preview: isPreview(), uploadsEnabled, imoveis: snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id })) });
     }
     let body = req.body;
     if (typeof body === 'string') { try { body = JSON.parse(body); } catch { throw Object.assign(new Error('Dados inválidos.'),{status:400}); } }
@@ -30,14 +33,17 @@ export default async function handler(req, res) {
       if (!isPreview()) return res.status(403).json({ error: 'Disponível apenas no ambiente de teste.' });
       const existing = await collection.limit(1).get();
       if (!existing.empty) return res.status(409).json({ error: 'O catálogo de teste já foi preparado.' });
-      const source = await db.collection('imoveis').get();
-      if (source.size > 450) return res.status(400).json({ error: 'A cópia requer preparação manual para este volume.' });
+      const source = process.env.CATALOG_SEED_SNAPSHOT === 'true'
+        ? seedSnapshot.map(data => ({ id: documentId(data.id), data: () => data }))
+        : (await db.collection('imoveis').get()).docs;
+      if (source.length > 450) return res.status(400).json({ error: 'A cópia requer preparação manual para este volume.' });
       const batch = db.batch();
-      source.docs.forEach(doc => batch.create(collection.doc(doc.id), doc.data()));
+      source.forEach(doc => batch.create(collection.doc(doc.id), publicProperty(doc.data(), doc.id)));
       await batch.commit();
-      return res.status(200).json({ copied: source.size });
+      return res.status(200).json({ copied: source.length });
     }
     if (req.method === 'POST' && action === 'upload') {
+      if (!uploadsEnabled) return res.status(503).json({ error: 'O envio de novas fotos está indisponível neste ambiente de teste. Use a capa padrão.' });
       const { bytes, type } = imageInput(body);
       const ext = { 'image/jpeg':'jpg','image/png':'png','image/webp':'webp' }[type];
       const bucket = storage.bucket();
