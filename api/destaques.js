@@ -1,3 +1,4 @@
+import { propertyCollection } from './_properties.js';
 // /api/destaques.js
 import { db } from './_firebaseAdmin.js';
 
@@ -9,23 +10,20 @@ export default async function handler(req, res) {
     // 1) Tenta com orderBy (fica bonito se o índice existir)
     if (ordenar) {
       try {
-        snap = await db
-          .collection('imoveis')
+        snap = await propertyCollection(db)
           .where('destaque', '==', true)
           .orderBy('destaqueOrdem', 'asc')
           .get();
       } catch (e) {
         // 2) Se faltar índice, cai pro plano B sem orderBy
         console.warn('Sem índice para orderBy(destaqueOrdem); usando fallback.', e.message);
-        snap = await db
-          .collection('imoveis')
+        snap = await propertyCollection(db)
           .where('destaque', '==', true)
           .get();
       }
     } else {
       // pedido explícito para não ordenar (ordenar=nao)
-      snap = await db
-        .collection('imoveis')
+      snap = await propertyCollection(db)
         .where('destaque', '==', true)
         .get();
     }

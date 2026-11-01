@@ -35,3 +35,4 @@ backend/node_modules/
 
 # Componente para testes unitários do ImovelCard.vue
 ImovelCardPreview.vue
+.vercel

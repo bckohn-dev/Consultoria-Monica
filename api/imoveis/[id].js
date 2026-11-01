@@ -1,3 +1,4 @@
+import { propertyCollection } from '../_properties.js';
 import { db } from '../_firebaseAdmin.js';
 
 export default async function handler(req, res) {
@@ -13,7 +14,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const docRef = db.collection('imoveis').doc(id);
+    const docRef = propertyCollection(db).doc(id);
     const doc = await docRef.get();
 
     if (!doc.exists) {

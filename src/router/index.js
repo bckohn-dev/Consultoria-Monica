@@ -9,7 +9,8 @@ const Sobre = () => import('../views/SobrePage.vue');
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/catalogo', name: 'Catalogo', component: Catalogo },
-  { path: '/admin', name: 'Admin', component: Admin },
+  { path: '/admin', name: 'Admin', component: Admin, meta: { admin: true } },
+  { path: '/login', name: 'Login', component: () => import('../views/LoginPage.vue') },
   // { path: '/contato', name: 'Contato', component: Contato },
   { path: '/sobre', name: 'Sobre', component: Sobre },
   { path: '/imovel/:id', name: 'ImovelDetalhes', component: () => import('../views/ImovelDetalhes.vue')}
@@ -21,4 +22,12 @@ const router = createRouter({
   scrollBehavior(to, from, savedPosition) { return savedPosition || { top: 0 } },
 });
 
+router.beforeEach(async to => {
+  if (!to.meta.admin) return true
+  const { adminAuth, adminRequest } = await import('../services/adminApi')
+  await adminAuth.authStateReady()
+  if (!adminAuth.currentUser) return '/login'
+  try { await adminRequest('get', { params: { action:'session' } }); return true }
+  catch { return '/login' }
+})
 export default router;

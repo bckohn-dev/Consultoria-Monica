@@ -1,3 +1,4 @@
+import { propertyCollection } from './_properties.js';
 import { db } from "./_firebaseAdmin.js";
 
 export default async function handler(req, res) {
@@ -6,7 +7,7 @@ export default async function handler(req, res) {
   try {
     // 🔍 Se estiver buscando por campo 'id' (slug público)
     if (id) {
-      const snapshot = await db.collection('imoveis').where('id', '==', id).limit(1).get();
+      const snapshot = await propertyCollection(db).where('id', '==', id).limit(1).get();
       if (snapshot.empty) {
         return res.status(404).json({ error: 'Imóvel não encontrado.' });
       }
@@ -15,7 +16,7 @@ export default async function handler(req, res) {
     }
 
     // 🔍 Caso contrário, listagem com filtros
-    const snapshot = await db.collection('imoveis').get();
+    const snapshot = await propertyCollection(db).get();
     const imoveis = snapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),

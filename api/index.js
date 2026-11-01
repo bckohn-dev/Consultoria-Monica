@@ -1,3 +1,4 @@
+import { propertyCollection } from './_properties.js';
 // api/index.js
 import { db } from './_firebaseAdmin.js';
 
@@ -5,7 +6,7 @@ export default async function handler(req, res) {
   try {
     const { quartos, precoMin, precoMax } = req.query;
 
-    let query = db.collection('imoveis');
+    let query = propertyCollection(db);
 
     if (quartos) query = query.where('quartos', '==', parseInt(quartos));
     if (precoMin) query = query.where('preco', '>=', parseFloat(precoMin));
