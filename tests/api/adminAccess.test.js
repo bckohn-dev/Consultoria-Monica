@@ -24,6 +24,13 @@ describe('Admin authorization',()=>{
 })
 
 describe('Cross-site request protections',()=>{
+ it.each(['development','preview','production'])('allows local HTTP only during development: %s',async environment=>{
+  vi.stubEnv('VERCEL_ENV',environment)
+  verifyIdToken.mockResolvedValue({uid:'owner',email:'owner@example.com',email_verified:true})
+  const request={headers:{origin:'http://localhost:3000',host:'localhost:3000',authorization:'Bearer token'}}
+  if(environment==='development') expect((await requireAdmin(request)).uid).toBe('owner')
+  else await expect(requireAdmin(request)).rejects.toMatchObject({status:403})
+ })
  it('rejects cross-origin requests even with a token',async()=>{
   await expect(requireAdmin({headers:{origin:'https://attacker.invalid',host:'catalog.example',authorization:'Bearer token'}})).rejects.toMatchObject({status:403})
  })

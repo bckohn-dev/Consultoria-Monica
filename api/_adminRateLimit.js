@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
-import { isPreview } from './_properties.js';
+import { dataEnvironment } from './_properties.js';
 // Distributed per-account write limit. No IPs, emails or tokens are stored.
 export async function limitAdminWrites(db, uid, now = Date.now()) {
   const key = createHash('sha256').update(uid).digest('hex');
-  const reference = db.collection('admin_write_limits').doc((isPreview() ? 'preview-' : 'production-') + key);
+  const reference = db.collection('admin_write_limits').doc((dataEnvironment() + '-') + key);
   await db.runTransaction(async tx => {
     const snapshot = await tx.get(reference);
     const previous = snapshot?.exists ? snapshot.data() : {};

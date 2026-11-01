@@ -58,6 +58,9 @@ describe('Protected admin API',()=>{
   })
 })
 describe('Property and upload validation',()=>{
+  it.each([undefined,'','/default-placeholder.jpg'])('uses the preset for an absent cover: %s',foto=>{
+    expect(propertyInput({...valid(),foto,fotos:[]})).toMatchObject({foto:'/default-placeholder.jpg',fotos:[]})
+  })
   it.each([{preco:-1},{areaMax:1},{quartos:1.5},{foto:'javascript:alert(1)'},{nome:''},{fotos:Array(21).fill('https://firebasestorage.googleapis.com/v0/b/test/o/a.jpg')},{suite:'true'}])('rejects malformed property input',patch=>{
     expect(()=>propertyInput({...valid(),...patch})).toThrow()
   })

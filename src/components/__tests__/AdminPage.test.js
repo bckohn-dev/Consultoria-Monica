@@ -28,14 +28,14 @@ describe('Painel administrativo',()=>{
     })))
     expect(await screen.findByText('Imóvel salvo. O catálogo já está atualizado.')).toBeTruthy()
   })
-  it('requires a cover before creating a property',async()=>{
+  it('creates with the preset cover when no photos are uploaded',async()=>{
     await setup()
     await screen.findByRole('button',{name:'Editar Apartamento atual'})
     await fireEvent.update(screen.getByLabelText('Nome do imóvel'),'Novo imóvel')
     await fireEvent.update(screen.getByLabelText('Área mínima (m²)'),'30')
     await fireEvent.update(screen.getByLabelText('Área máxima (m²)'),'40')
     await fireEvent.click(screen.getByRole('button',{name:'Salvar imóvel'}))
-    expect(await screen.findByRole('alert')).toHaveProperty('textContent','Adicione pelo menos uma foto para a capa.')
-    expect(request.mock.calls.filter(call=>call[0]==='post')).toHaveLength(0)
+    await waitFor(()=>expect(request).toHaveBeenCalledWith('post',expect.objectContaining({data:expect.objectContaining({foto:'/default-placeholder.jpg',fotos:[]})})))
+    expect(await screen.findByText('Imóvel salvo. O catálogo já está atualizado.')).toBeTruthy()
   })
 })

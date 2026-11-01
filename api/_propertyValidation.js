@@ -21,6 +21,7 @@ export function propertyInput(value) {
   if (!Array.isArray(value.fotos) || value.fotos.length > 20) invalid('Use até 20 imagens por imóvel.');
   function imageUrl(url) {
     if (typeof url !== 'string' || url.length > 3000) invalid('Imagem inválida.');
+    if (url === '/default-placeholder.jpg') return url;
     try {
       const parsed = new URL(url);
       if (parsed.protocol !== 'https:' || parsed.username || parsed.password ||
@@ -30,7 +31,7 @@ export function propertyInput(value) {
     } catch { invalid('Endereço de imagem inválido.'); }
     return url;
   }
-  out.foto = imageUrl(value.foto);
+  out.foto = imageUrl(value.foto || value.fotos[0] || '/default-placeholder.jpg');
   out.fotos = [...new Set(value.fotos.map(imageUrl))];
   return out;
 }

@@ -37,9 +37,9 @@
               <label v-if="form.destaque">Ordem nos destaques<input v-model.number="form.destaqueOrdem" type="number" min="0" step="1" required /><small>Números menores aparecem primeiro.</small></label>
               <label>Descrição<textarea v-model="form.descricao" rows="8" maxlength="12000" placeholder="Apresente o imóvel, localização, diferenciais e lazer. Use Enter para separar as linhas."></textarea><small>{{ form.descricao.length }} / 12.000 caracteres</small></label>
               <section class="admin-photos" aria-label="Fotos do imóvel">
-                <div><h3>Fotos do imóvel</h3><p class="admin-muted">A primeira foto será a capa. Até 20 fotos, JPG, PNG ou WebP. Cada arquivo pode ter até 15 MB; as imagens serão otimizadas antes do envio.</p></div>
+                <div><h3>Fotos do imóvel</h3><p class="admin-muted">Sem fotos, usamos a imagem padrão do catálogo. A primeira foto enviada será a capa. Até 20 fotos, JPG, PNG ou WebP. Cada arquivo pode ter até 15 MB; as imagens serão otimizadas antes do envio.</p></div>
                 <label class="admin-upload"><ImagePlus :size="21" aria-hidden="true" /><span>Adicionar fotos</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple @change="upload" /></label>
-                <div class="admin-photo-grid"><div v-for="(url,index) in photos" :key="url" class="admin-photo"><img :src="url" :alt="'Foto ' + (index + 1)" @error="imageFallback" /><span v-if="index === 0" class="admin-photo-cover">Capa</span><div><button type="button" v-if="index > 0" @click="makeCover(index)" :aria-label="'Usar foto ' + (index + 1) + ' como capa'">Usar como capa</button><button type="button" @click="removePhoto(index)" :aria-label="'Remover foto ' + (index + 1)"><X :size="16" /></button></div></div></div>
+                <div class="admin-photo-grid"><div v-if="!photos.length" class="admin-photo"><img :src="'/default-placeholder.jpg'" alt="Capa padrão do catálogo" /><span class="admin-photo-cover">Capa padrão</span></div><div v-for="(url,index) in photos" :key="url" class="admin-photo"><img :src="url" :alt="'Foto ' + (index + 1)" @error="imageFallback" /><span v-if="index === 0" class="admin-photo-cover">Capa</span><div><button type="button" v-if="index > 0" @click="makeCover(index)" :aria-label="'Usar foto ' + (index + 1) + ' como capa'">Usar como capa</button><button type="button" @click="removePhoto(index)" :aria-label="'Remover foto ' + (index + 1)"><X :size="16" /></button></div></div></div>
               </section>
               <div class="admin-save-actions"><button class="button-primary" type="submit">{{ saving ? 'Salvando…' : 'Salvar imóvel' }} <Check :size="17" aria-hidden="true" /></button><button class="clear-filters" type="button" @click="create">Cancelar alterações</button></div>
             </fieldset>
@@ -94,7 +94,7 @@ function edit(item) {
   form.value.areaMax=Number(item.areaMax??item.area??form.value.areaMin)
   form.value.preco=Number(item.preco??0);form.value.quartos=Number(item.quartos??0)
   form.value.destaque=Boolean(item.destaque);form.value.destaqueOrdem=Number(item.destaqueOrdem??0)
-  photos.value=[...new Set([item.foto,...(Array.isArray(item.fotos)?item.fotos:[])].filter(Boolean))]
+  photos.value=[...new Set([item.foto,...(Array.isArray(item.fotos)?item.fotos:[])].filter(url=>url && url !== '/default-placeholder.jpg'))]
   baseline.value=snapshot();error.value='';message.value=''
 }
 function makeCover(index) { const [url]=photos.value.splice(index,1);photos.value.unshift(url) }
@@ -116,11 +116,10 @@ async function upload(event) {
 }
 async function save(){
   error.value='';message.value=''
-  if(!photos.value.length){error.value='Adicione pelo menos uma foto para a capa.';return}
   if(Number(form.value.areaMax)<Number(form.value.areaMin)){error.value='Confira a faixa de área.';return}
   saving.value=true
   try{
-    const data={...form.value,foto:photos.value[0],fotos:[...photos.value]}
+    const data={...form.value,foto:photos.value[0] || '/default-placeholder.jpg',fotos:[...photos.value]}
     if(editing.value) await adminRequest('patch',{params:{id:editing.value},data})
     else{
       const slug=form.value.nome.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,70)||'imovel'

@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
 import { db, storage } from './_firebaseAdmin.js';
 import { requireAdmin } from './_adminAccess.js';
-import { propertyCollection, isPreview } from './_properties.js';
+import { propertyCollection, isPreview, archiveCollectionName, imagePrefix } from './_properties.js';
 import { propertyInput, documentId, imageInput } from './_propertyValidation.js';
 
 export default async function handler(req, res) {
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       const { bytes, type } = imageInput(body);
       const ext = { 'image/jpeg':'jpg','image/png':'png','image/webp':'webp' }[type];
       const bucket = storage.bucket();
-      const path = (isPreview() ? 'imoveis-preview/' : 'imoveis/') + randomUUID() + '.' + ext;
+      const path = imagePrefix() + randomUUID() + '.' + ext;
       const token = randomUUID();
       await bucket.file(path).save(bytes, { resumable: false, metadata: { contentType: type, cacheControl: 'public, max-age=31536000, immutable', metadata: { firebaseStorageDownloadTokens: token } } });
       return res.status(201).json({ url: 'https://firebasestorage.googleapis.com/v0/b/' + bucket.name + '/o/' + encodeURIComponent(path) + '?alt=media&token=' + token });
@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     await db.runTransaction(async transaction => {
       const doc = await transaction.get(reference);
       if (!doc.exists) throw Object.assign(new Error('Imóvel não encontrado.'),{status:404});
-      const archive = db.collection(isPreview() ? 'imoveis_preview_lixeira' : 'imoveis_lixeira').doc();
+      const archive = db.collection(archiveCollectionName()).doc();
       transaction.set(archive, { originalId: doc.id, data: doc.data(), deletedAt: FieldValue.serverTimestamp(), deletedBy: user.uid });
       transaction.delete(reference);
     });

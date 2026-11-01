@@ -1,11 +1,13 @@
 import { getAuth } from 'firebase-admin/auth';
 import { app } from './_firebaseAdmin.js';
+import { dataEnvironment } from './_properties.js';
 
 export async function requireAdmin(req) {
   const origin = req.headers?.origin;
   if (origin) {
     const host = req.headers.host;
-    if (!host || origin !== 'https://' + host) {
+    const local = dataEnvironment() === 'development' && /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host || '');
+    if (!host || (origin !== 'https://' + host && !(local && origin === 'http://' + host))) {
       throw Object.assign(new Error('Origem da solicitação não permitida.'), { status: 403 });
     }
   }
