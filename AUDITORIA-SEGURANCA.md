@@ -24,7 +24,7 @@ Esta revisão não é certificação, não garante ausência de falhas e não in
 - Após regras: API pública de produção mantém nove imóveis e imagem pública responde HTTP 200.
 - SDK real Firebase Admin rejeitou JWT forjado sem assinatura válida.
 - Testes de ausência de token, conta externa, e-mail não verificado, revogação, origem externa/opaque, IDs maliciosos, XSS como texto, arquivos inválidos, campos extras, duplicação, exclusão com arquivo de recuperação e limite de operações.
-- Build e 66 testes da aplicação aprovados após as atualizações; teste adicional de inicialização do Firebase Auth sem require(esm) aprovado (67 casos no total).
+- Build e 83 testes aprovados na versão com Firebase Dev separado, incluindo inicialização do Firebase Auth sem require(esm), capa padrão, proteção contra sobrescrita do snapshot e bloqueio de upload no ambiente sem Storage.
 - Integração no preview corrigido: login Google da conta autorizada, leitura dos nove imóveis, upload de imagem local não pessoal pela API e salvamento de imóvel aprovados após fechar as regras. A imagem de teste foi retirada da galeria e a configuração original restaurada; o arquivo permanece no prefixo de teste do Storage, conforme a retenção de arquivos para recuperação. Acesso sem token retorna mensagem de autenticação, sem erro de inicialização.
 - Os testes com mocks não substituem os testes integrados; manter a validação de login e upload em futuras atualizações.
 
@@ -49,3 +49,10 @@ Referência: https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educat
 A busca no histórico Git encontrou duas chaves privadas em backend/serviceAccountKey.json (commits antigos). Apenas project_id, client_email e private_key_id foram examinados; os valores privados não foram exibidos nem usados para autenticar.
 No Google Cloud, ambas as chaves correspondentes estão Disabled, com motivo Exposta. Não se confirmou uso indevido nem vazamento de uma chave atualmente ativa. As outras chaves listadas não foram revogadas, pois é necessário identificar seu uso antes de uma rotação.
 O arquivo permanece recuperável no histórico; limpar o histórico sozinho não substitui revogar credenciais. Foram acrescentadas exclusões de arquivos de credenciais ao .gitignore.
+
+## Firebase Dev separado
+O projeto catalogo-imoveis-dev foi criado no plano Spark, sem faturamento. Preview da branch feature/painel-administrativo e Development usam credenciais próprias, guardadas como Secret no Vercel. Production não recebeu essas variáveis. A credencial Dev conseguiu ler seu próprio Firestore e foi recusada ao tentar ler imoveis no projeto de produção (PERMISSION_DENIED, código 7). Leitura anônima direta do Firestore Dev retorna HTTP 403.
+
+Firebase Authentication Google foi habilitado e o login real da conta de teste foi validado no preview. A massa inicial contém nove imóveis, somente campos públicos; não há conexão permanente com o Firestore de produção para fazer a cópia. O teste real de cadastro sem foto e edição de preço passou. O registro temporário foi arquivado por limpeza controlada via SDK, preservando recuperação e deixando nove imóveis no catálogo.
+
+Storage Dev não foi provisionado, respeitando a decisão do usuário de não ativar faturamento. A API rejeita uploads nesse ambiente e o painel informa a indisponibilidade; cadastros sem fotos usam a capa padrão. A chave extra criada na tentativa inicial de download foi excluída com autorização explícita, preservando somente a credencial efetivamente usada. O JSON baixado pelo usuário continua fora do repositório.

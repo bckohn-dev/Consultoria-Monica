@@ -2,29 +2,31 @@
 
 A mesma API é executada em cada ambiente. A seleção dos dados ocorre no servidor; não depende da URL nem de uma opção enviada pelo navegador.
 
-| Ambiente Vercel | Catálogo | Lixeira | Novas imagens |
-| --- | --- | --- | --- |
-| Production | imoveis | imoveis_lixeira | imoveis/ |
-| Preview (branches) | imoveis_preview | imoveis_preview_lixeira | imoveis-preview/ |
-| Development ou ambiente ausente/desconhecido | imoveis_dev | imoveis_dev_lixeira | imoveis-dev/ |
+| Ambiente Vercel | Projeto Firebase configurado | Catálogo | Lixeira | Novas imagens |
+| --- | --- | --- | --- | --- |
+| Production | catalogo-imoveis (sem alteração) | imoveis | imoveis_lixeira | imoveis/ |
+| Preview da branch feature/painel-administrativo | catalogo-imoveis-dev | imoveis_preview | imoveis_preview_lixeira | Desativadas |
+| Development | catalogo-imoveis-dev | imoveis_dev | imoveis_dev_lixeira | Desativadas |
+
+Ambiente ausente ou desconhecido seleciona a coleção de Development. O prefixo imoveis-dev/ está preparado para eventual ativação futura do Storage; não existe bucket Dev provisionado nesta versão. As variáveis de Preview foram configuradas especificamente para a branch indicada; outras branches não são migradas automaticamente.
 
 Somente VERCEL_ENV=production seleciona o catálogo publicado. Nunca use esse valor em execução local. Os limites de escrita também usam identificadores separados por ambiente.
 
 ## Espelhamento
 
-No painel de teste vazio, o botão “Copiar imóveis atuais para o teste” cria uma cópia inicial do catálogo. A cópia é executada em lote atômico, não sobrescreve documentos existentes e é bloqueada em Production. O catálogo de origem é apenas lido; alterações posteriores no teste não são sincronizadas de volta. A cópia não é atualizada continuamente, preservando os cenários de teste.
+No painel de teste vazio, o botão “Copiar imóveis atuais para o teste” cria uma cópia inicial a partir do snapshot público preparado. A cópia é executada em lote atômico, não sobrescreve documentos existentes e é bloqueada em Production. Alterações posteriores no teste não são sincronizadas de volta. A cópia não é atualizada continuamente, preservando os cenários de teste.
 
-As fotos já publicadas continuam referenciadas por URLs de leitura; uploads novos usam o prefixo do ambiente. Remover um imóvel do teste não apaga os arquivos originais. O preview atual já está preenchido; a coleção local só será preenchida ao usar o botão em Development.
+As fotos já publicadas continuam referenciadas por URLs públicas de leitura. Não há credencial de produção no ambiente Dev para alterá-las. Remover um imóvel do teste não apaga os arquivos originais. O preview atual já está preenchido; a coleção local só será preenchida ao usar o botão em Development.
 
 Para a API local, use `npm run dev:vercel`, com as variáveis de servidor configuradas para Development. `npm run dev` executa apenas o frontend Vite. Fazer build do frontend não cria nem copia um banco: as funções de API precisam estar em execução.
 
-## Isolamento completo recomendado
+## Isolamento entre projetos
 
-A configuração atual separa coleções e caminhos dentro do projeto Firebase existente; compartilha credenciais, autenticação, quotas e infraestrutura. Isso protege os fluxos normais do aplicativo, mas não equivale a dois projetos fisicamente separados. Todos os previews de branches compartilham o catálogo de Preview.
+O preview desta branch e Development agora usam um projeto Firebase diferente do de Production, com autenticação, banco, quotas e credenciais próprios. Os dois ambientes de teste compartilham o projeto Dev, mas mantêm coleções distintas. A credencial Dev foi testada contra o Firestore de produção e recebeu PERMISSION_DENIED (código 7).
 
-Para uma barreira mais forte, criar um segundo projeto Firebase exclusivo de desenvolvimento e configurar no Vercel apenas os ambientes Preview/Development com credenciais desse projeto. Production deve manter as credenciais atuais. Separar também o bucket e a configuração Firebase Auth do cliente, autorizar os domínios necessários e aplicar regras restritivas. A conta de serviço de teste não deve ter acesso ao projeto de produção.
+Production mantém suas credenciais anteriores. O Firebase Auth do cliente é selecionado pela configuração pública do respectivo ambiente. O domínio do preview e localhost estão autorizados somente no fluxo necessário de testes, e as regras Dev negam acesso direto aos dados.
 
-Ao migrar para outro projeto, o botão de cópia lê somente o projeto configurado naquele ambiente; portanto a carga inicial de produção deve ser uma importação explícita de campos públicos, feita uma vez por uma ferramenta confiável. Não conceder acesso permanente à produção à API de teste para fazer espelhamento automático.
+Não conceder acesso permanente à produção à API de teste para fazer espelhamento automático. Uma atualização futura da massa de testes deve importar explicitamente campos públicos e preservar cenários de teste existentes.
 
 ## Projeto Dev criado em 1/11/2026
 
@@ -37,6 +39,8 @@ Ao migrar para outro projeto, o botão de cópia lê somente o projeto configura
 - FIREBASE_EXPECTED_PROJECT_ID=catalogo-imoveis-dev faz o servidor recusar credenciais configuradas para outro projeto.
 - VITE_FIREBASE_CONFIG seleciona a configuração pública do cliente por ambiente. Nunca usar prefixo VITE_ para chaves privadas.
 
-Pendência de conexão: o download automatizado da chave do projeto Dev não ficou disponível. Foi solicitado ao usuário baixar o JSON localmente pelo Chrome/Brave; nenhuma chave privada foi impressa ou adicionada ao repositório. Até a configuração e validação das credenciais do Dev no Vercel, o preview existente continua usando as coleções de teste do projeto anterior. Não considerar a migração concluída só porque o projeto novo foi criado.
+Conexão concluída: a credencial fornecida localmente pelo usuário foi configurada como Secret no Vercel para o Preview desta branch e Development. A chave extra da tentativa inicial de download foi excluída com autorização específica; ficou somente a credencial efetivamente instalada. Nenhuma chave privada foi impressa ou adicionada ao repositório. Os valores foram enviados ao CLI sem quebras de linha adicionais de pipelines PowerShell.
+
+Validação integrada: login Google da conta autorizada; nove imóveis copiados atomicamente para o projeto Dev; cadastro pelo painel sem foto com capa padrão; edição de preço conferida no banco Dev; registro temporário arquivado por limpeza controlada via SDK e retirado do catálogo, restando nove imóveis. Essa limpeza não foi um teste do botão de exclusão da interface; a API de exclusão permanece coberta pelos testes automatizados. Build e 83 testes aprovados na preparação desta versão.
 
 Antes da promoção para main: conferir a conta final da proprietária, o ADMIN_EMAILS de Production e o fluxo real no domínio próprio. As credenciais e flags de Dev não devem ser copiadas para Production.
