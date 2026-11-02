@@ -20,7 +20,7 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior(to, from, savedPosition) { return savedPosition || { top: 0 } },
+  scrollBehavior(to, from, savedPosition) { return savedPosition || (to.hash ? { el: to.hash, top: 24 } : { top: 0 }) },
 });
 
 router.beforeEach(async to => {

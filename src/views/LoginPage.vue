@@ -1,6 +1,6 @@
 <template>
   <div class="site-page"><Header />
-    <main class="admin-login-shell">
+    <main id="conteudo" tabindex="-1" class="admin-login-shell">
       <section class="admin-login-card" aria-labelledby="login-title">
         <p class="eyebrow">ACESSO RESTRITO</p><h1 id="login-title">Seu catálogo,<br />sob seu cuidado.</h1>
         <p class="admin-muted">Entre com a conta autorizada para gerenciar os imóveis.</p>

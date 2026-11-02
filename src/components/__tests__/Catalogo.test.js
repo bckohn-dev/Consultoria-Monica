@@ -132,3 +132,30 @@ describe('Integridade da busca', () => {
     expect(axios.get).toHaveBeenCalledTimes(1)
   })
 })
+
+
+describe('Filtros selecionados', () => {
+  beforeEach(() => vi.resetAllMocks())
+  it('remove apenas a opção escolhida e preserva os demais filtros', async () => {
+    axios.get.mockResolvedValue({ data: [{ id: '1', nome: 'Apto A' }] })
+    render(Catalogo)
+    await screen.findByText('Apto A')
+    await fireEvent.update(screen.getByLabelText('Quartos'), '2')
+    await fireEvent.update(screen.getByLabelText('Garagem'), 'true')
+    await fireEvent.click(screen.getByRole('button', { name: 'Remover filtro: 2 quartos' }))
+    expect(screen.getByLabelText('Quartos').value).toBe('')
+    expect(screen.getByLabelText('Garagem').value).toBe('true')
+    expect(axios.get.mock.lastCall[1].params).toEqual({ garagem: 'true' })
+  })
+  it('associa erros de faixa de preço aos dois campos', async () => {
+    axios.get.mockResolvedValue({ data: [] })
+    render(Catalogo)
+    await screen.findByText('Nenhum imóvel encontrado.')
+    const min = screen.getByLabelText('Preço mínimo (R$)'), max = screen.getByLabelText('Preço máximo (R$)')
+    await fireEvent.update(min, '500000')
+    await fireEvent.update(max, '100000')
+    await fireEvent.click(screen.getByRole('button', { name: 'Buscar imóveis' }))
+    expect(min.getAttribute('aria-invalid')).toBe('true')
+    expect(max.getAttribute('aria-describedby')).toBe(screen.getByRole('alert').id)
+  })
+})

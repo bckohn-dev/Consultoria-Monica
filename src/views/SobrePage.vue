@@ -1,7 +1,7 @@
 <template>
   <div class="site-page">
     <Header />
-    <main id="conteudo" class="about-shell">
+    <main id="conteudo" tabindex="-1" class="about-shell">
       <section class="about-intro" aria-labelledby="about-title">
         <div><p class="eyebrow">SOBRE A MÔNICA CONSULTORIA</p><h1 id="about-title">Imóveis conectam.<br /><em>Pessoas fazem a diferença.</em></h1></div>
         <div class="about-intro-copy"><p>Encontrar um imóvel é dar espaço a novos planos. Na Mônica Consultoria, ajudamos você nessa escolha com atendimento personalizado, transparência e proximidade.</p></div>

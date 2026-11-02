@@ -1,12 +1,13 @@
 <template>
-  <header class="site-header">
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <header class="site-header" @keydown.esc="fecharMenu">
     <div class="header-inner">
       <router-link to="/" class="brand-lockup" aria-label="Mônica Consultoria — início">
         <img :src="Logo" class="brand-symbol" alt="Logo MC" width="66" height="66" />
         <span class="brand-wordmark"><strong>Mônica</strong><span>Consultoria imobiliária</span></span>
       </router-link>
-      <button class="menu-toggle" @click="menuAberto = !menuAberto" :aria-expanded="menuAberto" aria-controls="primary-nav" aria-label="Abrir menu de navegação"><X v-if="menuAberto" :size="22" /><Menu v-else :size="22" /></button>
-      <nav id="primary-nav" class="primary-nav" :class="{ 'is-open': menuAberto }" aria-label="Navegação principal" @keydown.esc="menuAberto = false">
+      <button ref="menuToggle" class="menu-toggle" @click="menuAberto = !menuAberto" :aria-expanded="menuAberto" aria-controls="primary-nav" :aria-label="menuAberto ? 'Fechar menu de navegação' : 'Abrir menu de navegação'"><X v-if="menuAberto" :size="22" /><Menu v-else :size="22" /></button>
+      <nav id="primary-nav" class="primary-nav" :class="{ 'is-open': menuAberto }" aria-label="Navegação principal">
         <router-link v-for="item in menu" :key="item.rota" :to="item.rota" @click="menuAberto = false">{{ item.nome }}</router-link>
         <button ref="contactTrigger" class="header-contact" @click="abrirContato">Contato <ArrowUpRight :size="16" aria-hidden="true" /></button>
       </nav>
@@ -32,17 +33,23 @@ import { ref, watch, onBeforeUnmount } from 'vue'
 import { Menu, X, MessageCircle, Mail, ArrowUpRight } from 'lucide-vue-next'
 import Logo from '@/assets/brand-symbol.svg'
 const emit = defineEmits(['toggle-menu'])
-const menuAberto = ref(false), dialog = ref(null), contactTrigger = ref(null)
+const menuAberto = ref(false), dialog = ref(null), contactTrigger = ref(null), menuToggle = ref(null)
 const menu = [{nome:'Home',rota:'/'},{nome:'Catálogo',rota:'/catalogo'},{nome:'Sobre',rota:'/sobre'}]
 let previousOverflow = ''
 watch(menuAberto, value => emit('toggle-menu', value))
+function fecharMenu(event) {
+  if (!menuAberto.value) return
+  event.preventDefault()
+  menuAberto.value = false
+  menuToggle.value?.focus()
+}
 function abrirContato() {
   menuAberto.value = false
   previousOverflow = document.body.style.overflow
   dialog.value.showModal()
   document.body.style.overflow = 'hidden'
 }
-function aoFechar() { document.body.style.overflow = previousOverflow; contactTrigger.value?.focus() }
+function aoFechar() { document.body.style.overflow = previousOverflow; (window.matchMedia?.('(max-width: 680px)').matches ? menuToggle.value : contactTrigger.value)?.focus() }
 function fecharContato() { dialog.value.close() }
 function fecharFora(event) {
   if (event.target !== dialog.value) return

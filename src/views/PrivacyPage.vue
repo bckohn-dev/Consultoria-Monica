@@ -1,5 +1,5 @@
 <template>
-  <div class="site-page"><Header /><main id="conteudo" class="privacy-shell">
+  <div class="site-page"><Header /><main id="conteudo" tabindex="-1" class="privacy-shell">
     <p class="eyebrow">TRANSPARÊNCIA E CUIDADO</p><h1>Privacidade e cookies</h1><p class="privacy-date">Atualizado em 1º de novembro de 2026</p>
     <p>Esta página explica como a Mônica Consultoria Imobiliária trata dados no site e no atendimento iniciado por você.</p>
     <section><h2>Quem é responsável</h2><p>Mônica Consultoria Imobiliária, CRECI SP 266907. Para questões sobre seus dados, escreva para <a href="mailto:monicanogueiravendas@gmail.com">monicanogueiravendas@gmail.com</a>.</p></section>
