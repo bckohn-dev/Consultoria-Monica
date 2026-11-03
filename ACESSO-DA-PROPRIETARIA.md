@@ -23,3 +23,7 @@ Quem receber o link ainda precisa de token Firebase válido, não revogado, e-ma
 Painel Dev: https://consultoria-monica-git-development-bckohn-devs-projects.vercel.app/gestao-monica. As contas xdbruninhodx@gmail.com e monicanogueiravendas@gmail.com estão autorizadas no teste. O login real de Bruno foi validado nesse endereço.
 
 Antes da publicação, definir ADMIN_EMAILS de Production com as contas aprovadas pelo proprietário e autorizar mcnimobiliaria.com.br no Firebase catalogo-imoveis. A inspeção confirmou que essas configurações ainda estavam pendentes em produção.
+
+## Configuração de produção concluída — 03/11/2026
+
+O proprietário aprovou Bruno e Mônica também em produção. ADMIN_EMAILS de Production foi configurado com xdbruninhodx@gmail.com e monicanogueiravendas@gmail.com. O domínio mcnimobiliaria.com.br foi autorizado no Firebase catalogo-imoveis, preservando os domínios existentes; o provedor Google está ativo. Essa atualização substitui as pendências de configuração registradas acima. Não foi feito deploy ou merge de produção: a variável será aplicada no próximo deploy aprovado. Após publicar, acessar https://mcnimobiliaria.com.br/gestao-monica e entrar com uma dessas contas Google.

@@ -12,12 +12,12 @@
 
 ## Limitações e pendências
 
-- Exclusão pela interface iniciada no registro temporário, aguardando confirmação na janela do navegador. Conferir retorno a nove imóveis e arquivo na lixeira Dev antes de declarar teste real concluído.
+- Exclusão pela interface iniciou a confirmação, mas a janela não ficou disponível ao usuário. Limpeza concluída por transação SDK exclusivamente em catalogo-imoveis-dev: registro temporário ausente, uma cópia na lixeira e nove imóveis no catálogo. Isso valida a limpeza e recuperação, não a confirmação final da interface; os testes automatizados cobrem confirmar/cancelar.
 - Upload real indisponível no Dev por decisão de manter Storage/faturamento desativado. API de upload verificada com armazenamento simulado; isso não comprova upload no bucket de produção.
 - Login real da Mônica deve ser validado por ela; sua conta está na lista Dev.
-- Production ainda precisa de ADMIN_EMAILS com as contas aprovadas e do domínio mcnimobiliaria.com.br autorizado para OAuth.
+- Configuração de Production concluída com autorização explícita: ADMIN_EMAILS contém Bruno e Mônica; mcnimobiliaria.com.br autorizado no Firebase catalogo-imoveis, preservando os domínios anteriores. Google confirmado como ativado no console. As variáveis terão efeito no próximo deploy; não foi disparado deploy de produção.
 - A revisão automática rejeitou baixar secrets de Production. Inspeção feita por configuração pública, nomes das variáveis e API pública; nenhuma credencial de produção baixada/exibida.
 
 ## Publicação
 
-PR para main deve permanecer como rascunho enquanto faltarem configurações e validações acima. O merge dispara deploy de produção; abrir o PR não publica. Preservar credenciais/dados de Production, sem copiar variáveis de Dev. Fazer validação controlada de login e upload no domínio próprio após publicação aprovada.
+Configurações de publicação concluídas e PR para main pronto para revisão, com as limitações de testes descritas acima. O merge dispara deploy de produção; abrir o PR não publica. Preservar credenciais/dados de Production, sem copiar variáveis de Dev. Fazer validação controlada de login e upload no domínio próprio após publicação aprovada.
