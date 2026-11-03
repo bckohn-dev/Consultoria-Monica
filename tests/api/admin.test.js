@@ -20,6 +20,16 @@ beforeEach(()=>{
 })
 afterEach(()=>vi.unstubAllEnvs())
 describe('Protected admin API',()=>{
+  it('stores an allowed image with the preview prefix and cache metadata',async()=>{
+    vi.stubEnv('FIREBASE_STORAGE_ENABLED','true')
+    const bytes=Buffer.from([0xff,0xd8,0xff,0xdb])
+    const res=response();await handler({method:'POST',query:{action:'upload'},body:{type:'image/jpeg',data:bytes.toString('base64')}},res)
+    expect(res.status).toHaveBeenCalledWith(201)
+    expect(mocks.save).toHaveBeenCalledWith(bytes,expect.objectContaining({resumable:false,metadata:expect.objectContaining({contentType:'image/jpeg',cacheControl:'public, max-age=31536000, immutable'})}))
+    expect(res.json.mock.calls[0][0].url).toContain('imoveis-preview%2F')
+    expect(mocks.create).not.toHaveBeenCalled()
+    expect(mocks.update).not.toHaveBeenCalled()
+  })
   it('rejects uploads when storage is disabled for a no-billing sandbox',async()=>{
     vi.stubEnv('FIREBASE_STORAGE_ENABLED','false')
     const res=response();await handler({method:'POST',query:{action:'upload'},body:{}},res)

@@ -17,3 +17,9 @@ No painel, use o lápis ao lado do imóvel, altere os campos e clique em “Salv
 A entrada não aparece no menu ou rodapé. As rotas reservadas enviam noindex/noarchive e no-store; /admin e /login antigos passam a retornar 404. Essas medidas reduzem exposição, mas não tornam a URL secreta ou indetectável.
 
 Quem receber o link ainda precisa de token Firebase válido, não revogado, e-mail verificado e autorização ADMIN_EMAILS no servidor. O painel fica em /gestao-monica/imoveis e consulta a autorização antes de abrir. A API repete essa verificação em cada operação; conhecer o caminho não permite editar imóveis.
+
+## Validação para publicação — 03/11/2026
+
+Painel Dev: https://consultoria-monica-git-development-bckohn-devs-projects.vercel.app/gestao-monica. As contas xdbruninhodx@gmail.com e monicanogueiravendas@gmail.com estão autorizadas no teste. O login real de Bruno foi validado nesse endereço.
+
+Antes da publicação, definir ADMIN_EMAILS de Production com as contas aprovadas pelo proprietário e autorizar mcnimobiliaria.com.br no Firebase catalogo-imoveis. A inspeção confirmou que essas configurações ainda estavam pendentes em produção.

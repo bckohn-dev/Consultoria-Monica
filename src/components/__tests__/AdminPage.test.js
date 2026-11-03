@@ -1,5 +1,5 @@
 import { render,screen,fireEvent,waitFor } from '@testing-library/vue'
-import { describe,it,expect,vi,beforeEach } from 'vitest'
+import { describe,it,expect,vi,beforeEach,afterEach } from 'vitest'
 import { createRouter,createMemoryHistory } from 'vue-router'
 const request=vi.hoisted(()=>vi.fn())
 vi.mock('../../services/adminApi',()=>({adminAuth:{currentUser:{email:'owner@example.com'}},adminRequest:request,prepareImage:vi.fn()}))
@@ -16,6 +16,8 @@ beforeEach(()=>{
   vi.clearAllMocks()
   request.mockImplementation(async method=>method==='patch'?{ok:true}:{preview:true,imoveis:[property]})
 })
+afterEach(()=>vi.restoreAllMocks())
+
 describe('Painel administrativo',()=>{
   it('hides upload when the test environment has no Storage enabled',async()=>{
     request.mockResolvedValue({preview:true,uploadsEnabled:false,imoveis:[property]})
@@ -45,5 +47,49 @@ describe('Painel administrativo',()=>{
     await fireEvent.click(screen.getByRole('button',{name:'Salvar imóvel'}))
     await waitFor(()=>expect(request).toHaveBeenCalledWith('post',expect.objectContaining({data:expect.objectContaining({foto:'/default-placeholder.jpg',fotos:[]})})))
     expect(await screen.findByText('Imóvel salvo. O catálogo já está atualizado.')).toBeTruthy()
+  })
+})
+
+
+describe('Admin editing safeguards',()=>{
+  it('keeps unsaved changes when discard is refused',async()=>{
+    vi.spyOn(window,'confirm').mockReturnValue(false)
+    await setup()
+    await fireEvent.click(await screen.findByRole('button',{name:'Editar Apartamento atual'}))
+    await fireEvent.update(screen.getByLabelText('Nome do imóvel'),'Alteração não salva')
+    await fireEvent.click(screen.getByRole('button',{name:'Novo imóvel'}))
+    expect(screen.getByLabelText('Nome do imóvel').value).toBe('Alteração não salva')
+    expect(window.confirm).toHaveBeenCalledOnce()
+    expect(request.mock.calls.some(([method])=>method==='post'||method==='patch')).toBe(false)
+  })
+  it('does not delete when the owner cancels confirmation',async()=>{
+    vi.spyOn(window,'confirm').mockReturnValue(false)
+    await setup()
+    await fireEvent.click(await screen.findByRole('button',{name:'Excluir Apartamento atual'}))
+    expect(request.mock.calls.some(([method])=>method==='delete')).toBe(false)
+  })
+  it('deletes by document ID only after confirmation',async()=>{
+    vi.spyOn(window,'confirm').mockReturnValue(true)
+    await setup()
+    await fireEvent.click(await screen.findByRole('button',{name:'Excluir Apartamento atual'}))
+    await waitFor(()=>expect(request).toHaveBeenCalledWith('delete',{params:{id:'original-doc'}}))
+    expect(await screen.findByText(/Imóvel retirado do catálogo/)).toBeTruthy()
+  })
+  it('keeps edits and exposes a save failure instead of success',async()=>{
+    await setup()
+    await fireEvent.click(await screen.findByRole('button',{name:'Editar Apartamento atual'}))
+    await fireEvent.update(screen.getByLabelText('Nome do imóvel'),'Preservar edição')
+    request.mockRejectedValueOnce(new Error('Falha de teste ao salvar'))
+    await fireEvent.click(screen.getByRole('button',{name:'Salvar imóvel'}))
+    expect((await screen.findByRole('alert')).textContent).toContain('Falha de teste ao salvar')
+    expect(screen.getByLabelText('Nome do imóvel').value).toBe('Preservar edição')
+    expect(screen.queryByText('Imóvel salvo. O catálogo já está atualizado.')).toBeNull()
+  })
+  it('changes cover order without uploading or losing existing photos',async()=>{
+    await setup()
+    await fireEvent.click(await screen.findByRole('button',{name:'Editar Apartamento atual'}))
+    await fireEvent.click(screen.getByRole('button',{name:'Usar foto 2 como capa'}))
+    await fireEvent.click(screen.getByRole('button',{name:'Salvar imóvel'}))
+    await waitFor(()=>expect(request).toHaveBeenCalledWith('patch',expect.objectContaining({data:expect.objectContaining({foto:property.fotos[0],fotos:[property.fotos[0],property.foto]})})))
   })
 })

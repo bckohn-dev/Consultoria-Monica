@@ -48,3 +48,7 @@ Antes da promoção para main: conferir a conta final da proprietária, o ADMIN_
 ## Proteção de novas branches Preview (03/11/2026)
 
 O servidor recusa inicialização quando VERCEL_ENV=preview e FIREBASE_ADMIN_PROJECT_ID não é catalogo-imoveis-dev, mesmo sem FIREBASE_EXPECTED_PROJECT_ID. Uma nova branch precisa receber configuração Dev própria antes de testar APIs. A configuração específica de feature/painel-administrativo não é automaticamente herdada por outra branch. Este PR não copia Secrets nem altera Production.
+
+## Development configurada em 03/11/2026
+
+A development recebeu nove variáveis específicas de Preview, com frontend e API em catalogo-imoveis-dev e coleção imoveis_preview. Compartilha esse catálogo de teste com feature/painel-administrativo. Os dois domínios estáveis estão autorizados no Firebase Dev; novas branches não herdam suas variáveis. Ambos os previews permitem as contas de Bruno e Mônica. Production não foi modificada por essa configuração.
