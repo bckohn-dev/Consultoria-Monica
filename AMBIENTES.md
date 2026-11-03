@@ -44,3 +44,7 @@ Conexão concluída: a credencial fornecida localmente pelo usuário foi configu
 Validação integrada: login Google da conta autorizada; nove imóveis copiados atomicamente para o projeto Dev; cadastro pelo painel sem foto com capa padrão; edição de preço conferida no banco Dev; registro temporário arquivado por limpeza controlada via SDK e retirado do catálogo, restando nove imóveis. Essa limpeza não foi um teste do botão de exclusão da interface; a API de exclusão permanece coberta pelos testes automatizados. Build e 83 testes aprovados na preparação desta versão.
 
 Antes da promoção para main: conferir a conta final da proprietária, o ADMIN_EMAILS de Production e o fluxo real no domínio próprio. As credenciais e flags de Dev não devem ser copiadas para Production.
+
+## Proteção de novas branches Preview (03/11/2026)
+
+O servidor recusa inicialização quando VERCEL_ENV=preview e FIREBASE_ADMIN_PROJECT_ID não é catalogo-imoveis-dev, mesmo sem FIREBASE_EXPECTED_PROJECT_ID. Uma nova branch precisa receber configuração Dev própria antes de testar APIs. A configuração específica de feature/painel-administrativo não é automaticamente herdada por outra branch. Este PR não copia Secrets nem altera Production.

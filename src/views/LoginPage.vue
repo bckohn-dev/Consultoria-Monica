@@ -23,6 +23,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { OWNER_PANEL_PATH } from '../config/adminRoutes.js'
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, setPersistence, browserSessionPersistence, signOut } from 'firebase/auth'
 import { adminAuth, adminRequest } from '../services/adminApi'
 import { ArrowUpRight } from 'lucide-vue-next'
@@ -49,7 +50,7 @@ async function login(action) {
     }
     stage='authorization'
     await adminRequest('get',{params:{action:'session'}})
-    await router.replace('/admin')
+    await router.replace(OWNER_PANEL_PATH)
   } catch (e) {
     console.warn('Admin login failure '+JSON.stringify({stage,code:typeof e.code==='string'?e.code:'unknown'}))
     if (e.code !== 'auth/popup-closed-by-user' && e.code !== 'auth/cancelled-popup-request') error.value=authMessage(e)

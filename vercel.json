@@ -19,6 +19,23 @@
       "continue": true
     },
     {
+      "src": "/gestao-monica(?:/.*)?",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow, noarchive",
+        "Cache-Control": "private, no-store"
+      },
+      "continue": true
+    },
+    {
+      "src": "/(?:admin|login)(?:/.*)?",
+      "headers": {
+        "X-Robots-Tag": "noindex, nofollow, noarchive",
+        "Cache-Control": "private, no-store"
+      },
+      "dest": "/index.html",
+      "status": 404
+    },
+    {
       "src": "/api/imoveis/([^/]+)$",
       "dest": "/api/imoveis/[id].js"
     },

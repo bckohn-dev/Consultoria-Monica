@@ -9,6 +9,11 @@ const {
   FIREBASE_STORAGE_BUCKET,
 } = process.env;
 
+// A new Preview branch must never inherit Production Firebase credentials.
+if (process.env.VERCEL_ENV === 'preview' && FIREBASE_ADMIN_PROJECT_ID !== 'catalogo-imoveis-dev') {
+  throw new Error('Preview requires isolated Firebase Dev credentials.');
+}
+
 // Fail closed if deployment credentials point to the wrong Firebase project.
 if (process.env.FIREBASE_EXPECTED_PROJECT_ID && FIREBASE_ADMIN_PROJECT_ID !== process.env.FIREBASE_EXPECTED_PROJECT_ID) {
   throw new Error('Firebase project does not match the configured environment.');

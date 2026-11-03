@@ -5,10 +5,11 @@ const request=vi.hoisted(()=>vi.fn())
 vi.mock('../../services/adminApi',()=>({adminAuth:{currentUser:{email:'owner@example.com'}},adminRequest:request,prepareImage:vi.fn()}))
 vi.mock('firebase/auth',()=>({signOut:vi.fn()}))
 import Admin from '../../views/AdminPage.vue'
+import { OWNER_ENTRY_PATH, OWNER_PANEL_PATH } from '../../config/adminRoutes.js'
 const property={docId:'original-doc',id:'public-id',nome:'Apartamento atual',preco:100,areaMin:30,areaMax:40,quartos:2,foto:'https://example.com/cover.jpg',fotos:['https://example.com/second.jpg'],marca:'vibra',descricao:'Descrição',destaque:false}
 async function setup(){
-  const router=createRouter({history:createMemoryHistory(),routes:[{path:'/admin',component:Admin},{path:'/catalogo',component:{template:'<div />'}},{path:'/login',component:{template:'<div />'}}]})
-  await router.push('/admin')
+  const router=createRouter({history:createMemoryHistory(),routes:[{path:OWNER_PANEL_PATH,component:Admin},{path:'/catalogo',component:{template:'<div />'}},{path:OWNER_ENTRY_PATH,component:{template:'<div />'}}]})
+  await router.push(OWNER_PANEL_PATH)
   return render(Admin,{global:{plugins:[router]}})
 }
 beforeEach(()=>{

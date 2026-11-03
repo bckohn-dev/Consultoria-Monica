@@ -56,6 +56,7 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { onBeforeRouteLeave, useRouter } from 'vue-router'
 import { signOut } from 'firebase/auth'
 import { adminAuth, adminRequest, prepareImage } from '../services/adminApi'
+import { OWNER_ENTRY_PATH } from '../config/adminRoutes.js'
 import { Plus, Pencil, Trash2, LogOut, ArrowUpRight, ImagePlus, X, Check, FlaskConical } from 'lucide-vue-next'
 const router=useRouter()
 const items=ref([]), search=ref(''), loading=ref(true), saving=ref(false), uploading=ref(false), preview=ref(false)
@@ -152,7 +153,7 @@ async function seed(){
   catch(e){error.value=e.message}
   finally{saving.value=false}
 }
-async function logout(){if(!mayDiscard())return;baseline.value=snapshot();await signOut(adminAuth);await router.replace('/login')}
+async function logout(){if(!mayDiscard())return;baseline.value=snapshot();await signOut(adminAuth);await router.replace(OWNER_ENTRY_PATH)}
 function beforeUnload(e){if(dirty.value || saving.value || uploading.value){e.preventDefault();e.returnValue=''}}
 onMounted(()=>{load();window.addEventListener('beforeunload',beforeUnload)})
 onBeforeUnmount(()=>window.removeEventListener('beforeunload',beforeUnload))

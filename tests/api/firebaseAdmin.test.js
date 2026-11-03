@@ -21,3 +21,28 @@ describe('Firebase private key formatting', () => {
     expect(sdk.cert.mock.calls[0][0].privateKey).toBe('first\nsecond')
   })
 })
+
+
+describe('Preview Firebase isolation', () => {
+  it.each(['catalogo-imoveis', ''])('refuses unsafe or missing Preview project %s', async project => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('FIREBASE_ADMIN_PROJECT_ID', project)
+    vi.stubEnv('FIREBASE_EXPECTED_PROJECT_ID', '')
+    await expect(import('../../api/_firebaseAdmin.js')).rejects.toThrow('Preview requires isolated')
+    expect(sdk.initializeApp).not.toHaveBeenCalled()
+  })
+  it('accepts the isolated Dev project in Preview', async () => {
+    vi.stubEnv('VERCEL_ENV', 'preview')
+    vi.stubEnv('FIREBASE_ADMIN_PROJECT_ID', 'catalogo-imoveis-dev')
+    vi.stubEnv('FIREBASE_EXPECTED_PROJECT_ID', 'catalogo-imoveis-dev')
+    await import('../../api/_firebaseAdmin.js')
+    expect(sdk.cert).toHaveBeenCalledWith(expect.objectContaining({projectId:'catalogo-imoveis-dev'}))
+  })
+  it('preserves Production project initialization', async () => {
+    vi.stubEnv('VERCEL_ENV', 'production')
+    vi.stubEnv('FIREBASE_ADMIN_PROJECT_ID', 'catalogo-imoveis')
+    vi.stubEnv('FIREBASE_EXPECTED_PROJECT_ID', 'catalogo-imoveis')
+    await import('../../api/_firebaseAdmin.js')
+    expect(sdk.initializeApp).toHaveBeenCalledOnce()
+  })
+})

@@ -56,3 +56,12 @@ O projeto catalogo-imoveis-dev foi criado no plano Spark, sem faturamento. Previ
 Firebase Authentication Google foi habilitado e o login real da conta de teste foi validado no preview. A massa inicial contém nove imóveis, somente campos públicos; não há conexão permanente com o Firestore de produção para fazer a cópia. O teste real de cadastro sem foto e edição de preço passou. O registro temporário foi arquivado por limpeza controlada via SDK, preservando recuperação e deixando nove imóveis no catálogo.
 
 Storage Dev não foi provisionado, respeitando a decisão do usuário de não ativar faturamento. A API rejeita uploads nesse ambiente e o painel informa a indisponibilidade; cadastros sem fotos usam a capa padrão. A chave extra criada na tentativa inicial de download foi excluída com autorização explícita, preservando somente a credencial efetivamente usada. O JSON baixado pelo usuário continua fora do repositório.
+
+## Revisão do acesso reservado — 03/11/2026
+
+- Escopo: código local, testes isolados com Firebase mockado, configuração de rotas e auditoria do lockfile. Nenhum ataque a serviço real, alteração de banco, regra Firebase ou autorização Production nesta revisão.
+- 101 testes em 17 arquivos passaram. Incluem recusa da API antes de acessar o banco em GET/POST/PATCH/DELETE sem autorização; token inválido, e-mail não autorizado/não verificado, revogação e origem; navegação reservada; preservação da indexação pública; Preview recusando projeto Production ou ausente. A build passou.
+- npm audit --package-lock-only --ignore-scripts: zero avisos conhecidos em todos os níveis. Isso não garante ausência de vulnerabilidades desconhecidas.
+- /gestao-monica e /gestao-monica/imoveis ficam fora da navegação pública e recebem X-Robots-Tag noindex/nofollow/noarchive e Cache-Control private/no-store. /admin e /login antigos retornam 404. O endereço pode ser descoberto; a barreira de segurança permanece na API.
+- Conta final confirmada: monicanogueiravendas@gmail.com. ADMIN_EMAILS Production e teste real de entrada dessa conta permanecem pendentes antes da promoção para main.
+- A development remota antiga tem histórico desconectado. O PR une a ancestralidade preservando integralmente a árvore da versão atual validada; não publica produção nem altera automaticamente development.
