@@ -1,0 +1,161 @@
+// src/components/__tests__/Catalogo.test.js
+import { render, fireEvent, screen, waitFor } from '@testing-library/vue'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import Catalogo from '../Catalogo.vue'
+import axios from 'axios'
+
+// Stub minimal do ImovelCard
+vi.mock('../ImovelCard.vue', () => ({
+  default: {
+    props: ['imovel'],
+    template: `<div data-testid="card">{{ imovel.nome }}</div>`
+  }
+}))
+
+vi.mock('axios')
+
+function deferred() {
+  let resolve, reject
+  const promise = new Promise((res, rej) => {
+    resolve = res
+    reject = rej
+  })
+  return { promise, resolve, reject }
+}
+
+describe('Catalogo.vue', () => {
+  const fakeImoveis = [
+    { id: '1', nome: 'Apto A' },
+    { id: '2', nome: 'Casa B' }
+  ]
+
+  beforeEach(() => {
+    vi.resetAllMocks()
+  })
+
+  it('exibe loading e depois lista de imóveis', async () => {
+    const d = deferred()
+    axios.get.mockReturnValueOnce(d.promise)
+
+    render(Catalogo)
+
+    // Loading deve aparecer
+    expect(await screen.findByText('Carregando...')).toBeTruthy()
+
+    // Agora resolve a promise do axios
+    d.resolve({ data: fakeImoveis })
+
+    // E espera que o loading suma e os cards apareçam
+    await waitFor(() => {
+      expect(screen.queryByText('Carregando...')).toBeNull()
+      const cards = screen.getAllByTestId('card')
+      // length via propriedade .length
+      expect(cards.length).toBe(2)
+      expect(cards[0].textContent).toBe('Apto A')
+      expect(cards[1].textContent).toBe('Casa B')
+    })
+  })
+
+  it('exibe mensagem de erro quando a API falha', async () => {
+    axios.get.mockRejectedValueOnce(new Error('fail'))
+
+    render(Catalogo)
+
+    await waitFor(() => {
+      expect(screen.getByText('Erro ao buscar imóveis. Tente novamente.')).toBeTruthy()
+    })
+  })
+
+  it('exibe "Nenhum imóvel encontrado." quando a lista vem vazia', async () => {
+    axios.get.mockResolvedValueOnce({ data: [] })
+
+    render(Catalogo)
+
+    await waitFor(() => {
+      expect(screen.getByText('Nenhum imóvel encontrado.')).toBeTruthy()
+    })
+  })
+
+  it('refaz a busca ao mudar filtro de quartos e limpa filtros no reset', async () => {
+    // 1ª resposta: 1 imóvel
+    axios.get.mockResolvedValueOnce({ data: [fakeImoveis[0]] })
+    render(Catalogo)
+    await waitFor(() => {
+      const cards = screen.getAllByTestId('card')
+      expect(cards.length).toBe(1)
+      expect(cards[0].textContent).toBe('Apto A')
+    })
+
+    // 2ª resposta: nenhum imóvel
+    axios.get.mockResolvedValueOnce({ data: [] })
+    const selects = screen.getAllByRole('combobox')
+    await fireEvent.update(selects[0], '2')
+    await waitFor(() => {
+      expect(screen.getByText('Nenhum imóvel encontrado.')).toBeTruthy()
+    })
+
+    // 3ª resposta: volta 2 imóveis
+    axios.get.mockResolvedValueOnce({ data: fakeImoveis })
+    const btnReset = screen.getAllByRole('button', { name: /limpar filtros/i })[0]
+    await fireEvent.click(btnReset)
+    await waitFor(() => {
+      const cards = screen.getAllByTestId('card')
+      expect(cards.length).toBe(2)
+    })
+
+    // select voltou para vazio
+    expect(selects[0].value).toBe('')
+  })
+})
+
+describe('Integridade da busca', () => {
+  beforeEach(() => vi.resetAllMocks())
+  it('ignora respostas antigas que chegam depois da busca atual', async () => {
+    const old = deferred(), current = deferred()
+    axios.get.mockReturnValueOnce(old.promise).mockReturnValueOnce(current.promise)
+    render(Catalogo)
+    await fireEvent.update(screen.getByLabelText('Quartos'), '2')
+    current.resolve({ data: [{ id: 'novo', nome: 'Resultado atual' }] })
+    await screen.findByText('Resultado atual')
+    old.resolve({ data: [{ id: 'antigo', nome: 'Resultado antigo' }] })
+    await waitFor(() => expect(screen.queryByText('Resultado antigo')).toBeNull())
+    expect(screen.getByText('Resultado atual')).toBeTruthy()
+  })
+  it('não consulta a API com preço mínimo maior que o máximo', async () => {
+    axios.get.mockResolvedValue({ data: [] })
+    render(Catalogo)
+    await screen.findByText('Nenhum imóvel encontrado.')
+    await fireEvent.update(screen.getByLabelText('Preço mínimo (R$)'), '500000')
+    await fireEvent.update(screen.getByLabelText('Preço máximo (R$)'), '100000')
+    await fireEvent.click(screen.getByRole('button', { name: 'Buscar imóveis' }))
+    expect(screen.getByRole('alert').textContent).toContain('faixa de preço válida')
+    expect(axios.get).toHaveBeenCalledTimes(1)
+  })
+})
+
+
+describe('Filtros selecionados', () => {
+  beforeEach(() => vi.resetAllMocks())
+  it('remove apenas a opção escolhida e preserva os demais filtros', async () => {
+    axios.get.mockResolvedValue({ data: [{ id: '1', nome: 'Apto A' }] })
+    render(Catalogo)
+    await screen.findByText('Apto A')
+    await fireEvent.update(screen.getByLabelText('Quartos'), '2')
+    await fireEvent.update(screen.getByLabelText('Garagem'), 'true')
+    await fireEvent.click(screen.getByRole('button', { name: 'Remover filtro: 2 quartos' }))
+    expect(screen.getByLabelText('Quartos').value).toBe('')
+    expect(screen.getByLabelText('Garagem').value).toBe('true')
+    expect(axios.get.mock.lastCall[1].params).toEqual({ garagem: 'true' })
+  })
+  it('associa erros de faixa de preço aos dois campos', async () => {
+    axios.get.mockResolvedValue({ data: [] })
+    render(Catalogo)
+    await screen.findByText('Nenhum imóvel encontrado.')
+    const min = screen.getByLabelText('Preço mínimo (R$)'), max = screen.getByLabelText('Preço máximo (R$)')
+    await fireEvent.update(min, '500000')
+    await fireEvent.update(max, '100000')
+    await fireEvent.click(screen.getByRole('button', { name: 'Buscar imóveis' }))
+    expect(min.getAttribute('aria-invalid')).toBe('true')
+    expect(max.getAttribute('aria-describedby')).toBe(screen.getByRole('alert').id)
+  })
+})

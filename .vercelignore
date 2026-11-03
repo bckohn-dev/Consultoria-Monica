@@ -1,0 +1,16 @@
+# Ignore local development files
+node_modules/
+*.log
+.vscode/
+.env*
+.DS_Store
+
+# Ignore backend dev environment
+backend/
+uploads/
+
+# Ignore local Vite output (should be generated during build)
+dist/
+
+# Cache or OS files
+Thumbs.db

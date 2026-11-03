@@ -1,0 +1,58 @@
+import { propertyCollection } from './_properties.js';
+// /api/destaques.js
+import { db } from './_firebaseAdmin.js';
+
+export default async function handler(req, res) {
+  res.setHeader?.('X-Content-Type-Options','nosniff');
+  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader?.('Allow','GET, HEAD');
+    return res.status(405).json({ error:'Método não permitido.' });
+  }
+  try {
+    const ordenar = (req.query.ordenar ?? 'sim') !== 'nao';
+    let snap;
+
+    // 1) Tenta com orderBy (fica bonito se o índice existir)
+    if (ordenar) {
+      try {
+        snap = await propertyCollection(db)
+          .where('destaque', '==', true)
+          .orderBy('destaqueOrdem', 'asc')
+          .get();
+      } catch (e) {
+        // 2) Se faltar índice, cai pro plano B sem orderBy
+        console.warn('Sem índice para orderBy(destaqueOrdem); usando fallback.', e.message);
+        snap = await propertyCollection(db)
+          .where('destaque', '==', true)
+          .get();
+      }
+    } else {
+      // pedido explícito para não ordenar (ordenar=nao)
+      snap = await propertyCollection(db)
+        .where('destaque', '==', true)
+        .get();
+    }
+
+    if (snap.empty) return res.status(200).json([]);
+
+    // Normaliza os campos esperados pelo carrossel
+    const destaques = snap.docs
+      .map((doc) => {
+        const data = doc.data();
+        // normaliza marca (somente se existir; vazio = sem faixa no front)
+        const marcaRaw = (data.marca ?? '').toString().trim().toLowerCase();
+        return {
+          id: data.id ?? doc.id, // slug público
+          nome: data.nome ?? 'Imóvel',
+          foto: data.foto ?? data.imagens?.[0] ?? null,
+          marca: marcaRaw || ''
+        };
+      })
+      .filter((d) => d.foto); // só envia se tiver imagem
+
+    return res.status(200).json(destaques);
+  } catch (error) {
+    console.error('Erro ao buscar destaques:', error);
+    return res.status(500).json({ error: 'Erro ao buscar destaques' });
+  }
+}

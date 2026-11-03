@@ -1,0 +1,88 @@
+import { render, fireEvent } from '@testing-library/vue';
+import { describe, it, expect, vi } from 'vitest';
+import ImovelCard from '../ImovelCard.vue';
+import { createRouter, createMemoryHistory } from 'vue-router';
+
+// Mock router
+const router = createRouter({
+  history: createMemoryHistory(),
+  routes: [{ path: '/imovel/:id', component: { template: '<div>Detalhes</div>' } }],
+});
+
+const mockImovel = {
+  id: 'apto-001',
+  nome: 'Apartamento Central',
+  preco: 450000,
+  quartos: 2,
+  area: 75,
+  foto: 'https://example.com/img.jpg',
+};
+
+describe('ImovelCard.vue', () => {
+  it('renderiza informações do imóvel corretamente', () => {
+    const { getByText, getByAltText } = render(ImovelCard, {
+      props: { imovel: mockImovel },
+      global: { plugins: [router] },
+    });
+
+    expect(getByText('Apartamento Central')).toBeTruthy();
+    expect(getByText(/450.000,00/)).toBeTruthy();
+    expect(getByText(/Quartos: 2/)).toBeTruthy();
+    expect(getByText(/75 m²/)).toBeTruthy();
+    expect(getByAltText('Apartamento Central')).toBeTruthy();
+    expect(getByAltText('Apartamento Central').closest('a').getAttribute('href')).toBe('/imovel/apto-001');
+  });
+
+  it('mostra imagem de fallback se houver erro na imagem', async () => {
+    const { getByAltText } = render(ImovelCard, {
+      props: { imovel: { ...mockImovel, foto: 'imagem-invalida.jpg' } },
+      global: { plugins: [router] },
+    });
+
+    const img = getByAltText('Apartamento Central');
+    // Simula erro
+    await fireEvent.error(img);
+
+    expect(img.src).toContain('/default-placeholder.jpg');
+  });
+
+  it('link de detalhes mantém navegação e destino nativos', async () => {
+    router.push = vi.fn().mockResolvedValue(undefined);
+
+    const { getByRole } = render(ImovelCard, {
+      props: { imovel: mockImovel },
+      global: { plugins: [router] },
+    });
+
+    const btn = getByRole('link', { name: /ver detalhes/i });
+    expect(btn.getAttribute('href')).toBe('/imovel/apto-001');
+    await fireEvent.click(btn);
+
+    expect(router.push).toHaveBeenCalledWith('/imovel/apto-001');
+  });
+
+  it('mostra "Carregando..." e desativa botão quando loading é true', () => {
+    const { getByText } = render(ImovelCard, {
+      props: {
+        imovel: mockImovel,
+        loading: true,
+      },
+      global: {
+        plugins: [router],
+      },
+    });
+
+    const btn = getByText('Carregando...');
+    expect(btn).toBeTruthy();
+    expect(btn.getAttribute('aria-disabled')).toBe('true');
+    expect(btn.textContent).toMatch(/carregando/i);
+  });
+});
+
+it('renders injected markup as text without creating executable elements', () => {
+ const payload = '<img src=x onerror=alert(1)><script>alert(1)</script>'
+ const { container, getByText } = render(ImovelCard, { props: { imovel: { ...mockImovel, nome: payload } }, global: { plugins: [router] } })
+ expect(getByText(payload)).toBeTruthy()
+ expect(container.querySelector('script')).toBeNull()
+ expect(container.querySelector('img[onerror]')).toBeNull()
+})

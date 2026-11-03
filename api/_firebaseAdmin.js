@@ -1,0 +1,46 @@
+import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
+
+const {
+  FIREBASE_ADMIN_PROJECT_ID,
+  FIREBASE_ADMIN_CLIENT_EMAIL,
+  FIREBASE_ADMIN_PRIVATE_KEY,
+  FIREBASE_STORAGE_BUCKET,
+} = process.env;
+
+// A new Preview branch must never inherit Production Firebase credentials.
+if (process.env.VERCEL_ENV === 'preview' && FIREBASE_ADMIN_PROJECT_ID !== 'catalogo-imoveis-dev') {
+  throw new Error('Preview requires isolated Firebase Dev credentials.');
+}
+
+// Fail closed if deployment credentials point to the wrong Firebase project.
+if (process.env.FIREBASE_EXPECTED_PROJECT_ID && FIREBASE_ADMIN_PROJECT_ID !== process.env.FIREBASE_EXPECTED_PROJECT_ID) {
+  throw new Error('Firebase project does not match the configured environment.');
+}
+
+let app;
+let privateKey = FIREBASE_ADMIN_PRIVATE_KEY;
+
+// Accept PEM line breaks and escaped newlines from environment variable forms.
+if (privateKey) {
+  privateKey = privateKey.replace(/\\+n/g, '\n');
+}
+
+if (!getApps().length) {
+  app = initializeApp({
+    credential: cert({
+      projectId: FIREBASE_ADMIN_PROJECT_ID,
+      clientEmail: FIREBASE_ADMIN_CLIENT_EMAIL,
+      privateKey,
+    }),
+    storageBucket: FIREBASE_STORAGE_BUCKET,
+  });
+} else {
+  app = getApps()[0];
+}
+
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+export { app, db, storage };
