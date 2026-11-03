@@ -1,7 +1,7 @@
 <template>
   <div class="site-page">
     <Header />
-    <main id="conteudo">
+    <main id="conteudo" tabindex="-1">
       <section class="home-hero">
         <div class="hero-copy">
           <p class="eyebrow">MÔNICA CONSULTORIA IMOBILIÁRIA</p>

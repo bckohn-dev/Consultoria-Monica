@@ -1,7 +1,12 @@
-import { render } from '@testing-library/vue';
+import { render as baseRender } from '@testing-library/vue';
 import { describe, it, expect } from 'vitest';
 import Footer from '../Footer.vue';
 
+import { createRouter, createMemoryHistory } from 'vue-router'
+function render(component) {
+  const router=createRouter({history:createMemoryHistory(),routes:[{path:'/',component:{template:'<div />'}},{path:'/catalogo',component:{template:'<div />'}},{path:'/sobre',component:{template:'<div />'}},{path:'/privacidade',component:{template:'<div />'}}]})
+  return baseRender(component,{global:{plugins:[router]}})
+}
 describe('Footer.vue', () => {
   it('renderiza o texto de direitos autorais', () => {
     const { getByText } = render(Footer);

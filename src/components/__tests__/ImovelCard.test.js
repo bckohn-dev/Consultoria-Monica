@@ -46,22 +46,23 @@ describe('ImovelCard.vue', () => {
     expect(img.src).toContain('/default-placeholder.jpg');
   });
 
-  it('botão chama verDetalhes e navega para a rota correta', async () => {
-    router.push = vi.fn();
+  it('link de detalhes mantém navegação e destino nativos', async () => {
+    router.push = vi.fn().mockResolvedValue(undefined);
 
     const { getByRole } = render(ImovelCard, {
       props: { imovel: mockImovel },
       global: { plugins: [router] },
     });
 
-    const btn = getByRole('button', { name: /ver detalhes/i });
+    const btn = getByRole('link', { name: /ver detalhes/i });
+    expect(btn.getAttribute('href')).toBe('/imovel/apto-001');
     await fireEvent.click(btn);
 
     expect(router.push).toHaveBeenCalledWith('/imovel/apto-001');
   });
 
   it('mostra "Carregando..." e desativa botão quando loading é true', () => {
-    const { getByRole } = render(ImovelCard, {
+    const { getByText } = render(ImovelCard, {
       props: {
         imovel: mockImovel,
         loading: true,
@@ -71,9 +72,17 @@ describe('ImovelCard.vue', () => {
       },
     });
 
-    const btn = getByRole('button');
+    const btn = getByText('Carregando...');
     expect(btn).toBeTruthy();
-    expect(btn.disabled).toBe(true);
+    expect(btn.getAttribute('aria-disabled')).toBe('true');
     expect(btn.textContent).toMatch(/carregando/i);
   });
 });
+
+it('renders injected markup as text without creating executable elements', () => {
+ const payload = '<img src=x onerror=alert(1)><script>alert(1)</script>'
+ const { container, getByText } = render(ImovelCard, { props: { imovel: { ...mockImovel, nome: payload } }, global: { plugins: [router] } })
+ expect(getByText(payload)).toBeTruthy()
+ expect(container.querySelector('script')).toBeNull()
+ expect(container.querySelector('img[onerror]')).toBeNull()
+})

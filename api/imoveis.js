@@ -1,25 +1,29 @@
+import { publicProperty } from './_publicProperty.js';
+import { propertyCollection } from './_properties.js';
 import { db } from "./_firebaseAdmin.js";
 
 export default async function handler(req, res) {
+  res.setHeader?.('X-Content-Type-Options','nosniff');
+  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
+    res.setHeader?.('Allow','GET, HEAD');
+    return res.status(405).json({ error:'Método não permitido.' });
+  }
   const { id, quartos, precoMin, precoMax, garagem, suite } = req.query;
 
   try {
     // 🔍 Se estiver buscando por campo 'id' (slug público)
     if (id) {
-      const snapshot = await db.collection('imoveis').where('id', '==', id).limit(1).get();
+      const snapshot = await propertyCollection(db).where('id', '==', id).limit(1).get();
       if (snapshot.empty) {
         return res.status(404).json({ error: 'Imóvel não encontrado.' });
       }
       const doc = snapshot.docs[0];
-      return res.status(200).json({ id: doc.id, ...doc.data() });
+      return res.status(200).json(publicProperty(doc.data(), doc.id));
     }
 
     // 🔍 Caso contrário, listagem com filtros
-    const snapshot = await db.collection('imoveis').get();
-    const imoveis = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const snapshot = await propertyCollection(db).get();
+    const imoveis = snapshot.docs.map(doc => publicProperty(doc.data(), doc.id));
 
     const resultado = imoveis.filter(imovel => {
       const quartosNum = Number(imovel.quartos);

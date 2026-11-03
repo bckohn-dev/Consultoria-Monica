@@ -1,7 +1,7 @@
 <template>
   <div class="site-page detail-page">
     <Header />
-    <main id="conteudo" class="detail-shell">
+    <main id="conteudo" tabindex="-1" class="detail-shell">
       <router-link to="/catalogo" class="back-link"><ArrowLeft :size="16" aria-hidden="true" /> Voltar ao catálogo</router-link>
       <div v-if="loading" class="state-box" role="status">Carregando detalhes...</div>
       <div v-else-if="erro" class="state-box" role="alert"><p>{{ erro }}</p><button class="button-primary" @click="fetchImovel(route.params.id)">Tentar novamente</button></div>

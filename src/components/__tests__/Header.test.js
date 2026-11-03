@@ -48,3 +48,15 @@ describe('Header', () => {
     expect(document.body.style.overflow).toBe('auto')
   })
 })
+
+it('fecha menu com Escape e devolve foco ao botão', async () => {
+  setup()
+  const toggle = screen.getByRole('button', { name: 'Abrir menu de navegação' })
+  await fireEvent.click(toggle)
+  expect(toggle.getAttribute('aria-label')).toBe('Fechar menu de navegação')
+  const link = screen.getByRole('link', { name: 'Catálogo' })
+  link.focus()
+  await fireEvent.keyDown(link, { key: 'Escape' })
+  expect(toggle.getAttribute('aria-expanded')).toBe('false')
+  expect(document.activeElement).toBe(toggle)
+})

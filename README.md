@@ -4,6 +4,11 @@ Web application to manage a real estate apartment catalog, built with **Vue 3 + 
 
 ---
 
+## Fluxo de trabalho
+
+Usamos **branch específica → development (dev) → main**. Toda tarefa entra primeiro em development por PR; a publicação ocorre por um segundo PR de development para main, após validação no Dev. Consulte [FLUXO-DE-TRABALHO.md](FLUXO-DE-TRABALHO.md).
+
+
 ## 🚀 Features
 
 - **Home**: Consulting company landing page  
