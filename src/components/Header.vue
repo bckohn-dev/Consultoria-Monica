@@ -2,9 +2,9 @@
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
   <header class="site-header" @keydown.esc="fecharMenu">
     <div class="header-inner">
-      <router-link to="/" class="brand-lockup" aria-label="Mônica Consultoria — início">
+      <router-link to="/" class="brand-lockup" aria-label="Mônica Nogueira, Consultoria Imobiliária — início">
         <img :src="Logo" class="brand-symbol" alt="Logo MC" width="66" height="66" />
-        <span class="brand-wordmark"><strong>Mônica</strong><span>Consultoria imobiliária</span></span>
+        <span class="brand-wordmark"><strong>Mônica Nogueira</strong><span>Consultoria imobiliária</span></span>
       </router-link>
       <button ref="menuToggle" class="menu-toggle" @click="menuAberto = !menuAberto" :aria-expanded="menuAberto" aria-controls="primary-nav" :aria-label="menuAberto ? 'Fechar menu de navegação' : 'Abrir menu de navegação'"><X v-if="menuAberto" :size="22" /><Menu v-else :size="22" /></button>
       <nav id="primary-nav" class="primary-nav" :class="{ 'is-open': menuAberto }" aria-label="Navegação principal">
