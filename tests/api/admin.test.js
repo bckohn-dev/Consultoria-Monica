@@ -114,3 +114,10 @@ describe('Property and upload validation',()=>{
     expect(imageInput({type:'image/jpeg',data:jpeg.toString('base64')}).bytes).toEqual(jpeg)
   })
 })
+
+
+it('denies unauthorized publication before touching the database or hook',async()=>{
+ mocks.requireAdmin.mockRejectedValue(Object.assign(new Error('No access'),{status:403}));
+ const res=response();await handler({method:'POST',query:{action:'publish'}},res);
+ expect(res.status).toHaveBeenCalledWith(403);expect(mocks.collection).not.toHaveBeenCalled();
+});

@@ -4,6 +4,7 @@
     <main class="admin-shell">
       <div class="admin-page-heading"><div><h1>Seu catálogo, organizado.</h1><p class="admin-muted">Cadastre, edite e acompanhe seus imóveis em um só lugar.</p></div><router-link to="/catalogo" class="back-link" target="_blank">Ver catálogo <ArrowUpRight :size="17" aria-hidden="true" /></router-link></div>
       <p v-if="preview" class="admin-environment"><FlaskConical :size="19" aria-hidden="true" /><span><strong>Ambiente de teste.</strong> Alterações aqui não modificam os imóveis do site em produção.</span></p>
+      <section class="admin-publication" aria-label="Publicação do catálogo"><p>Salve suas alterações e publique quando estiver tudo pronto. O site mantém a última versão até a nova publicação terminar.</p><button class="button-primary" :disabled="!publishEnabled || dirty || saving || uploading || publishing || loading" @click="publish">{{ publishing ? 'Solicitando publicação…' : 'Publicar catálogo' }}</button><small v-if="!publishEnabled">A publicação precisa ser configurada neste ambiente.</small><small v-else-if="dirty">Salve ou cancele as alterações antes de publicar.</small></section>
       <p v-if="message" class="admin-feedback" role="status">{{ message }}</p>
       <p v-if="error" class="admin-feedback error" role="alert">{{ error }}</p>
       <div class="admin-layout">
@@ -60,7 +61,7 @@ import { OWNER_ENTRY_PATH } from '../config/adminRoutes.js'
 import { Plus, Pencil, Trash2, LogOut, ArrowUpRight, ImagePlus, X, Check, FlaskConical } from 'lucide-vue-next'
 const router=useRouter()
 const items=ref([]), search=ref(''), loading=ref(true), saving=ref(false), uploading=ref(false), preview=ref(false)
-const uploadsEnabled=ref(true)
+const uploadsEnabled=ref(true), publishEnabled=ref(false), publishing=ref(false)
 const message=ref(''), error=ref(''), editing=ref(null), photos=ref([])
 const empty=()=>({nome:'',preco:0,quartos:1,areaMin:0,areaMax:0,descricao:'',marca:'',prazoEntrega:'',vagaGaragem:false,suite:false,destaque:false,destaqueOrdem:0})
 const form=ref(empty()), baseline=ref('')
@@ -75,7 +76,7 @@ async function load() {
   loading.value=true
   try {
     const data=await adminRequest()
-    preview.value=data.preview; uploadsEnabled.value=data.uploadsEnabled !== false
+    publishEnabled.value=data.publishEnabled === true; preview.value=data.preview; uploadsEnabled.value=data.uploadsEnabled !== false
     items.value=data.imoveis.sort((a,b)=>String(a.nome||'').localeCompare(String(b.nome||''),'pt-BR'))
     return true
   } catch(e) {error.value=e.message; return false}
@@ -131,7 +132,7 @@ async function save(){
     }
     baseline.value=snapshot()
     const reloaded=await load()
-    message.value=reloaded ? 'Imóvel salvo. O catálogo já está atualizado.' : 'Imóvel salvo, mas não foi possível recarregar a lista. Atualize a página antes de continuar.'
+    message.value=reloaded ? 'Imóvel salvo. Clique em Publicar catálogo para atualizar o site.' : 'Imóvel salvo, mas não foi possível recarregar a lista. Atualize a página antes de continuar.'
   }catch(e){error.value=e.message}
   finally{saving.value=false}
 }
@@ -143,9 +144,18 @@ async function remove(item){
     await adminRequest('delete',{params:{id:item.docId}})
     if(editing.value===item.docId){editing.value=null;form.value=empty();photos.value=[];baseline.value=snapshot()}
     await load()
-    message.value='Imóvel retirado do catálogo. As fotos e uma cópia de segurança foram preservadas.'
+    message.value='Exclusão salva. Clique em Publicar catálogo para retirar o imóvel do site. As fotos e uma cópia de segurança foram preservadas.'
   }catch(e){error.value=e.message}
   finally{saving.value=false}
+}
+async function publish(){
+  if(dirty.value || saving.value || uploading.value || publishing.value || !publishEnabled.value)return
+  publishing.value=true;error.value='';message.value=''
+  try{
+    await adminRequest('post',{params:{action:'publish'}})
+    message.value='Publicação solicitada. Ela pode levar alguns minutos; confira o catálogo após a conclusão no Vercel.'
+  }catch(e){error.value=e.message}
+  finally{publishing.value=false}
 }
 async function seed(){
   saving.value=true;error.value=''
@@ -159,3 +169,10 @@ onMounted(()=>{load();window.addEventListener('beforeunload',beforeUnload)})
 onBeforeUnmount(()=>window.removeEventListener('beforeunload',beforeUnload))
 onBeforeRouteLeave(()=>saving.value||uploading.value ? false : mayDiscard())
 </script>
+
+<style scoped>
+.admin-publication { display:flex; flex-wrap:wrap; align-items:center; gap:1rem; padding:1.25rem 0; margin-bottom:1rem; border-bottom:1px solid #e0e2e8; }
+.admin-publication p { flex:1 1 20rem; margin:0; }
+.admin-publication small { flex-basis:100%; }
+@media(max-width:600px) { .admin-publication .button-primary { width:100%; } }
+</style>

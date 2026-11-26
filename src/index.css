@@ -92,6 +92,10 @@ h1, h2, h3 { text-wrap: balance; }
 .header-contact { display: flex; align-items: center; gap: 18px; border: 1px solid #ffffff35; padding: 11px 17px; border-radius: 7px; transition: background .2s; }
 .header-contact:hover { background: #ffffff10; }
 .menu-toggle { display: none; padding: 10px; }
+@media(max-width: 760px) {
+  .header-inner { gap: 12px; }
+  .site-header .brand-wordmark strong { font-size: clamp(1.25rem, 5.5vw, 1.5rem); line-height: 1.1; }
+}
 /* Photographs carry the emphasis; brand becomes a small label. */
 .brand-badge { display: inline-flex; align-items: center; gap: 7px; width: fit-content; padding: 6px 10px; background: #fffffff2; color: #32384a; border-radius: 5px; font-size: .62rem; font-weight: 700; letter-spacing: .12em; line-height: 1.4; box-shadow: 0 2px 12px #00000008; }
 .brand-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--brand-accent); }
