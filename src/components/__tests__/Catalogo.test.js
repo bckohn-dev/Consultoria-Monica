@@ -2,7 +2,7 @@
 import { render, fireEvent, screen, waitFor } from '@testing-library/vue'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import Catalogo from '../Catalogo.vue'
-import axios from 'axios'
+import { catalogApi as axios } from '../../services/catalogApi.js'
 
 // Stub minimal do ImovelCard
 vi.mock('../ImovelCard.vue', () => ({
@@ -12,7 +12,7 @@ vi.mock('../ImovelCard.vue', () => ({
   }
 }))
 
-vi.mock('axios')
+vi.mock('../../services/catalogApi.js', () => ({catalogApi:{get:vi.fn()}}))
 
 function deferred() {
   let resolve, reject

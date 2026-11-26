@@ -29,7 +29,7 @@
 </template>
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import axios from 'axios'
+import { catalogApi as axios } from '../services/catalogApi.js'
 import ImovelCard from './ImovelCard.vue'
 import { Search, SlidersHorizontal, X } from 'lucide-vue-next'
 defineProps({ showHeading: { type: Boolean, default: true } })

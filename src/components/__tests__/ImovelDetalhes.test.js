@@ -1,9 +1,9 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/vue'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createRouter, createMemoryHistory } from 'vue-router'
-import axios from 'axios'
+import { catalogApi as axios } from '../../services/catalogApi.js'
 import Details from '../../views/ImovelDetalhes.vue'
-vi.mock('axios')
+vi.mock('../../services/catalogApi.js', () => ({catalogApi:{get:vi.fn()}}))
 vi.mock('../Header.vue', () => ({ default: { template: '<header />' } }))
 vi.mock('../Footer.vue', () => ({ default: { template: '<footer />' } }))
 const property = { id: 'teste', nome: 'Jardim São Paulo', preco: 400000, quartos: 2, areaMin: 40, areaMax: 50, fotos: ['/segunda.jpg'], foto: '/capa.jpg', marca: 'vibra', vagaGaragem: true, descricao: 'Diferenciais:\\nPerto do metrô\\n\\nLazer completo.\nVisite.' }

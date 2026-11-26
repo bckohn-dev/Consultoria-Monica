@@ -54,7 +54,7 @@
 import FaixaMarca from '../components/FaixaMarca.vue'
 import Footer from '../components/Footer.vue'
 import Header from '../components/Header.vue'
-import axios from 'axios'
+import { catalogApi as axios } from '../services/catalogApi.js'
 import { useRoute } from 'vue-router'
 import { ref, computed, watch, onBeforeUnmount } from 'vue'
 import { ArrowLeft, ArrowUpRight, BedDouble, Maximize, CarFront, Bath, ChevronLeft, ChevronRight, Images } from 'lucide-vue-next'

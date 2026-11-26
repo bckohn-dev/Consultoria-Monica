@@ -2,7 +2,7 @@ import { render,screen } from '@testing-library/vue'
 import { describe,it,expect,vi,beforeEach } from 'vitest'
 import { createRouter,createMemoryHistory } from 'vue-router'
 const get=vi.hoisted(()=>vi.fn())
-vi.mock('../../services/api',()=>({api:{get}}))
+vi.mock('../../services/catalogApi.js',()=>({catalogApi:{get}}))
 vi.mock('swiper/vue',()=>({Swiper:{template:'<div><slot /></div>'},SwiperSlide:{template:'<div><slot /></div>'}}))
 import Carrossel from '../Carrossel.vue'
 function setup(){

@@ -43,3 +43,6 @@ ImovelCardPreview.vue
 **/serviceAccount*.json
 *.pem
 *.key
+
+# Build-time public CDN snapshot (no credentials).
+/public/catalogo-publico/

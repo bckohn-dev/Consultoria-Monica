@@ -1,3 +1,4 @@
+import { publishHook, publishCatalog } from './_publishCatalog.js';
 import { limitAdminWrites } from './_adminRateLimit.js';
 import { randomUUID } from 'node:crypto';
 import { FieldValue } from 'firebase-admin/firestore';
@@ -21,14 +22,15 @@ export default async function handler(req, res) {
     const action = req.query?.action;
     const uploadsEnabled = process.env.FIREBASE_STORAGE_ENABLED !== 'false';
     if (req.method === 'GET') {
-      if (action === 'session') return res.status(200).json({ email: user.email, preview: isPreview(), uploadsEnabled });
+      if (action === 'session') return res.status(200).json({ email: user.email, preview: isPreview(), uploadsEnabled, publishEnabled: Boolean(publishHook()) });
       const snapshot = await collection.get();
-      return res.status(200).json({ preview: isPreview(), uploadsEnabled, imoveis: snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id })) });
+      return res.status(200).json({ preview: isPreview(), uploadsEnabled, publishEnabled: Boolean(publishHook()), imoveis: snapshot.docs.map(doc => ({ ...doc.data(), docId: doc.id })) });
     }
     let body = req.body;
     if (typeof body === 'string') { try { body = JSON.parse(body); } catch { throw Object.assign(new Error('Dados inválidos.'),{status:400}); } }
     if (action === 'seed' && !isPreview()) return res.status(403).json({error:'Disponível apenas no ambiente de teste.'});
     await limitAdminWrites(db, user.uid);
+    if (req.method === 'POST' && action === 'publish') return res.status(202).json(await publishCatalog(db));
     if (req.method === 'POST' && action === 'seed') {
       if (!isPreview()) return res.status(403).json({ error: 'Disponível apenas no ambiente de teste.' });
       const existing = await collection.limit(1).get();

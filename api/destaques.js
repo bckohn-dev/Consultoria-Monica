@@ -1,5 +1,4 @@
-import { db } from './_firebaseAdmin.js';
-import { readPublicCatalog } from './_publicCatalog.js';
+import { readPublicCatalog } from './_staticCatalog.js';
 import { preparePublicRequest, sendPublicData, publicFailure } from './_publicRequest.js';
 
 export default async function handler(req, res) {
@@ -7,7 +6,7 @@ export default async function handler(req, res) {
     if (!preparePublicRequest(req, res, ['ordenar'])) return;
     const order = req.query?.ordenar ?? 'sim';
     if (!['sim', 'nao'].includes(order)) throw Object.assign(new Error('Ordenação inválida.'), { status: 400 });
-    const catalog = await readPublicCatalog(db);
+    const catalog = await readPublicCatalog();
     const entries = catalog.filter(entry => entry.property.destaque === true && entry.highlightPhoto);
     if (order !== 'nao') entries.sort((a, b) => Number(a.property.destaqueOrdem || 0) - Number(b.property.destaqueOrdem || 0));
     const highlights = entries.map(entry => ({
