@@ -53,3 +53,13 @@ Os visitantes deixam de gerar leituras de Firestore e downloads de Storage. O pa
 Desabilite o botão removendo o Secret do ambiente (novo deploy necessário). Reative um deployment conhecido no Vercel ou reverta o PR seguindo `feature → development → main`. Os documentos originais, fotos e lixeira permanecem intactos. Para restaurar um catálogo, use um deployment anterior ou restaure explicitamente a versão aprovada; não exclua automaticamente a versão congelada, pois o próximo build inicializaria a partir dos rascunhos.
 
 Referência: https://vercel.com/docs/deploy-hooks
+
+## Validação desta entrega (25/11/2026)
+
+- 147 testes passaram; auditoria npm completa e de runtime sem vulnerabilidades conhecidas.
+- Preview Vercel validado com 9 imóveis, filtro de garagem com 2 resultados, detalhes de Veleiros, três destaques e fotos carregadas de caminhos locais.
+- JSON estático sem URLs Firebase/tokens; API antiga retornou 9 imóveis com caminhos locais; arquivo inexistente mostrou a resposta de erro própria.
+- Build Vercel final exportou uma única vez e terminou em aproximadamente 23 segundos.
+- Hooks de `development` e `main` e Secrets correspondentes configurados. Nenhum hook de produção foi acionado.
+- Publicação manual coberta por testes locais; teste completo do botão no Dev pendente da integração dos PRs #20 e #21. A branch de trabalho não recebe o hook de `development`.
+- Houve uma build inicial rejeitada por ausência de variáveis da branch e uma build anterior com exportações repetidas. A configuração isolada e a remoção do script redundante corrigiram essas duas condições.
