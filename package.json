@@ -7,7 +7,6 @@
     "dev": "vite",
     "dev:vercel": "vercel dev",
     "build": "node scripts/build-public-catalog.mjs && vite build",
-    "vercel-build": "npm run build",
     "preview": "vite preview",
     "test": "vitest",
     "build:fixture": "node scripts/build-public-catalog.mjs --fixture && vite build"
