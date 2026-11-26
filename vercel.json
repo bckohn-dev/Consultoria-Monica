@@ -19,6 +19,20 @@
       "continue": true
     },
     {
+      "src": "/catalogo-publico/images/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
+      "continue": true
+    },
+    {
+      "src": "/catalogo-publico/catalogo.json",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      },
+      "continue": true
+    },
+    {
       "src": "/gestao-monica(?:/.*)?",
       "headers": {
         "X-Robots-Tag": "noindex, nofollow, noarchive",
@@ -43,8 +57,18 @@
       "handle": "filesystem"
     },
     {
+      "src": "/catalogo-publico/(.*)",
+      "status": 404,
+      "dest": "/cdn-not-found.txt"
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "public/catalogo-publico/catalogo.json"
+    }
+  }
 }

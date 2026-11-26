@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "vite",
     "dev:vercel": "vercel dev",
-    "build": "vite build",
-    "vercel-build": "vite build",
+    "build": "node scripts/build-public-catalog.mjs && vite build",
+    "vercel-build": "npm run build",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "build:fixture": "node scripts/build-public-catalog.mjs --fixture && vite build"
   },
   "dependencies": {
     "@heroicons/vue": "^2.2.0",

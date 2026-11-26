@@ -1,6 +1,5 @@
-import { db } from '../_firebaseAdmin.js';
 import { documentId } from '../_propertyValidation.js';
-import { readPublicCatalog } from '../_publicCatalog.js';
+import { readPublicCatalog } from '../_staticCatalog.js';
 import { preparePublicRequest, sendPublicData, publicFailure } from '../_publicRequest.js';
 
 export default async function handler(req, res) {
@@ -11,8 +10,8 @@ export default async function handler(req, res) {
     try { rawId = decodeURIComponent(match?.[1] || ''); }
     catch { throw Object.assign(new Error('Identificador inválido.'), { status: 400 }); }
     const id = documentId(rawId);
-    const catalog = await readPublicCatalog(db);
-    const entry = catalog.find(entry => entry.documentId === id);
+    const catalog = await readPublicCatalog();
+    const entry = catalog.find(entry => entry.documentId === id || entry.property.id === id);
     if (!entry) return sendPublicData(req, res, { error: 'Imóvel não encontrado.' }, 404);
     return sendPublicData(req, res, entry.property);
   } catch (error) {

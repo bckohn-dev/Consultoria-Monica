@@ -19,7 +19,7 @@ import { Navigation, Pagination, A11y, Keyboard } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { api } from '@/services/api'
+import { catalogApi as api } from '@/services/catalogApi.js'
 import FaixaMarca from '@/components/FaixaMarca.vue'
 
 export default {
