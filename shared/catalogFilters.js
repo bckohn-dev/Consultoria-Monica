@@ -33,4 +33,3 @@ export function matchesFilters(property, filters, legacySearch = false) {
   if (filters.suite !== undefined && Boolean(property.suite) !== filters.suite) return false;
   return true;
 }
-
