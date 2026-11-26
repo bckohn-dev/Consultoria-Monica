@@ -1,37 +1,43 @@
 import { storage } from './_firebaseAdmin.js';
+import { dataEnvironment } from './_properties.js';
+import { preparePublicRequest, sendPublicData, publicFailure } from './_publicRequest.js';
+
+let cached;
+let pending;
+let retryAt = 0;
+
+async function readImages() {
+  const environment = dataEnvironment();
+  if (cached?.environment === environment && cached.expires > Date.now()) return cached.urls;
+  if (pending) return pending;
+  if (Date.now() < retryAt) throw new Error('Storage retry backoff');
+  pending = Promise.resolve().then(async () => {
+    try {
+      const [files] = await storage.bucket().getFiles({ prefix: 'carrossel/', autoPaginate: false, maxResults: 50 });
+      const images = files.filter(file => /\.(jpe?g|png|webp|gif)$/i.test(file.name));
+      const urls = await Promise.all(images.map(async file => {
+        const [url] = await file.getSignedUrl({ action: 'read', expires: Date.now() + 3600000 });
+        return url;
+      }));
+      cached = { environment, urls, expires: Date.now() + 30000 };
+      retryAt = 0;
+      return urls;
+    } catch (error) {
+      retryAt = Date.now() + 5000;
+      throw error;
+    } finally {
+      pending = null;
+    }
+  });
+  return pending;
+}
 
 export default async function handler(req, res) {
-  res.setHeader?.('X-Content-Type-Options','nosniff');
-  if (req.method && req.method !== 'GET' && req.method !== 'HEAD') {
-    res.setHeader?.('Allow','GET, HEAD');
-    return res.status(405).json({ error:'Método não permitido.' });
-  }
   try {
-    const bucket = storage.bucket();
-    const [files] = await bucket.getFiles({ prefix: 'carrossel/' });
-
-    if (!files.length) {
-      return res.status(200).json([]);
-    }
-
-    const urls = await Promise.all(
-      files
-        .filter(file => /\.(jpe?g|png|webp|gif)$/i.test(file.name)) // 🔍 apenas arquivos de imagem
-        .map(file =>
-          file.getSignedUrl({
-            action: 'read',
-            expires: '03-01-2500',
-          }).then(urls => urls[0])
-        )
-    );
-
-    return res.status(200).json(urls);
+    if (!preparePublicRequest(req, res, [])) return;
+    if (process.env.FIREBASE_STORAGE_ENABLED === 'false') return sendPublicData(req, res, []);
+    return sendPublicData(req, res, await readImages());
   } catch (error) {
-    console.error('❌ Firebase Admin erro no carrossel:', {
-      message: error.message,
-      stack: error.stack,
-      custom: error?.errors || error,
-    });
-    return res.status(500).json({ erro: 'Erro ao buscar imagens' });
+    return publicFailure(res, error);
   }
 }

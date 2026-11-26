@@ -36,7 +36,7 @@ describe('Painel administrativo',()=>{
       params:{id:'original-doc'},
       data:expect.objectContaining({nome:'Apartamento atualizado',foto:property.foto,fotos:[property.foto,...property.fotos]})
     })))
-    expect(await screen.findByText('Imóvel salvo. O catálogo já está atualizado.')).toBeTruthy()
+    expect(await screen.findByText('Imóvel salvo. A atualização no catálogo público pode levar até 1 minuto.')).toBeTruthy()
   })
   it('creates with the preset cover when no photos are uploaded',async()=>{
     await setup()
@@ -46,7 +46,7 @@ describe('Painel administrativo',()=>{
     await fireEvent.update(screen.getByLabelText('Área máxima (m²)'),'40')
     await fireEvent.click(screen.getByRole('button',{name:'Salvar imóvel'}))
     await waitFor(()=>expect(request).toHaveBeenCalledWith('post',expect.objectContaining({data:expect.objectContaining({foto:'/default-placeholder.jpg',fotos:[]})})))
-    expect(await screen.findByText('Imóvel salvo. O catálogo já está atualizado.')).toBeTruthy()
+    expect(await screen.findByText('Imóvel salvo. A atualização no catálogo público pode levar até 1 minuto.')).toBeTruthy()
   })
 })
 
@@ -83,7 +83,7 @@ describe('Admin editing safeguards',()=>{
     await fireEvent.click(screen.getByRole('button',{name:'Salvar imóvel'}))
     expect((await screen.findByRole('alert')).textContent).toContain('Falha de teste ao salvar')
     expect(screen.getByLabelText('Nome do imóvel').value).toBe('Preservar edição')
-    expect(screen.queryByText('Imóvel salvo. O catálogo já está atualizado.')).toBeNull()
+    expect(screen.queryByText('Imóvel salvo. A atualização no catálogo público pode levar até 1 minuto.')).toBeNull()
   })
   it('changes cover order without uploading or losing existing photos',async()=>{
     await setup()

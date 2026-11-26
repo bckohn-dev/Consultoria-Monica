@@ -65,3 +65,7 @@ Storage Dev não foi provisionado, respeitando a decisão do usuário de não at
 - /gestao-monica e /gestao-monica/imoveis ficam fora da navegação pública e recebem X-Robots-Tag noindex/nofollow/noarchive e Cache-Control private/no-store. /admin e /login antigos retornam 404. O endereço pode ser descoberto; a barreira de segurança permanece na API.
 - Conta final confirmada: monicanogueiravendas@gmail.com. ADMIN_EMAILS Production e teste real de entrada dessa conta permanecem pendentes antes da promoção para main.
 - A development remota antiga tem histórico desconectado. O PR une a ancestralidade preservando integralmente a árvore da versão atual validada; não publica produção nem altera automaticamente development.
+
+## Auditoria de custos e segurança em 25/11/2026
+
+Relatório atualizado, correções, evidências e roadmap em [security/AUDITORIA-2026-11-25.md](security/AUDITORIA-2026-11-25.md). Os registros anteriores são históricos e não substituem a verificação do estado atual no console.

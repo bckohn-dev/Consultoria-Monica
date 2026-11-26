@@ -131,7 +131,7 @@ async function save(){
     }
     baseline.value=snapshot()
     const reloaded=await load()
-    message.value=reloaded ? 'Imóvel salvo. O catálogo já está atualizado.' : 'Imóvel salvo, mas não foi possível recarregar a lista. Atualize a página antes de continuar.'
+    message.value=reloaded ? 'Imóvel salvo. A atualização no catálogo público pode levar até 1 minuto.' : 'Imóvel salvo, mas não foi possível recarregar a lista. Atualize a página antes de continuar.'
   }catch(e){error.value=e.message}
   finally{saving.value=false}
 }
